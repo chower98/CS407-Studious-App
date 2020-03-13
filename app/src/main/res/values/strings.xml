@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Studious</string>
+    <string name="course_Prompt">Subject</string>
+
+    <string-array name="course_array">
+        <item>Anatomy</item>
+        <item>Biology</item>
+        <item>Chemistry</item>
+        <item>Computer Science</item>
+        <item>Physiology</item>
+    </string-array>
+</resources>
