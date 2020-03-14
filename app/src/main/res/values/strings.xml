@@ -3,10 +3,12 @@
     <string name="course_Prompt">Subject</string>
 
     <string-array name="course_array">
+        <item>Select Subject</item>
         <item>Anatomy</item>
         <item>Biology</item>
         <item>Chemistry</item>
         <item>Computer Science</item>
         <item>Physiology</item>
+        <item>Zoology</item>
     </string-array>
 </resources>

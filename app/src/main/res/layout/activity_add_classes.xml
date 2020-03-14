@@ -9,18 +9,18 @@
     <Spinner
         android:id="@+id/courseList"
         android:layout_width="189dp"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:entries="@array/course_array"
         android:prompt="@string/course_Prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.423" />
+        app:layout_constraintVertical_bias="0.276" />
 
     <EditText
         android:id="@+id/classNumber"
         android:layout_width="102dp"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:ems="10"
         android:hint="Course #"
         android:inputType="number"
@@ -30,7 +30,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/courseList"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.424" />
+        app:layout_constraintVertical_bias="0.276" />
 
     <Button
         android:id="@+id/addButton"
@@ -38,7 +38,23 @@
         android:layout_height="wrap_content"
         android:text="Add!"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.546"
-        tools:layout_editor_absoluteX="161dp" />
+        app:layout_constraintVertical_bias="0.42" />
+
+    <ListView
+        android:id="@+id/classHolder"
+        android:layout_width="match_parent"
+        android:layout_height="303dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addedClasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courses Added:"
+        app:layout_constraintBottom_toTopOf="@+id/classHolder"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
