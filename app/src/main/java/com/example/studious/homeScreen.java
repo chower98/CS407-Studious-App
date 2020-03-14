@@ -9,6 +9,6 @@ public class homeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_classes);
+        setContentView(R.layout.activity_homeScreen);
     }
 }
