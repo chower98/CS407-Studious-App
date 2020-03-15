@@ -6,8 +6,15 @@
         <item>Select Subject</item>
         <item>Anatomy</item>
         <item>Biology</item>
+        <item>Biomedical Engineering</item>
+        <item>Chemical Engineering</item>
         <item>Chemistry</item>
+        <item>Computer Engineering</item>
         <item>Computer Science</item>
+        <item>Electrical Engineering</item>
+        <item>MCAT</item>
+        <item>LSAT</item>
+        <item>PCAT</item>
         <item>Physiology</item>
         <item>Zoology</item>
     </string-array>
