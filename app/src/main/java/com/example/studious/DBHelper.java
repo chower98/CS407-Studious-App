@@ -12,14 +12,47 @@ public class DBHelper {
         this.sqLiteDatabase = sqLiteDatabase;
     }
 
-    public void createTable() {
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS courses " +
-                "(id INTEGER PRIMARY KEY, username TEXT, date TEXT, title TEXT, status TEXT, src TEXT)");
+    public void createUserTable() {
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS users" +
+                "(id INTEGER PRIMARY KEY, email TEXT, password TEXT)");
     }
 
-    public ArrayList<Course> readCourses(String username) {
-        createTable();
-        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses WHERE username like '%s'", username), null);
+    public int checkUserLogin(String email, String password) {
+        // returns 0: user does not exist or incorrect password
+        // returns 1: user exists, correct password
+        createUserTable();
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM users WHERE email like %s", email), null);
+
+        int emailIndex = c.getColumnIndex("email");
+        int passwordIndex = c.getColumnIndex("password");
+
+        c.moveToFirst();
+
+        if (!c.isNull(emailIndex)) { // email is found in database
+            if (c.getString(passwordIndex).equals(password)) { // correct password inputted
+                return 1;
+            } else { // incorrect password inputted
+                return 0;
+            }
+        } else { // email not found
+            return 0;
+        }
+    }
+
+    public void addUser(String userEmail, String password) {
+        createUserTable();
+        sqLiteDatabase.execSQL(String.format("INSERT INTO users (userEmail, password) VALUES ('%s', '%s', '%s', '%s')",
+                userEmail, password));
+    }
+
+    public void createCoursesTable() {
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS courses " +
+                "(id INTEGER PRIMARY KEY, userEmail TEXT, date TEXT, title TEXT, status TEXT, src TEXT)");
+    }
+
+    public ArrayList<Course> readCourses(String userEmail) {
+        createCoursesTable();
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses WHERE username like '%s'", userEmail), null);
 
         int dateIndex = c.getColumnIndex("date");
         int titleIndex = c.getColumnIndex("title");
@@ -34,7 +67,7 @@ public class DBHelper {
             String date = c.getString(dateIndex);
             String status = c.getString(statusIndex);
 
-            Course note = new Course(date, username, title, status);
+            Course note = new Course(date, userEmail, title, status);
             coursesList.add(note);
             c.moveToNext();
         }
@@ -45,7 +78,7 @@ public class DBHelper {
     }
 
     public void saveCourses(String username, String title, String status, String date) {
-        createTable();
+        createCoursesTable();
         sqLiteDatabase.execSQL(String.format("INSERT INTO courses (username, date, title, status) VALUES ('%s', '%s', '%s', '%s')",
                 username, date, title, status));
     }

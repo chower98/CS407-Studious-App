@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 public class Login extends AppCompatActivity {
-
+    String email, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +65,29 @@ public class Login extends AppCompatActivity {
         EditText emailText = findViewById(R.id.usernameText);
         EditText passwordText = findViewById(R.id.passwordText);
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        email = emailText.getText().toString();
+        password = passwordText.getText().toString();
 
         sharedPreferences.edit().putString("email", email).apply();
         sharedPreferences.edit().putString("password", password).apply();
 
-        Intent loginIntent = new Intent(this, AddClasses.class);
-        loginIntent.putExtra("login_info", new String[]{email, password});
-        startActivity(loginIntent);
+        // instantiate dbHelper to check if correct login info was inputted
+        Context context = getApplicationContext();
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("courses", Context.MODE_PRIVATE, null);
+        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        int loginCheck = dbHelper.checkUserLogin(email, password);
+
+        if (loginCheck == 1) {
+            Intent loginIntent = new Intent(this, AddClasses.class);
+            loginIntent.putExtra("login_info", new String[]{email, password}); // don't know if this is needed rn
+            startActivity(loginIntent);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+
+            builder.setMessage("Incorrect email or password!");
+            builder.setTitle("Alert!");
+
+            builder.setCancelable(false);
+        }
     }
 }

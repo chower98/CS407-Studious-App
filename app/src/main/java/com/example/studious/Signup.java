@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,12 @@ public class Signup extends AppCompatActivity {
 
         sharedPreferences.edit().putString("email", email).apply();
         sharedPreferences.edit().putString("password", password).apply();
+
+        // instantiate dbHelper to add new user
+        Context context = getApplicationContext();
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("courses", Context.MODE_PRIVATE, null);
+        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        dbHelper.addUser(email, password);
 
         Intent intent = new Intent(this, AddClasses.class);
         startActivity(intent);

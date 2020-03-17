@@ -1,13 +1,13 @@
 package com.example.studious;
 
 public class Course {
-    private String username;
+    private String userEmail;
     private String date;
     private String title;
     private String status;
 
-    public Course(String date, String username, String title, String status) {
-        this.username = username;
+    public Course(String date, String userEmail, String title, String status) {
+        this.userEmail = userEmail;
         this.date = date;
         this.title = title;
         this.status = status;
@@ -15,7 +15,7 @@ public class Course {
 
     public String getDate() { return date; }
 
-    public String getUsername() { return username; }
+    public String getUserEmail() { return userEmail; }
 
     public String getTitle() { return title; }
 
