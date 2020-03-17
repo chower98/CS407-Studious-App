@@ -3,7 +3,6 @@ package com.example.studious;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,11 +24,11 @@ public class Login extends AppCompatActivity {
         if(!sharedPreferences.getString(usernameKey, "").equals("")
                 && !sharedPreferences.getString(passwordKey, "").equals("")) {
 
-            Intent intent = new Intent(this, homeScreen.class);
+            Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
 
         } else {
-            setContentView(R.layout.login);
+            setContentView(R.layout.activity_login);
         }
     }
 
