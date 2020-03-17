@@ -41,7 +41,7 @@ public class AddClasses extends AppCompatActivity {
         // create ArrayList<String> by iterating courses object
         ArrayList<String> displayCourses = new ArrayList<>();
         for (Course course : courses) {
-            displayCourses.add(String.format("Course:%s\nDate Added:%s\nStatus:%s\n", course.getTitle(),
+            displayCourses.add(String.format("Course: %s\nDate Added: %s\nStatus: %s\n", course.getTitle(),
                     course.getDate(), course.getStatus()));
         }
 

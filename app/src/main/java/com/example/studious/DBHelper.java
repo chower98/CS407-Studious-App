@@ -28,8 +28,8 @@ public class DBHelper {
 
         c.moveToFirst();
 
-        if (!c.isNull(emailIndex)) { // email is found in database
-            if (c.getString(passwordIndex).equals(password)) { // correct password inputted
+        if (c.getString(0) != null) { // email is found in database
+            if (c.getString(1).equals(password)) { // correct password inputted
                 return 1;
             } else { // incorrect password inputted
                 return 0;
@@ -39,10 +39,10 @@ public class DBHelper {
         }
     }
 
-    public void addUser(String userEmail, String password) {
+    public void addUser(String email, String password) {
         createUserTable();
-        sqLiteDatabase.execSQL(String.format("INSERT INTO users (userEmail, password) VALUES ('%s', '%s', '%s', '%s')",
-                userEmail, password));
+        sqLiteDatabase.execSQL(String.format("INSERT INTO users (email, password) VALUES ('%s', '%s')",
+                email, password));
     }
 
     public void createCoursesTable() {
@@ -52,7 +52,7 @@ public class DBHelper {
 
     public ArrayList<Course> readCourses(String userEmail) {
         createCoursesTable();
-        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses WHERE username like '%s'", userEmail), null);
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses WHERE userEmail like '%s'", userEmail), null);
 
         int dateIndex = c.getColumnIndex("date");
         int titleIndex = c.getColumnIndex("title");
@@ -77,10 +77,10 @@ public class DBHelper {
         return coursesList;
     }
 
-    public void saveCourses(String username, String title, String status, String date) {
+    public void saveCourses(String userEmail, String title, String status, String date) {
         createCoursesTable();
-        sqLiteDatabase.execSQL(String.format("INSERT INTO courses (username, date, title, status) VALUES ('%s', '%s', '%s', '%s')",
-                username, date, title, status));
+        sqLiteDatabase.execSQL(String.format("INSERT INTO courses (userEmail, date, title, status) VALUES ('%s', '%s', '%s', '%s')",
+                userEmail, date, title, status));
     }
 
 }
