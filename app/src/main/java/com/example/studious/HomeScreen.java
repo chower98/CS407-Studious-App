@@ -3,6 +3,7 @@ package com.example.studious;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.EditText;
 
 public class HomeScreen extends AppCompatActivity {
 

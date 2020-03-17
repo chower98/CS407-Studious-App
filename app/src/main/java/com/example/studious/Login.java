@@ -39,10 +39,9 @@ public class Login extends AppCompatActivity {
 
         //checks if this email is already contained
         if(!sharedPreferences.contains(editText.getText().toString())) {
-            Intent intent = new Intent(this, Signup.class);
-            startActivity(intent);
+            Intent signupIntent = new Intent(this, Signup.class);
+            startActivity(signupIntent);
         } else {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
 
             builder.setMessage("This email already has an account!");
@@ -53,9 +52,7 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    // When the user click yes button
-                    // then app will close
+                    // When the user click yes button, then app will close
                     finish();
                 }
             });
@@ -67,10 +64,14 @@ public class Login extends AppCompatActivity {
         EditText emailText = findViewById(R.id.usernameText);
         EditText passwordText = findViewById(R.id.passwordText);
 
-        sharedPreferences.edit().putString("email", emailText.getText().toString());
-        sharedPreferences.edit().putString("password", passwordText.getText().toString());
+        String email = emailText.getText().toString();
+        String password = passwordText.getText().toString();
 
-        Intent intent = new Intent(this, AddClasses.class);
-        startActivity(intent);
+        sharedPreferences.edit().putString("email", email).apply();
+        sharedPreferences.edit().putString("password", password).apply();
+
+        Intent loginIntent = new Intent(this, AddClasses.class);
+        loginIntent.putExtra("login_info", new String[]{email, password});
+        startActivity(loginIntent);
     }
 }
