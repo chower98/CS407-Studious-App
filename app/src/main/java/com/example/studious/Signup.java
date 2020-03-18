@@ -40,7 +40,6 @@ public class Signup extends AppCompatActivity {
         int userExists = dbHelper.checkUserLogin(email, password);
         if (userExists == 0) { // 0 = user doesn't exist
             dbHelper.addUser(email, password);
-            Log.e("Called addUser()", "should have");
 
             Intent intent = new Intent(this, AddClasses.class);
             startActivity(intent);

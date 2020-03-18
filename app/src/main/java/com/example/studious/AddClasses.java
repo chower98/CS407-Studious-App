@@ -59,7 +59,7 @@ public class AddClasses extends AppCompatActivity {
         String courseName = courseList.getSelectedItem().toString() + " " +courseNumber.getText().toString();
 
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("courses", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
         DBHelper dbHelper = new DBHelper(sqLiteDatabase);
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
@@ -72,8 +72,7 @@ public class AddClasses extends AppCompatActivity {
         if (courseId == -1) { // add new course
             title = courseName;
             String status = "No Matches Yet";
-            dbHelper.saveCourses(username, title, status, date);
-            Log.e("Course Added?", "dontsdkfjsdk");
+            dbHelper.addCourses(username, title, status, date);
         } else {
             // TODO: course is already added, show some kind of dialog/alert???
         }
