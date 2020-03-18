@@ -26,6 +26,21 @@ public class HomeScreen extends AppCompatActivity {
         startActivity(coursesIntent);
     }
 
+    public void matchesClick(View view) {
+        Intent matchesIntent = new Intent(this, Matches.class);
+        startActivity(matchesIntent);
+    }
+
+    public void messagesClick(View view) {
+        Intent messagesIntent = new Intent(this, Messages.class);
+        startActivity(messagesIntent);
+    }
+
+    public void preferencesClick(View view) {
+        Intent preferencesIntent = new Intent(this, Preferences.class);
+        startActivity(preferencesIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -39,7 +54,8 @@ public class HomeScreen extends AppCompatActivity {
             case R.id.logout:
                 // remove data kept in the instance for the user since they are logging out
                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-                sharedPreferences.edit().remove("username").apply();
+                sharedPreferences.edit().remove("email").apply();
+                sharedPreferences.edit().remove("password").apply();
 
                 Intent logoutIntent = new Intent(this, Login.class);
                 startActivity(logoutIntent);

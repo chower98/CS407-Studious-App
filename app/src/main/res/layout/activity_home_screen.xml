@@ -36,6 +36,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="false"
             android:scaleType="fitCenter"
+            android:onClick="messagesClick"
             app:srcCompat="@android:drawable/stat_notify_chat" />
 
         <ImageButton
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitCenter"
+            android:onClick="matchesClick"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <ImageButton
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitCenter"
+            android:onClick="preferencesClick"
             app:srcCompat="@android:drawable/ic_menu_manage" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

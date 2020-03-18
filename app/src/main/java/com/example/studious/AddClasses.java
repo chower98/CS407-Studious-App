@@ -1,5 +1,6 @@
 package com.example.studious;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -8,6 +9,9 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -88,6 +92,35 @@ public class AddClasses extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                // remove data kept in the instance for the user since they are logging out
+                SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove("email").apply();
+                sharedPreferences.edit().remove("password").apply();
+
+                Intent logoutIntent = new Intent(this, Login.class);
+                startActivity(logoutIntent);
+                return true;
+
+            case R.id.preferences:
+                Intent preferencesIntent = new Intent(this, Preferences.class);
+                startActivity(preferencesIntent);
+                return true;
+
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
 }
