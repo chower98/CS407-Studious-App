@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -72,6 +73,7 @@ public class AddClasses extends AppCompatActivity {
             title = courseName;
             String status = "No Matches Yet";
             dbHelper.saveCourses(username, title, status, date);
+            Log.e("Course Added?", "dontsdkfjsdk");
         } else {
             // TODO: course is already added, show some kind of dialog/alert???
         }

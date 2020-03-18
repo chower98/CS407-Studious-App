@@ -80,14 +80,12 @@ public class Login extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(sqLiteDatabase);
         int loginCheck = dbHelper.checkUserLogin(email, password);
 
-        Log.d("Login Check", new Integer(loginCheck).toString());
-
-        if (loginCheck == 1) {
+        if (loginCheck == 1) { // correct login, go to home screen
+            // TODO: HOME SCREEN INTENT ISN'T WORKING, IT'S CRASHING THE APP (that's why it's set to AddClasses rn
             Intent loginIntent = new Intent(this, AddClasses.class);
             loginIntent.putExtra("login_info", new String[]{email, password}); // don't know if this is needed rn
             startActivity(loginIntent);
-        } else {
-            Log.d("Alert Check", "in");
+        } else { // incorrect login, display alert
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
 
             builder.setMessage("Incorrect email or password!");

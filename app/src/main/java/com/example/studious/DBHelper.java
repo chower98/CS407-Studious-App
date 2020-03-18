@@ -2,6 +2,7 @@ package com.example.studious;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,9 @@ public class DBHelper {
     }
 
     public int checkUserLogin(String email, String password) {
-        // returns 0: user does not exist or incorrect password
+        // returns 0: user does not exist
         // returns 1: user exists, correct password
+        // returns 2: user exists, incorrect password
         createTables(); //createUserTable();
         Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM users"), null);
 
@@ -53,18 +55,16 @@ public class DBHelper {
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
-            if (c.getString(emailIndex).equals(email) && c.getString(passwordIndex).equals(password)) {
-                c.close();
-                sqLiteDatabase.close();
-                return 1;
+            if (c.getString(emailIndex).equals(email)) {
+                if (c.getString(passwordIndex).equals(password)) {
+                    return 1;
+                } else {
+                    return 2;
+                }
             } else {
-                c.close();
-                sqLiteDatabase.close();
                 return 0;
             }
         }
-        c.close();
-        sqLiteDatabase.close();
         return 0;
     }
 
@@ -72,6 +72,52 @@ public class DBHelper {
         createTables(); //createUserTable();
         sqLiteDatabase.execSQL(String.format("INSERT INTO users (email, password) VALUES ('%s', '%s')",
                 email, password));
+
+        printEmailsInLog(); // for debugging purposes, delete later
+        printCoursesInLog();
+    }
+
+    public void printEmailsInLog() {
+        createTables(); //createCoursesTable();
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM users"), null);
+
+        int emailIndex = c.getColumnIndex("email");
+        int passwordIndex = c.getColumnIndex("password");
+
+        c.moveToFirst();
+
+        ArrayList<String> emails = new ArrayList<>();
+
+        while (!c.isAfterLast()) {
+            String email = c.getString(emailIndex);
+
+            emails.add(email);
+            c.moveToNext();
+        }
+        //c.close();
+        //sqLiteDatabase.close();
+
+        Log.e("Added Emails", emails.toString());
+    }
+
+    public void printCoursesInLog() {
+        Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses"), null);
+
+        int titleIndex = c.getColumnIndex("title");
+
+        c.moveToFirst();
+
+        ArrayList<String> coursesList = new ArrayList<>();
+
+        while (!c.isAfterLast()) {
+            String title = c.getString(titleIndex);
+            coursesList.add(title);
+            c.moveToNext();
+        }
+        //c.close();
+        //sqLiteDatabase.close();
+
+        Log.e("Added Courses", coursesList.toString());
     }
 
     public void createCoursesTable() {
@@ -100,8 +146,8 @@ public class DBHelper {
             coursesList.add(note);
             c.moveToNext();
         }
-        c.close();
-        sqLiteDatabase.close();
+        //c.close();
+        //sqLiteDatabase.close();
 
         return coursesList;
     }
@@ -110,6 +156,7 @@ public class DBHelper {
         createTables(); //createCoursesTable();
         sqLiteDatabase.execSQL(String.format("INSERT INTO courses (email, date, title, status) VALUES ('%s', '%s', '%s', '%s')",
                 email, date, title, status));
+        printCoursesInLog();
     }
 
 }
