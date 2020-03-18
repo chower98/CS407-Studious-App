@@ -16,28 +16,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="200dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
+            android:onClick="coursesClick"
             app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_today" />
+
+        <ImageButton
+            android:id="@+id/messages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/stat_notify_chat" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_manage" />
-
-        <ImageButton
-            android:id="@+id/imageButton5"
+            android:id="@+id/matches"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,11 +47,11 @@
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/preferences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            app:srcCompat="@android:drawable/ic_menu_today" />
+            app:srcCompat="@android:drawable/ic_menu_manage" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
