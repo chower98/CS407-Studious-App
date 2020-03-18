@@ -34,7 +34,7 @@ public class Signup extends AppCompatActivity {
 
         // instantiate dbHelper to add new user
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("courses", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
         DBHelper dbHelper = new DBHelper(sqLiteDatabase);
         dbHelper.addUser(email, password);
 

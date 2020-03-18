@@ -34,7 +34,7 @@ public class AddClasses extends AppCompatActivity {
 
         // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("courses", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
         DBHelper dbHelper = new DBHelper(sqLiteDatabase);
         courses = dbHelper.readCourses(currentUser);
 
