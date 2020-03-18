@@ -81,8 +81,7 @@ public class Login extends AppCompatActivity {
         int loginCheck = dbHelper.checkUserLogin(email, password);
 
         if (loginCheck == 1) { // correct login, go to home screen
-            // TODO: HOME SCREEN INTENT ISN'T WORKING, IT'S CRASHING THE APP (that's why it's set to AddClasses rn
-            Intent loginIntent = new Intent(this, AddClasses.class);
+            Intent loginIntent = new Intent(this, HomeScreen.class);
             loginIntent.putExtra("login_info", new String[]{email, password}); // don't know if this is needed rn
             startActivity(loginIntent);
         } else { // incorrect login, display alert
