@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 
 public class HomeScreen extends AppCompatActivity {
+    private final static String EMAIL_KEY = "email";
+    private final static String PASSWORD_KEY = "password";
+    private final static String PACKAGE_NAME = "com.example.studious";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,9 @@ public class HomeScreen extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 // remove data kept in the instance for the user since they are logging out
-                SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-                sharedPreferences.edit().remove("email").apply();
-                sharedPreferences.edit().remove("password").apply();
+                SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(EMAIL_KEY).apply();
+                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
 
                 Intent logoutIntent = new Intent(this, Login.class);
                 startActivity(logoutIntent);

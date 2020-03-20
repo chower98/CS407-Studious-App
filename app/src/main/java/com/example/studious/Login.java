@@ -16,16 +16,21 @@ import android.widget.EditText;
 public class Login extends AppCompatActivity {
     String email, password;
     EditText emailInput, passwordInput;
+    DBHelper dbHelper;
+
+    private static final String EMAIL_KEY = "email";
+    private static final String PASSWORD_KEY = "password";
+    private final static String PACKAGE_NAME = "com.example.studious";
+    private final static String DATABASE_NAME = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String usernameKey = "username";
-        String passwordKey = "password";
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
-        if(!sharedPreferences.getString(usernameKey, "").equals("")
-                && !sharedPreferences.getString(passwordKey, "").equals("")) {
+        // TODO: this isn't working, where if a user doesn't log out it automatically logs them in
+        if(!sharedPreferences.getString(EMAIL_KEY, "").equals("")
+                && !sharedPreferences.getString(PASSWORD_KEY, "").equals("")) {
 
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
@@ -40,7 +45,7 @@ public class Login extends AppCompatActivity {
     public void signupClick(View view) {
         EditText editText =findViewById(R.id.emailInput);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
         //checks if this email is already contained
         if(!sharedPreferences.contains(editText.getText().toString())) {
@@ -67,22 +72,22 @@ public class Login extends AppCompatActivity {
     }
 
     public void loginClick(View view) {
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
         email = emailInput.getText().toString();
         password = passwordInput.getText().toString();
 
-        sharedPreferences.edit().putString("email", email).apply();
-        sharedPreferences.edit().putString("password", password).apply();
+        // add email and password to sharedPreferences
+        sharedPreferences.edit().putString(EMAIL_KEY, email).apply();
+        sharedPreferences.edit().putString(PASSWORD_KEY, password).apply();
 
         // instantiate dbHelper to check if correct login info was inputted
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        dbHelper = new DBHelper(sqLiteDatabase);
         int loginCheck = dbHelper.checkUserLogin(email, password);
 
         if (loginCheck == 1) { // correct login, go to home screen
             Intent loginIntent = new Intent(this, HomeScreen.class);
-            loginIntent.putExtra("login_info", new String[]{email, password}); // don't know if this is needed rn
             startActivity(loginIntent);
         } else { // incorrect login, display alert
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);

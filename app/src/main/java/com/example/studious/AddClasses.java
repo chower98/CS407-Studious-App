@@ -3,7 +3,9 @@ package com.example.studious;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,19 +30,25 @@ public class AddClasses extends AppCompatActivity {
     int courseId = -1;
     public static ArrayList<Course> courses;
     private String currentUser;
+    private DBHelper dbHelper;
+
+    private final static String EMAIL_KEY = "email";
+    private final static String PASSWORD_KEY = "password";
+    private final static String PACKAGE_NAME = "com.example.studious";
+    private final static String DATABASE_NAME = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-        currentUser = sharedPreferences.getString("email", "");
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        currentUser = sharedPreferences.getString(EMAIL_KEY, "");
 
         // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        dbHelper = new DBHelper(sqLiteDatabase);
         courses = dbHelper.readCourses(currentUser);
 
         // create ArrayList<String> by iterating courses object
@@ -59,15 +67,37 @@ public class AddClasses extends AppCompatActivity {
     public void addClass(View view) {
         Spinner courseList = findViewById(R.id.courseList);
         EditText courseNumber = findViewById(R.id.classNumber);
+
+        // get course details
+        String department = courseList.getSelectedItem().toString();
+        String number = courseNumber.getText().toString();
+
         // get full course name
-        String courseName = courseList.getSelectedItem().toString() + " " +courseNumber.getText().toString();
+        String courseName = department + " " + number;
 
-        Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        // check to make sure class to add is fully specified
+        if (department.contains("Select Subject") || number.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("email", "");
+            builder.setMessage("Cannot add class without a subject or course number!");
+            builder.setTitle("Alert!");
+
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // When the user click yes button, then dialog will close
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog duplicateEmailAlert = builder.create();
+            duplicateEmailAlert.show();
+            return; // end method so that class without enough details is not added
+        }
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(EMAIL_KEY, "");
 
         String title;
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -81,7 +111,7 @@ public class AddClasses extends AppCompatActivity {
             // TODO: course is already added, show some kind of dialog/alert???
         }
 
-        refresh();
+        refresh(); // method to refresh courses page to reflect changes
     }
 
     public void refresh() {
@@ -106,9 +136,9 @@ public class AddClasses extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 // remove data kept in the instance for the user since they are logging out
-                SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-                sharedPreferences.edit().remove("email").apply();
-                sharedPreferences.edit().remove("password").apply();
+                SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(EMAIL_KEY).apply();
+                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
 
                 Intent logoutIntent = new Intent(this, Login.class);
                 startActivity(logoutIntent);
