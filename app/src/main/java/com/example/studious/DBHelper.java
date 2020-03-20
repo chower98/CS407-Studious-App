@@ -93,12 +93,25 @@ public class DBHelper {
         return coursesList;
     }
 
-    public void addCourses(String email, String title, String status, String date) {
+    public boolean duplicateCourseCheck(String email, String courseName) {
+        // returns true if duplicate course found; returns false if course is not added yet
+        ArrayList<Course> courses = this.readCourses(email);
+
+        for (Course course : courses) {
+            if (course.getName().equals(courseName)) {
+                return true; // return true if duplicate course found
+            }
+        }
+
+        return false; // no duplicate course found
+    }
+
+    public void addCourses(String email, String name, String status, String date) {
         createTables();
         // insert new course with parameters passed in into TABLE_COURSES
         sqLiteDatabase.execSQL(String.format("INSERT INTO " + TABLE_COURSES + " (" + KEY_EMAIL +
                         ", " + KEY_DATE + ", " + KEY_COURSE_NAME + ", " + KEY_STATUS +
-                        ") VALUES ('%s', '%s', '%s', '%s')", email, date, title, status));
+                        ") VALUES ('%s', '%s', '%s', '%s')", email, date, name, status));
     }
 
     private void printEmailsInLog() { // TODO: FOR DEBUGGING PURPOSES, DELETE LATER
@@ -118,12 +131,12 @@ public class DBHelper {
 
     private void printCoursesInLog() { // TODO: FOR DEBUGGING PURPOSES, DELETE LATER
         Cursor c = sqLiteDatabase.rawQuery(String.format("SELECT * FROM courses"), null);
-        int titleIndex = c.getColumnIndex("title");
+        int nameIndex = c.getColumnIndex("name");
         c.moveToFirst();
         ArrayList<String> coursesList = new ArrayList<>();
         while (!c.isAfterLast()) {
-            String title = c.getString(titleIndex);
-            coursesList.add(title);
+            String name = c.getString(nameIndex);
+            coursesList.add(name);
             c.moveToNext();
         }
         Log.d("Added Courses", coursesList.toString());

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -54,7 +55,7 @@ public class AddClasses extends AppCompatActivity {
         // create ArrayList<String> by iterating courses object
         ArrayList<String> displayCourses = new ArrayList<>();
         for (Course course : courses) {
-            displayCourses.add(String.format("Course: %s\nDate Added: %s\nStatus: %s\n", course.getTitle(),
+            displayCourses.add(String.format("Course: %s\nDate Added: %s\nStatus: %s\n", course.getName(),
                     course.getDate(), course.getStatus()));
         }
 
@@ -62,6 +63,14 @@ public class AddClasses extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, displayCourses);
         ListView listView = findViewById(R.id.classHolder);
         listView.setAdapter(adapter);
+
+        // add onItemClickListener for each item in the list
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: implement a dialog popup? fragment? to show details and give option to delete
+            }
+        });
     }
 
     public void addClass(View view) {
@@ -71,9 +80,6 @@ public class AddClasses extends AppCompatActivity {
         // get course details
         String department = courseList.getSelectedItem().toString();
         String number = courseNumber.getText().toString();
-
-        // get full course name
-        String courseName = department + " " + number;
 
         // check to make sure class to add is fully specified
         if (department.contains("Select Subject") || number.isEmpty()) {
@@ -96,17 +102,42 @@ public class AddClasses extends AppCompatActivity {
             return; // end method so that class without enough details is not added
         }
 
+        // get full course name
+        String courseName = department + " " + number;
+
+        // check to make sure course has not already been added
+        boolean duplicateExists = dbHelper.duplicateCourseCheck(currentUser, courseName);
+        if (duplicateExists) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+
+            builder.setMessage("Class has already been added!");
+            builder.setTitle("Alert!");
+
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // When the user click yes button, then dialog will close
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog duplicateEmailAlert = builder.create();
+            duplicateEmailAlert.show();
+            return; // end method so that duplicate class is not added
+        }
+
         SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(EMAIL_KEY, "");
 
-        String title;
+        String name;
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String date = dateFormat.format(new Date());
 
         if (courseId == -1) { // add new course
-            title = courseName;
+            name = courseName;
             String status = "No Matches Yet";
-            dbHelper.addCourses(username, title, status, date);
+            dbHelper.addCourses(username, name, status, date);
         } else {
             // TODO: course is already added, show some kind of dialog/alert???
         }
