@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,7 +71,8 @@ public class AddClasses extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: implement a dialog popup? fragment? to show details and give option to delete
+                // TODO: have fragment pop up with info and delete option
+                loadFragment(new CourseFragment());
             }
         });
     }
@@ -139,7 +143,7 @@ public class AddClasses extends AppCompatActivity {
             String status = "No Matches Yet";
             dbHelper.addCourses(username, name, status, date);
         } else {
-            // TODO: course is already added, show some kind of dialog/alert???
+            // TODO: not sure what is going on here? why is this if-else loop needed
         }
 
         refresh(); // method to refresh courses page to reflect changes
@@ -153,6 +157,14 @@ public class AddClasses extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    // TODO: SOMETHING IS WRONG
+    private void loadFragment(CourseFragment fragment) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
