@@ -28,14 +28,14 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
-        // TODO: this isn't working, where if a user doesn't log out it automatically logs them in
+        // checks if a user hasn't logged out
         if(!sharedPreferences.getString(EMAIL_KEY, "").equals("")
                 && !sharedPreferences.getString(PASSWORD_KEY, "").equals("")) {
 
+            // go automatically to home screen if user is still logged in
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
-
-        } else {
+        } else { // go to login screen if no user logged in
             setContentView(R.layout.activity_login);
             emailInput = findViewById(R.id.emailInput);
             passwordInput = findViewById(R.id.passwordInput);
