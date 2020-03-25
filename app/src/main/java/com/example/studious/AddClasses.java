@@ -163,7 +163,7 @@ public class AddClasses extends AppCompatActivity {
     private void loadFragment(CourseFragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.classHolder, fragment);
         fragmentTransaction.commit();
     }
 

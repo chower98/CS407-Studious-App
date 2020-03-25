@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/courseList"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ListView
+    <FrameLayout
         android:id="@+id/classHolder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
