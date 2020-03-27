@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +19,25 @@ public class Preferences extends AppCompatActivity {
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
 
+    private Button buttonHome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
+
+        buttonHome = findViewById(R.id.backToHome);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToHome();
+            }
+        });
+    }
+
+    public void backToHome(){
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
     }
 
     @Override
@@ -51,4 +68,6 @@ public class Preferences extends AppCompatActivity {
             default: return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
