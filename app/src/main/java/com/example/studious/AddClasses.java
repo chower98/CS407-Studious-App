@@ -160,7 +160,7 @@ public class AddClasses extends AppCompatActivity {
     }
 
     // TODO: SOMETHING IS WRONG
-    private void loadFragment(CourseFragment fragment) {
+    private void loadFragment(Fragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.classHolder, fragment);

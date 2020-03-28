@@ -11,7 +11,7 @@ import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-public class CourseFragment extends DialogFragment {
+public class CourseFragment extends Fragment {
     View view;
     Button delete;
 
@@ -28,15 +28,15 @@ public class CourseFragment extends DialogFragment {
         delete = (Button) view.findViewById(R.id.delete);
 
         // perform setOnClickListener on delete button
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: implement delete
-                Context context = getApplicationContext();
-                SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                dbHelper = new DBHelper(sqLiteDatabase);
-            }
-        });
+//        delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO: implement delete
+//                Context context = getApplicationContext();
+//                SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, context.MODE_PRIVATE, null);
+//                dbHelper = new DBHelper(sqLiteDatabase);
+//            }
+//        });
         return view;
     }
 }
