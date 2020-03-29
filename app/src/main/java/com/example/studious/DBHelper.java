@@ -106,12 +106,12 @@ public class DBHelper {
         return false; // no duplicate course found
     }
 
-    public void addCourses(String email, String name, String status, String date) {
+    public void addCourses(String email, String name, String status) {
         createTables();
         // insert new course with parameters passed in into TABLE_COURSES
         sqLiteDatabase.execSQL(String.format("INSERT INTO " + TABLE_COURSES + " (" + KEY_EMAIL +
-                        ", " + KEY_DATE + ", " + KEY_COURSE_NAME + ", " + KEY_STATUS +
-                        ") VALUES ('%s', '%s', '%s', '%s')", email, date, name, status));
+                        ", " + KEY_COURSE_NAME + ", " + KEY_STATUS +
+                        ") VALUES ('%s', '%s', '%s', '%s')", email, name, status));
     }
 
     public void deleteCourse(String email, String name) {

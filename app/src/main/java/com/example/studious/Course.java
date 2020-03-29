@@ -20,4 +20,5 @@ public class Course {
     public String getName() { return name; }
 
     public String getStatus() { return status; }
-}
+
+    }
