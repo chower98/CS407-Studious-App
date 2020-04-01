@@ -41,31 +41,31 @@ public class AddClasses extends AppCompatActivity {
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
     private final static String DATABASE_NAME = "data";
-    SQLiteDatabase sqLiteDatabase;
+    //SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
+        displayCourses = new ArrayList<>();
         refresh();
     }
 
     public void refresh() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-        currentUser = sharedPreferences.getString(EMAIL_KEY, "");
+        //SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        //currentUser = sharedPreferences.getString(EMAIL_KEY, "");
 
         // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
         Context context = getApplicationContext();
-        sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        dbHelper = new DBHelper(sqLiteDatabase);
-        courses = dbHelper.readCourses(currentUser);
+        //sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        //dbHelper = new DBHelper(sqLiteDatabase);
+        //courses = dbHelper.readCourses(currentUser);
 
         // create ArrayList<String> by iterating courses object
-        displayCourses = new ArrayList<String>();
-        for (Course course : courses) {
-            displayCourses.add(String.format("Course: %s\nDate Added: %s\nStatus: %s\n", course.getName(),
-                    course.getDate(), course.getStatus()));
-        }
+
+//        for (Course course : courses) {
+//            displayCourses.add(String.format("Course: %s\nStatus: %s\n", course.getName(), course.getStatus()));
+//        }
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, displayCourses);
         ListView listView = findViewById(R.id.classHolder);
@@ -87,8 +87,8 @@ public class AddClasses extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         displayCourses.remove(position);
-                        dbHelper.deleteCourse(EMAIL_KEY, currentUser);
-                        courses = dbHelper.readCourses(currentUser);
+//                        dbHelper.deleteCourse(EMAIL_KEY, currentUser);
+//                        courses = dbHelper.readCourses(currentUser);
                         refresh();
                     }
                 })
@@ -109,9 +109,10 @@ public class AddClasses extends AppCompatActivity {
         String department = courseList.getSelectedItem().toString();
         String number = courseNumber.getText().toString();
         String courseToAdd = department + number;
-
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
+        displayCourses.add(courseToAdd);
+//        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+//        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
+        refresh();
         }
 
     @Override

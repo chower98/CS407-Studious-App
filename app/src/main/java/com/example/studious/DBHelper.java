@@ -114,11 +114,11 @@ public class DBHelper {
                         ") VALUES ('%s', '%s', '%s', '%s')", email, name, status));
     }
 
-    public void deleteCourse(String email, String name) {
+    public void deleteCourse(String email, String name, String status) {
         createTables();
 
         sqLiteDatabase.execSQL(String.format("DELETE FROM " + TABLE_COURSES + " WHERE " + KEY_EMAIL
-                + " like '%s' AND " + KEY_COURSE_NAME + " like '%s'", email, name), null);
+                + " like '%s' AND " + KEY_COURSE_NAME + " like '%s'", email, name, status), null);
     }
 
     private void printEmailsInLog() { // TODO: FOR DEBUGGING PURPOSES, DELETE LATER
