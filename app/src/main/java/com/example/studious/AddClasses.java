@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,6 +37,7 @@ public class AddClasses extends AppCompatActivity {
     private ArrayList<String> displayCourses;
     private String currentUser;
     private DBHelper dbHelper;
+    private Button nextButton;
 
     private final static String EMAIL_KEY = "email";
     private final static String PASSWORD_KEY = "password";
@@ -47,6 +49,38 @@ public class AddClasses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
+
+        nextButton = findViewById(R.id.nextButton); // reference to nextButton
+
+        // get intent and get the value of newUser
+        Intent intent = getIntent();
+        boolean newUser = intent.getBooleanExtra("newUser", false);
+        
+        if (newUser) { // new user adding classes, so nextButton must be visible
+            nextButton.setVisibility(View.VISIBLE);
+
+            // show dialog telling new user what to do
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Welcome to Studious, an app that will help you connect to" +
+                    " other study partners at UW-Madison! Please add the classes that you would " +
+                    "like to find study buddies for. When you are finished, click the Continue " +
+                    "button.");
+            builder.setTitle("Hi There!");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // When the user click yes button, the dialog will close
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog newUserWelcome = builder.create();
+            newUserWelcome.show();
+        } else { // not a new user, do not show nextButton or welcome dialog
+            nextButton.setVisibility(View.GONE);
+        }
+
         displayCourses = new ArrayList<>();
         refresh();
     }
@@ -108,7 +142,7 @@ public class AddClasses extends AppCompatActivity {
         // get course details
         String department = courseList.getSelectedItem().toString();
         String number = courseNumber.getText().toString();
-        String courseToAdd = department + number;
+        String courseToAdd = department + " " + number;
         displayCourses.add(courseToAdd);
 //        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
 //        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
