@@ -45,9 +45,10 @@ public class Signup extends AppCompatActivity {
         if (userExists == 0) { // 0 = user doesn't exist
             dbHelper.addUser(email, password);
 
-            Intent intent = new Intent(this, AddClasses.class);
-            intent.putExtra("newUser", true);
-            startActivity(intent);
+            Intent continueIntent = new Intent(this, AddClasses.class);
+            continueIntent.putExtra("newUser", true);
+            startActivity(continueIntent);
+
         } else { // 1 or 2 = user exists
             AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
 

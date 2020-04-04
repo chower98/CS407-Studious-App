@@ -55,16 +55,17 @@ public class AddClasses extends AppCompatActivity {
         // get intent and get the value of newUser
         Intent intent = getIntent();
         boolean newUser = intent.getBooleanExtra("newUser", false);
-        
+
         if (newUser) { // new user adding classes, so nextButton must be visible
             nextButton.setVisibility(View.VISIBLE);
 
             // show dialog telling new user what to do
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Welcome to Studious, an app that will help you connect to" +
-                    " other study partners at UW-Madison! Please add the classes that you would " +
+            builder.setMessage("Welcome to Studious, an app that will help you connect to " +
+                    "other study partners at UW-Madison! Please add the classes that you would " +
                     "like to find study buddies for. When you are finished, click the Continue " +
-                    "button.");
+                    "button. You can always come back to this page from your home screen if you'd " +
+                    "like to edit your list of classes!");
             builder.setTitle("Hi There!");
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -147,7 +148,13 @@ public class AddClasses extends AppCompatActivity {
 //        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
 //        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
         refresh();
-        }
+    }
+
+    public void continueSignup(View view) {
+        Intent continueIntent = new Intent(this, Preferences.class);
+        continueIntent.putExtra("newUser", true);
+        startActivity(continueIntent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
