@@ -38,6 +38,7 @@ public class AddClasses extends AppCompatActivity {
     private String currentUser;
     private DBHelper dbHelper;
     private Button nextButton;
+    private boolean newUser;
 
     private final static String EMAIL_KEY = "email";
     private final static String PASSWORD_KEY = "password";
@@ -54,7 +55,7 @@ public class AddClasses extends AppCompatActivity {
 
         // get intent and get the value of newUser
         Intent intent = getIntent();
-        boolean newUser = intent.getBooleanExtra("newUser", false);
+        newUser = intent.getBooleanExtra("newUser", false);
 
         if (newUser) { // new user adding classes, so nextButton must be visible
             nextButton.setVisibility(View.VISIBLE);
@@ -152,7 +153,7 @@ public class AddClasses extends AppCompatActivity {
 
     public void continueSignup(View view) {
         Intent continueIntent = new Intent(this, Preferences.class);
-        continueIntent.putExtra("newUser", true);
+        continueIntent.putExtra("newUser", newUser);
         startActivity(continueIntent);
     }
 
