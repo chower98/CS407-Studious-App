@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -23,12 +24,15 @@ public class Preferences extends AppCompatActivity {
     private Button homeButton;
     private boolean newUser;
 
+    private Button saveButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
         homeButton = findViewById(R.id.homeButton);
+        saveButton = findViewById(R.id.saveButton);
 
         // get intent and get the value of newUser
         Intent intent = getIntent();
@@ -36,6 +40,7 @@ public class Preferences extends AppCompatActivity {
 
         if (newUser) { // new user choosing preferences, so buttonHome will say "Finished!"
             homeButton.setText("Finished!");
+            saveButton.setVisibility(View.GONE); // it's going to save b/c this is first time, don't need a save button yet
 
             // show dialog telling new user what to do
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -59,8 +64,12 @@ public class Preferences extends AppCompatActivity {
             AlertDialog newUserWelcome = builder.create();
             newUserWelcome.show();
 
-        } else { // not a new user, do not show dialog, and buttonHome should say "Back to Home"
+        } else { // not a new user, do not show dialog, and buttonHome should say "Back to Home" & there should be a save changes button
             homeButton.setText("Back to Home");
+            saveButton.setText("Save Changes");
+
+            //add functionality for save changes button click
+
         }
     }
 
