@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <CheckBox
-        android:id="@+id/checkBox23"
+        android:id="@+id/wednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -15,10 +15,10 @@
         android:layout_marginTop="60dp"
         android:text="Wednesday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/daysPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -33,17 +33,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox20"
+        android:id="@+id/monday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
         android:layout_marginLeft="68dp"
         android:text="Monday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox21"
+        android:id="@+id/tuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -51,20 +51,20 @@
         android:layout_marginTop="28dp"
         android:text="Tuesday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox22"
+        android:id="@+id/thursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="188dp"
         android:layout_marginLeft="188dp"
         android:text="Thursday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox24"
+        android:id="@+id/friday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="188dp"
@@ -72,10 +72,10 @@
         android:layout_marginTop="28dp"
         android:text="Friday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox25"
+        android:id="@+id/sunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="296dp"
@@ -83,10 +83,10 @@
         android:layout_marginTop="28dp"
         android:text="Sunday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox26"
+        android:id="@+id/saturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="188dp"
@@ -94,10 +94,10 @@
         android:layout_marginTop="60dp"
         android:text="Saturday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/deletePrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -113,7 +113,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/areaPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -131,7 +131,7 @@
         app:layout_constraintVertical_bias="0.985" />
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/lakeshore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -139,10 +139,10 @@
         android:layout_marginTop="23dp"
         android:text="Lakeshore"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox6"
+        android:id="@+id/college"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="208dp"
@@ -150,10 +150,10 @@
         android:layout_marginTop="20dp"
         android:text="College/Memorial Area"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox7"
+        android:id="@+id/state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="208dp"
@@ -161,10 +161,10 @@
         android:layout_marginTop="52dp"
         android:text="State St."
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/southeast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -172,10 +172,10 @@
         android:layout_marginTop="52dp"
         android:text="Southeast"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/engineering"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -183,10 +183,10 @@
         android:layout_marginTop="84dp"
         android:text="Engineering"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="72dp"
         android:layout_height="88dp"
         android:layout_marginStart="16dp"
@@ -197,7 +197,7 @@
         app:srcCompat="@drawable/mini_logo" />
 
     <Button
-        android:id="@+id/backToHome"
+        android:id="@+id/homeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="168dp"
@@ -206,6 +206,7 @@
         android:background="#4CAF50"
         android:text="Back to Home"
         android:textAllCaps="false"
+        android:onClick="backToHome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
