@@ -47,6 +47,7 @@ public class Signup extends AppCompatActivity {
 
             Intent continueIntent = new Intent(this, AddClasses.class);
             continueIntent.putExtra("newUser", true);
+            // will not keep current activity in the stack; user cannot back to this activity
             startActivity(continueIntent);
 
         } else { // 1 or 2 = user exists
