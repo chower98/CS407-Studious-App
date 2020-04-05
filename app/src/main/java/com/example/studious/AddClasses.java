@@ -174,6 +174,7 @@ public class AddClasses extends AppCompatActivity {
                 sharedPreferences.edit().remove(PASSWORD_KEY).apply();
 
                 Intent logoutIntent = new Intent(this, Login.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);
                 return true;
 
