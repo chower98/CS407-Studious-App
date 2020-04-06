@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -33,48 +34,107 @@ public class AddClasses extends AppCompatActivity {
 
     int courseId = -1;
     public static ArrayList<Course> courses;
+    private ArrayList<String> displayCourses;
     private String currentUser;
     private DBHelper dbHelper;
+    private Button nextButton;
+    private boolean newUser;
 
     private final static String EMAIL_KEY = "email";
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
     private final static String DATABASE_NAME = "data";
+    //SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-        currentUser = sharedPreferences.getString(EMAIL_KEY, "");
+        nextButton = findViewById(R.id.nextButton); // reference to nextButton
+
+        // get intent and get the value of newUser
+        Intent intent = getIntent();
+        newUser = intent.getBooleanExtra("newUser", false);
+
+        if (newUser) { // new user adding classes, so nextButton must be visible
+            nextButton.setVisibility(View.VISIBLE);
+
+            // show dialog telling new user what to do
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Welcome to Studious, an app that will help you connect to " +
+                    "other study partners at UW-Madison! Please add the classes that you would " +
+                    "like to find study buddies for. When you are finished, click the Continue " +
+                    "button. You can always come back to this page from your home screen if you'd " +
+                    "like to edit your list of classes!");
+            builder.setTitle("Hi There!");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // When the user click yes button, the dialog will close
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog newUserWelcome = builder.create();
+            newUserWelcome.show();
+        } else { // not a new user, do not show nextButton or welcome dialog
+            nextButton.setVisibility(View.GONE);
+        }
+
+        displayCourses = new ArrayList<>();
+        refresh();
+    }
+
+    public void refresh() {
+        //SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        //currentUser = sharedPreferences.getString(EMAIL_KEY, "");
 
         // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
         Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        dbHelper = new DBHelper(sqLiteDatabase);
-        courses = dbHelper.readCourses(currentUser);
+        //sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        //dbHelper = new DBHelper(sqLiteDatabase);
+        //courses = dbHelper.readCourses(currentUser);
 
         // create ArrayList<String> by iterating courses object
-        ArrayList<String> displayCourses = new ArrayList<>();
-        for (Course course : courses) {
-            displayCourses.add(String.format("Course: %s\nDate Added: %s\nStatus: %s\n", course.getName(),
-                    course.getDate(), course.getStatus()));
-        }
 
-        // use ListView view to display courses on screen
+//        for (Course course : courses) {
+//            displayCourses.add(String.format("Course: %s\nStatus: %s\n", course.getName(), course.getStatus()));
+//        }
+
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, displayCourses);
         ListView listView = findViewById(R.id.classHolder);
         listView.setAdapter(adapter);
 
-        // add onItemClickListener for each item in the list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: have fragment pop up with info and delete option
-                loadFragment(new CourseFragment());
+                openDialog(position);
             }
         });
+    }
+
+    public void openDialog(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+        builder.setMessage("Remove " + displayCourses.get(position) + " from Courses?")
+                .setTitle("Remove Course?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        displayCourses.remove(position);
+//                        dbHelper.deleteCourse(EMAIL_KEY, currentUser);
+//                        courses = dbHelper.readCourses(currentUser);
+                        refresh();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {}
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void addClass(View view) {
@@ -84,87 +144,17 @@ public class AddClasses extends AppCompatActivity {
         // get course details
         String department = courseList.getSelectedItem().toString();
         String number = courseNumber.getText().toString();
-
-        // check to make sure class to add is fully specified
-        if (department.contains("Select Subject") || number.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
-
-            builder.setMessage("Cannot add class without a subject or course number!");
-            builder.setTitle("Alert!");
-
-            builder.setCancelable(false);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // When the user click yes button, then dialog will close
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog duplicateEmailAlert = builder.create();
-            duplicateEmailAlert.show();
-            return; // end method so that class without enough details is not added
-        }
-
-        // get full course name
-        String courseName = department + " " + number;
-
-        // check to make sure course has not already been added
-        boolean duplicateExists = dbHelper.duplicateCourseCheck(currentUser, courseName);
-        if (duplicateExists) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
-
-            builder.setMessage("Class has already been added!");
-            builder.setTitle("Alert!");
-
-            builder.setCancelable(false);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // When the user click yes button, then dialog will close
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog duplicateEmailAlert = builder.create();
-            duplicateEmailAlert.show();
-            return; // end method so that duplicate class is not added
-        }
-
-        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(EMAIL_KEY, "");
-
-        String name;
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String date = dateFormat.format(new Date());
-
-        if (courseId == -1) { // add new course
-            name = courseName;
-            String status = "No Matches Yet";
-            dbHelper.addCourses(username, name, status, date);
-        } else {
-            // TODO: not sure what is going on here? why is this if-else loop needed
-        }
-
-        refresh(); // method to refresh courses page to reflect changes
+        String courseToAdd = department + " " + number;
+        displayCourses.add(courseToAdd);
+//        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+//        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
+        refresh();
     }
 
-    public void refresh() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-    }
-
-    // TODO: SOMETHING IS WRONG
-    private void loadFragment(CourseFragment fragment) {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.classHolder, fragment);
-        fragmentTransaction.commit();
+    public void continueSignup(View view) {
+        Intent continueIntent = new Intent(this, Preferences.class);
+        continueIntent.putExtra("newUser", newUser);
+        startActivity(continueIntent);
     }
 
     @Override
@@ -184,6 +174,7 @@ public class AddClasses extends AppCompatActivity {
                 sharedPreferences.edit().remove(PASSWORD_KEY).apply();
 
                 Intent logoutIntent = new Intent(this, Login.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logoutIntent);
                 return true;
 

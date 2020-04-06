@@ -50,6 +50,7 @@ public class Login extends AppCompatActivity {
         //checks if this email is already contained
         if(!sharedPreferences.contains(editText.getText().toString())) {
             Intent signupIntent = new Intent(this, Signup.class);
+            signupIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(signupIntent);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);

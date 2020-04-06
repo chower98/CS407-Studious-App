@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class Signup extends AppCompatActivity {
-    String email, password;
+    String name, email, password, phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,12 @@ public class Signup extends AppCompatActivity {
     public void signUpClick(View view) {
         EditText emailInput = findViewById(R.id.emailInput);
         EditText passwordInput = findViewById(R.id.passwordInput);
+        EditText nameInput = findViewById(R.id.nameInput);
+        EditText phoneInput = findViewById(R.id.phoneInput);
+            name = nameInput.getText().toString(); // not used right now, but probs need later
             email = emailInput.getText().toString();
             password = passwordInput.getText().toString();
+            phone = phoneInput.getText().toString(); // not used right now, but probs need later
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("email", email).apply();
@@ -41,8 +45,11 @@ public class Signup extends AppCompatActivity {
         if (userExists == 0) { // 0 = user doesn't exist
             dbHelper.addUser(email, password);
 
-            Intent intent = new Intent(this, AddClasses.class);
-            startActivity(intent);
+            Intent continueIntent = new Intent(this, AddClasses.class);
+            continueIntent.putExtra("newUser", true);
+            // will not keep current activity in the stack; user cannot back to this activity
+            startActivity(continueIntent);
+
         } else { // 1 or 2 = user exists
             AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
 
