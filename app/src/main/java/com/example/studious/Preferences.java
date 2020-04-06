@@ -67,13 +67,12 @@ public class Preferences extends AppCompatActivity {
         } else { // not a new user, do not show dialog, and buttonHome should say "Back to Home" & there should be a save changes button
             homeButton.setText("Back to Home");
             saveButton.setText("Save Changes");
-
             //add functionality for save changes button click
 
         }
     }
 
-    public void backToHome(){
+    public void backToHome(View view){
         Intent intent = new Intent(this, HomeScreen.class);
         intent.putExtra("newUser", newUser);
         startActivity(intent);
