@@ -15,8 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 //import android.support.v7.app.AppCompatActivity;
 
 public class NavigationActivity extends AppCompatActivity {
-   private BottomNavigationItemView bottomNavigation;
-
+    private BottomNavigationItemView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +30,22 @@ public class NavigationActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    BottomNavigationView.OnNavigationItemReselectedListener navigationItemReselectedListener = new BottomNavigationView.OnNavigationItemReselectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_matches:
-                    openFragment(MatchesFragment.newInstance("", ""));
-                    return true;
-                case R.id.navigation_recommendations:
-                    openFragment(RecommendationsFragment.newInstance("", ""));
-                    return true;
-                case R.id.navigation_requests:
-                    openFragment(RequestFragment.newInstance("", ""));
-                    return true;
-            }
-            return false;
-
-        }
-    };
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_matches:
+                            openFragment(MatchesFragment.newInstance("", ""));
+                            return true;
+                        case R.id.navigation_recommendations:
+                            openFragment(RecommendationsFragment.newInstance("", ""));
+                            return true;
+                        case R.id.navigation_requests:
+                            openFragment(RequestFragment.newInstance("", ""));
+                            return true;
+                    }
+                    return false;
+                }
+            };
 
 }
