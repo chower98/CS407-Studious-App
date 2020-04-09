@@ -1,4 +1,4 @@
-package com.example.studious.ui.dashboard;
+package com.example.studious.ui.Requests;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

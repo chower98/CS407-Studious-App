@@ -1,4 +1,4 @@
-package com.example.studious.ui.dashboard;
+package com.example.studious.ui.Requests;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
