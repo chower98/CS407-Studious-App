@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Signup extends AppCompatActivity {
     String name, email, password, phone;
 
@@ -37,7 +39,8 @@ public class Signup extends AppCompatActivity {
             sharedPreferences.edit().putString("password", password).apply();
 
         // instantiate firebaseHelper to add new user
-        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseHelper firebaseHelper = new FirebaseHelper(database);
 
         // old code
         //Context context = getApplicationContext();
@@ -46,7 +49,7 @@ public class Signup extends AppCompatActivity {
         //
 
         int userExists = firebaseHelper.checkUserLogin(email, password);
-        if (userExists == 0) { // 0 = user doesn't exist
+        //if (userExists == 0) { // 0 = user doesn't exist
             User newUser = new User(name, email, password, phone);
             firebaseHelper.addUserInfo(newUser);
 
@@ -57,7 +60,7 @@ public class Signup extends AppCompatActivity {
             // will not keep current activity in the stack; user cannot back to this activity
             startActivity(continueIntent);
 
-        } else { // 1 or 2 = user exists
+        /*} else { // 1 or 2 = user exists
             AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
 
             builder.setMessage("This email already has an account!");
@@ -78,7 +81,7 @@ public class Signup extends AppCompatActivity {
             });
             AlertDialog duplicateEmailAlert = builder.create();
             duplicateEmailAlert.show();
-        }
+        }*/
 
 
     }

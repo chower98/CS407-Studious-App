@@ -26,6 +26,16 @@ public class FirebaseHelper {
         userConnections = database.getReference().child(USER_CONNECTIONS);
     }
 
+    public FirebaseHelper(FirebaseDatabase database) {
+        this.database = database;
+
+        // get references to the 4 main nodes
+        userInfo = database.getReference().child(USER_INFO);
+        userPref = database.getReference().child(USER_PREF);
+        userMatches = database.getReference().child(USER_MATCHES);
+        userConnections = database.getReference().child(USER_CONNECTIONS);
+    }
+
     public void addUserInfo(User newUser) {
         String userEmail = newUser.getEmail(); // user info will be stored under the user's email
 
