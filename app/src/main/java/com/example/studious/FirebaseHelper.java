@@ -20,10 +20,32 @@ public class FirebaseHelper {
         database = FirebaseDatabase.getInstance(); // get Firebase database
 
         // get references to the 4 main nodes
-        userInfo = database.getReference(USER_INFO);
-        userPref = database.getReference(USER_PREF);
-        userMatches = database.getReference(USER_MATCHES);
-        userConnections = database.getReference(USER_CONNECTIONS);
+        userInfo = database.getReference().child(USER_INFO);
+        userPref = database.getReference().child(USER_PREF);
+        userMatches = database.getReference().child(USER_MATCHES);
+        userConnections = database.getReference().child(USER_CONNECTIONS);
+    }
+
+    public void addUserInfo(User newUser) {
+        String userID = newUser.getEmail(); // user info will be stored under the user's email
+
+        // get reference to child that the info will be stored at
+        //DatabaseReference newUserRef = userInfo.child(userID);
+        //newUserRef.setValue(newUser); // store info in firebase
+
+        userInfo.child(userID).setValue(newUser);
+    }
+
+    // TODO: method that checks whether email and password match
+    public int checkUserLogin(String email, String password) {
+        // TODO: return 0 if email does not have an account
+        // TODO: return 1 if user exists and password matches
+        // TODO: return 2 if user exists but password does NOT match
+
+        // this method is used in Signup to check if an account already exists for an email
+        // also used in login to check that a user's login info is correct
+
+        return 0; // TODO: dummy return, change once method is written
     }
 
 }

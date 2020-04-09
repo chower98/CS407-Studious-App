@@ -27,23 +27,30 @@ public class Signup extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInput);
         EditText nameInput = findViewById(R.id.nameInput);
         EditText phoneInput = findViewById(R.id.phoneInput);
-            name = nameInput.getText().toString(); // not used right now, but probs need later
+            name = nameInput.getText().toString();
             email = emailInput.getText().toString();
             password = passwordInput.getText().toString();
-            phone = phoneInput.getText().toString(); // not used right now, but probs need later
+            phone = phoneInput.getText().toString();
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("email", email).apply();
             sharedPreferences.edit().putString("password", password).apply();
 
-        // instantiate dbHelper to add new user
-        Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        // instantiate firebaseHelper to add new user
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
 
-        int userExists = dbHelper.checkUserLogin(email, password);
+        // old code
+        //Context context = getApplicationContext();
+        //SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
+        //DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        //
+
+        int userExists = firebaseHelper.checkUserLogin(email, password);
         if (userExists == 0) { // 0 = user doesn't exist
-            dbHelper.addUser(email, password);
+            User newUser = new User(name, email, password, phone);
+            firebaseHelper.addUserInfo(newUser);
+
+            //dbHelper.addUser(email, password); // old code
 
             Intent continueIntent = new Intent(this, AddClasses.class);
             continueIntent.putExtra("newUser", true);
