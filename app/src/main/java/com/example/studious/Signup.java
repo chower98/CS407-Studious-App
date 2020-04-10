@@ -25,41 +25,46 @@ public class Signup extends AppCompatActivity {
     }
 
     public void signUpClick(View view) {
-        EditText emailInput = findViewById(R.id.emailInput);
-        EditText passwordInput = findViewById(R.id.passwordInput);
-        EditText nameInput = findViewById(R.id.nameInput);
-        EditText phoneInput = findViewById(R.id.phoneInput);
+        try {
+            EditText emailInput = findViewById(R.id.emailInput);
+            EditText passwordInput = findViewById(R.id.passwordInput);
+            EditText nameInput = findViewById(R.id.nameInput);
+            EditText phoneInput = findViewById(R.id.phoneInput);
+
             name = nameInput.getText().toString();
             email = emailInput.getText().toString();
             password = passwordInput.getText().toString();
             phone = phoneInput.getText().toString();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("email", email).apply();
             sharedPreferences.edit().putString("password", password).apply();
 
-        // instantiate firebaseHelper to add new user
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseHelper firebaseHelper = new FirebaseHelper(database);
+            // instantiate firebaseHelper to add new user
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseHelper firebaseHelper = new FirebaseHelper(database);
 
-        // old code
-        //Context context = getApplicationContext();
-        //SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-        //DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-        //
+            // old code
+            //Context context = getApplicationContext();
+            //SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
+            //DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+            //
 
-        int userExists = firebaseHelper.checkUserLogin(email, password);
-        //if (userExists == 0) { // 0 = user doesn't exist
+            //int userExists = firebaseHelper.checkUserLogin(email, password);
+            //if (userExists == 0) { // 0 = user doesn't exist
+            Log.i("54", "Before Adding User To Firebase");
             User newUser = new User(name, email, password, phone);
             firebaseHelper.addUserInfo(newUser);
-
+            Log.i("57", "Line 57, after adding to firebase");
             //dbHelper.addUser(email, password); // old code
 
             Intent continueIntent = new Intent(this, AddClasses.class);
             continueIntent.putExtra("newUser", true);
             // will not keep current activity in the stack; user cannot back to this activity
             startActivity(continueIntent);
-
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         /*} else { // 1 or 2 = user exists
             AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
 

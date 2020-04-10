@@ -1,10 +1,13 @@
 package com.example.studious;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseHelper {
     FirebaseDatabase database;
+    private DatabaseReference dataRef;
 
     private final String USER_INFO = "userInfo";
     private final String USER_PREF = "userPreferences";
@@ -16,9 +19,9 @@ public class FirebaseHelper {
     DatabaseReference userMatches;
     DatabaseReference userConnections;
 
-    public FirebaseHelper() {
+    FirebaseHelper() {
         database = FirebaseDatabase.getInstance(); // get Firebase database
-
+        dataRef = FirebaseDatabase.getInstance().getReference();
         // get references to the 4 main nodes
         userInfo = database.getReference().child(USER_INFO);
         userPref = database.getReference().child(USER_PREF);
@@ -26,9 +29,9 @@ public class FirebaseHelper {
         userConnections = database.getReference().child(USER_CONNECTIONS);
     }
 
-    public FirebaseHelper(FirebaseDatabase database) {
+    FirebaseHelper(FirebaseDatabase database) {
         this.database = database;
-
+        dataRef = database.getReference();
         // get references to the 4 main nodes
         userInfo = database.getReference().child(USER_INFO);
         userPref = database.getReference().child(USER_PREF);
@@ -37,13 +40,20 @@ public class FirebaseHelper {
     }
 
     public void addUserInfo(User newUser) {
+        dataRef = FirebaseDatabase.getInstance().getReference();
         String userEmail = newUser.getEmail(); // user info will be stored under the user's email
-
+        userEmail = userEmail.substring(0, userEmail.length() - 9);
+        String userPassword = newUser.getPassword();
+        String userPhone = newUser.getPhone();
+        String userName = newUser.getName();
         // get reference to child that the info will be stored at
         //DatabaseReference newUserRef = userInfo.child(userID);
         //newUserRef.setValue(newUser); // store info in firebase
 
-        database.getReference().child(USER_INFO).child(userEmail).setValue(newUser);
+     //   database.getReference().child(USER_INFO).child(userEmail).setValue(newUser);
+        dataRef.child(USER_INFO).child(userEmail).child("Password:").setValue(userPassword);
+        dataRef.child(USER_INFO).child(userEmail).child("Phone:").setValue(userPhone);
+        dataRef.child(USER_INFO).child(userEmail).child("Name:").setValue(userName);
     }
 
     // TODO: method that checks whether email and password match
