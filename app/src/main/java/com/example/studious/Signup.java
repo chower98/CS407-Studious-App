@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Signup extends AppCompatActivity {
@@ -52,10 +53,11 @@ public class Signup extends AppCompatActivity {
 
             //int userExists = firebaseHelper.checkUserLogin(email, password);
             //if (userExists == 0) { // 0 = user doesn't exist
-            Log.i("54", "Before Adding User To Firebase");
+
             User newUser = new User(name, email, password, phone);
             firebaseHelper.addUserInfo(newUser);
-            Log.i("57", "Line 57, after adding to firebase");
+//            DatabaseReference dR = database.getReference();
+//            dR.child("User1").child("Password:").setValue("password");
             //dbHelper.addUser(email, password); // old code
 
             Intent continueIntent = new Intent(this, AddClasses.class);
