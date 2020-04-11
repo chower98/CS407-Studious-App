@@ -56,6 +56,7 @@ public class Signup extends AppCompatActivity {
 
             User newUser = new User(name, email, password, phone);
             firebaseHelper.addUserInfo(newUser);
+            firebaseHelper.checkUserLogin(email, password);
 //            DatabaseReference dR = database.getReference();
 //            dR.child("User1").child("Password:").setValue("password");
             //dbHelper.addUser(email, password); // old code
