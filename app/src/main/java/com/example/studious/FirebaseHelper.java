@@ -40,20 +40,10 @@ public class FirebaseHelper {
     }
 
     public void addUserInfo(User newUser) {
-        dataRef = FirebaseDatabase.getInstance().getReference();
         String userEmail = newUser.getEmail(); // user info will be stored under the user's email
         userEmail = userEmail.substring(0, userEmail.length() - 9);
-        String userPassword = newUser.getPassword();
-        String userPhone = newUser.getPhone();
-        String userName = newUser.getName();
-        // get reference to child that the info will be stored at
-        //DatabaseReference newUserRef = userInfo.child(userID);
-        //newUserRef.setValue(newUser); // store info in firebase
 
-     //   database.getReference().child(USER_INFO).child(userEmail).setValue(newUser);
-        dataRef.child(USER_INFO).child(userEmail).child("Password:").setValue(userPassword);
-        dataRef.child(USER_INFO).child(userEmail).child("Phone:").setValue(userPhone);
-        dataRef.child(USER_INFO).child(userEmail).child("Name:").setValue(userName);
+        database.getReference().child(USER_INFO).child(userEmail).setValue(newUser);
     }
 
     // TODO: method that checks whether email and password match

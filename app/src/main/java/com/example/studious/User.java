@@ -7,7 +7,7 @@ public class User {
     private String phone;
 
     public User() {
-
+        //constructor used by firebase
     }
 
     public User(String name, String email, String password, String phone) {
