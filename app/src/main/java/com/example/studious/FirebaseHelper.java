@@ -71,10 +71,12 @@ public class FirebaseHelper {
         final User[] userToLogIn = {null};
 
         String shortenedEmail = email.substring(0, email.length() - 9);
-        userInfo.orderByChild("email").equalTo(shortenedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        userInfo.child(shortenedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+        //userInfo.orderByChild("email").equalTo(shortenedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userToLogIn[0] = dataSnapshot.getValue(User.class);
+                Log.e("user exists?", dataSnapshot.getValue(User.class).getName());
             }
 
             @Override
@@ -90,20 +92,6 @@ public class FirebaseHelper {
             userLoginStatus = 0;
 
         } else { // user exists
-            /* TODO: old code, might not need
-            DatabaseReference userRef = userInfo.child(shortenedEmail);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    userToLogIn[0] = dataSnapshot.getValue(User.class);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // TODO: not sure if something needs to be done here??
-                }
-            });*/
-
             if (userToLogIn[0].getEmail().equals(email) && userToLogIn[0].getPassword().equals(password)) {
                 userLoginStatus = 1;
             } else {
