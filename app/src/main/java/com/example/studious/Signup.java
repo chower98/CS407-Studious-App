@@ -37,29 +37,19 @@ public class Signup extends AppCompatActivity {
             password = passwordInput.getText().toString();
             phone = phoneInput.getText().toString();
 
+            // shared preferences to keep user logged in app if they do not manually log out
             SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("email", email).apply();
             sharedPreferences.edit().putString("password", password).apply();
 
             // instantiate firebaseHelper to add new user
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            FirebaseHelper firebaseHelper = new FirebaseHelper(database);
-
-            // old code
-            //Context context = getApplicationContext();
-            //SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("data", Context.MODE_PRIVATE, null);
-            //DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-            //
+            FirebaseHelper firebaseHelper = new FirebaseHelper();
 
             //int userExists = firebaseHelper.checkUserLogin(email, password);
             //if (userExists == 0) { // 0 = user doesn't exist
 
-            User newUser = new User(name, email, password, phone);
-            firebaseHelper.addUserInfo(newUser);
-            firebaseHelper.checkUserLogin(email, password);
-//            DatabaseReference dR = database.getReference();
-//            dR.child("User1").child("Password:").setValue("password");
-            //dbHelper.addUser(email, password); // old code
+            User newUser = new User(name, email, password, phone); // create new User object
+            firebaseHelper.addUserInfo(newUser); // add new user to database
 
             Intent continueIntent = new Intent(this, AddClasses.class);
             continueIntent.putExtra("newUser", true);

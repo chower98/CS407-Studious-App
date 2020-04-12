@@ -21,17 +21,8 @@ public class FirebaseHelper {
 
     FirebaseHelper() {
         database = FirebaseDatabase.getInstance(); // get Firebase database
-        dataRef = FirebaseDatabase.getInstance().getReference();
-        // get references to the 4 main nodes
-        userInfo = database.getReference().child(USER_INFO);
-        userPref = database.getReference().child(USER_PREF);
-        userMatches = database.getReference().child(USER_MATCHES);
-        userConnections = database.getReference().child(USER_CONNECTIONS);
-    }
+        dataRef = FirebaseDatabase.getInstance().getReference(); // get reference to database
 
-    FirebaseHelper(FirebaseDatabase database) {
-        this.database = database;
-        dataRef = database.getReference();
         // get references to the 4 main nodes
         userInfo = database.getReference().child(USER_INFO);
         userPref = database.getReference().child(USER_PREF);
@@ -42,7 +33,7 @@ public class FirebaseHelper {
     public void addUserInfo(User newUser) {
         String userEmail = newUser.getEmail(); // user info will be stored under the user's email
         userEmail = userEmail.substring(0, userEmail.length() - 9);
-        dataRef.child(USER_INFO).child(userEmail).setValue(newUser);
+        userInfo.child(userEmail).setValue(newUser);
     }
 
     // TODO: method that checks whether email and password match
