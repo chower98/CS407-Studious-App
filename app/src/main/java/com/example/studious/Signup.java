@@ -26,39 +26,39 @@ public class Signup extends AppCompatActivity {
     }
 
     public void signUpClick(View view) {
-        try {
-            EditText emailInput = findViewById(R.id.emailInput);
-            EditText passwordInput = findViewById(R.id.passwordInput);
-            EditText nameInput = findViewById(R.id.nameInput);
-            EditText phoneInput = findViewById(R.id.phoneInput);
+        EditText emailInput = findViewById(R.id.emailInput);
+        EditText passwordInput = findViewById(R.id.passwordInput);
+        EditText nameInput = findViewById(R.id.nameInput);
+        EditText phoneInput = findViewById(R.id.phoneInput);
 
-            name = nameInput.getText().toString();
-            email = emailInput.getText().toString();
-            password = passwordInput.getText().toString();
-            phone = phoneInput.getText().toString();
+        name = nameInput.getText().toString();
+        email = emailInput.getText().toString();
+        password = passwordInput.getText().toString();
+        phone = phoneInput.getText().toString();
 
-            // shared preferences to keep user logged in app if they do not manually log out
-            SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-            sharedPreferences.edit().putString("email", email).apply();
-            sharedPreferences.edit().putString("password", password).apply();
+        // shared preferences to keep user logged in app if they do not manually log out
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString("email", email).apply();
+        sharedPreferences.edit().putString("password", password).apply();
 
-            // instantiate firebaseHelper to add new user
-            FirebaseHelper firebaseHelper = new FirebaseHelper();
+        // instantiate firebaseHelper to add new user
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
 
-            //int userExists = firebaseHelper.checkUserLogin(email, password);
-            //if (userExists == 0) { // 0 = user doesn't exist
+        int userExists = firebaseHelper.checkUserLogin(email, password);
+        Log.e("user exists?", Integer.toString(userExists)); // TODO: debug code
 
-            User newUser = new User(name, email, password, phone); // create new User object
-            firebaseHelper.addUserInfo(newUser); // add new user to database
+        if (userExists == 0) { // 0 = user doesn't exist
+            try {
+                User newUser = new User(name, email, password, phone); // create new User object
+                firebaseHelper.addUserInfo(newUser); // add new user to database
 
-            Intent continueIntent = new Intent(this, AddClasses.class);
-            continueIntent.putExtra("newUser", true);
-            // will not keep current activity in the stack; user cannot back to this activity
-            startActivity(continueIntent);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        /*} else { // 1 or 2 = user exists
+                Intent continueIntent = new Intent(this, AddClasses.class);
+                continueIntent.putExtra("newUser", true);
+                startActivity(continueIntent);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        } else { // 1 or 2 = user exists
             AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
 
             builder.setMessage("This email already has an account!");
@@ -79,7 +79,7 @@ public class Signup extends AppCompatActivity {
             });
             AlertDialog duplicateEmailAlert = builder.create();
             duplicateEmailAlert.show();
-        }*/
+        }
 
 
     }

@@ -2,22 +2,28 @@ package com.example.studious;
 
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class FirebaseHelper {
     FirebaseDatabase database;
     private DatabaseReference dataRef;
+    DatabaseReference userInfo;
+    DatabaseReference userPref;
+    DatabaseReference userMatches;
+    DatabaseReference userConnections;
 
     private final String USER_INFO = "userInfo";
     private final String USER_PREF = "userPreferences";
     private final String USER_MATCHES = "userMatches";
     private final String USER_CONNECTIONS = "userConnections";
 
-    DatabaseReference userInfo;
-    DatabaseReference userPref;
-    DatabaseReference userMatches;
-    DatabaseReference userConnections;
 
     FirebaseHelper() {
         database = FirebaseDatabase.getInstance(); // get Firebase database
@@ -31,32 +37,81 @@ public class FirebaseHelper {
     }
 
     public void addUserInfo(User newUser) {
-        String userEmail = newUser.getEmail(); // user info will be stored under the user's email
-        userEmail = userEmail.substring(0, userEmail.length() - 9);
-        userInfo.child(userEmail).setValue(newUser);
+        // user info will be stored under the user's email
+        String userEmail = newUser.getEmail();
+        userEmail = userEmail.substring(0, userEmail.length() - 9); // remove "@wisc.edu"
+
+        // add new user's info to database
+        DatabaseReference newUserRef = userInfo.child(userEmail);
+        newUserRef.setValue(newUser);
+
+        // add listener for data change of user
+        newUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User changedUser = dataSnapshot.getValue(User.class);
+                // TODO: maybe need this to do something if the user chooses to change their info??
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure what should be here?
+            }
+        });
     }
 
     // TODO: method that checks whether email and password match
+    // this method is used in Signup to check if an account already exists for an email
+    // also used in login to check that a user's login info is correct
     public int checkUserLogin(String email, String password) {
+        // return 0 if email does not have an account
+        // return 1 if user exists and password matches
+        // return 2 if user exists but password does NOT match
+        int userLoginStatus = -1;
+        final User[] userToLogIn = {null};
 
-        if( false){
+        String shortenedEmail = email.substring(0, email.length() - 9);
+        userInfo.orderByChild("email").equalTo(shortenedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userToLogIn[0] = dataSnapshot.getValue(User.class);
+            }
 
-            return 0;
-        } else if( false) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure if something needs to be done here??
+            }
+        });
 
-            return 1;
-        } else if(false) {
+        // check if email is stored in allUserEmails
+        //boolean userExists = allUserEmails.contains(shortenedEmail);
 
-            return 2;
+        if(userToLogIn[0] == null){ // user does not exist
+            userLoginStatus = 0;
+
+        } else { // user exists
+            /* TODO: old code, might not need
+            DatabaseReference userRef = userInfo.child(shortenedEmail);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userToLogIn[0] = dataSnapshot.getValue(User.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // TODO: not sure if something needs to be done here??
+                }
+            });*/
+
+            if (userToLogIn[0].getEmail().equals(email) && userToLogIn[0].getPassword().equals(password)) {
+                userLoginStatus = 1;
+            } else {
+                userLoginStatus = 2;
+            }
         }
-        // TODO: return 0 if email does not have an account
-        // TODO: return 1 if user exists and password matches
-        // TODO: return 2 if user exists but password does NOT match
 
-        // this method is used in Signup to check if an account already exists for an email
-        // also used in login to check that a user's login info is correct
-
-        return -1; // TODO: dummy return, change once method is written
+        return userLoginStatus; // return value to indicate login status
     }
 
 }

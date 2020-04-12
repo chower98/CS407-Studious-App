@@ -54,6 +54,7 @@ public class Login extends AppCompatActivity {
         //checks if this email is already contained
         if(!sharedPreferences.contains(editText.getText().toString())) {
             Intent signupIntent = new Intent(this, Signup.class);
+            // will not keep Signup activity in the stack; user cannot back to the signup screen
             signupIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(signupIntent);
         } else {
@@ -81,17 +82,14 @@ public class Login extends AppCompatActivity {
         email = emailInput.getText().toString();
         password = passwordInput.getText().toString();
 
-        // add email and password to sharedPreferences
-        sharedPreferences.edit().putString(EMAIL_KEY, email).apply();
-        sharedPreferences.edit().putString(PASSWORD_KEY, password).apply();
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        int userLogInCheck = firebaseHelper.checkUserLogin(email, password);
 
-        // instantiate dbHelper to check if correct login info was inputted
-        Context context = getApplicationContext();
-        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        dbHelper = new DBHelper(sqLiteDatabase);
-        int loginCheck = dbHelper.checkUserLogin(email, password);
+        if (userLogInCheck == 1) { // correct login, go to home screen
+            // add email and password to sharedPreferences
+            sharedPreferences.edit().putString(EMAIL_KEY, email).apply();
+            sharedPreferences.edit().putString(PASSWORD_KEY, password).apply();
 
-        if (loginCheck == 1) { // correct login, go to home screen
             Intent loginIntent = new Intent(this, HomeScreen.class);
             startActivity(loginIntent);
         } else { // incorrect login, display alert
