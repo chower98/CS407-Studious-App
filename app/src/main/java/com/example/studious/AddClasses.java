@@ -51,6 +51,9 @@ public class AddClasses extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        currentUser = sharedPreferences.getString("email", "");
+
         nextButton = findViewById(R.id.nextButton); // reference to nextButton
 
         // get intent and get the value of newUser
@@ -84,6 +87,49 @@ public class AddClasses extends AppCompatActivity {
         }
 
         displayCourses = new ArrayList<>();
+        refresh();
+    }
+
+    public void addClass(View view) {
+        Spinner courseList = findViewById(R.id.courseList);
+        EditText courseNumber = findViewById(R.id.classNumber);
+
+        // get course details
+        String department = courseList.getSelectedItem().toString();
+        String number = courseNumber.getText().toString();
+
+        // check to make sure class to add is fully specified
+        if (department.contains("Select Subject") || number.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+
+            builder.setMessage("Cannot add class without a subject or course number!");
+            builder.setTitle("Alert!");
+
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // When the user click yes button, then dialog will close
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog duplicateEmailAlert = builder.create();
+            duplicateEmailAlert.show();
+            return; // end method so that class without enough details is not added
+        }
+
+        // get full course name
+        String courseToAddName = department + " " + number;
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        String date = dateFormat.format(new Date());
+        Course newCourse = new Course(date, currentUser, courseToAddName, "not matched");
+
+        // instantiate FirebaseHelper and add new course
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        firebaseHelper.addCourse(newCourse); // TODO: not functional yet
+
+        displayCourses.add(courseToAddName);
         refresh();
     }
 
@@ -135,20 +181,6 @@ public class AddClasses extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void addClass(View view) {
-        Spinner courseList = findViewById(R.id.courseList);
-        EditText courseNumber = findViewById(R.id.classNumber);
-
-        // get course details
-        String department = courseList.getSelectedItem().toString();
-        String number = courseNumber.getText().toString();
-        String courseToAdd = department + " " + number;
-        displayCourses.add(courseToAdd);
-//        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-//        dbHelper.addCourses(currentUser, EMAIL_KEY, courseToAdd);
-        refresh();
     }
 
     public void continueSignup(View view) {

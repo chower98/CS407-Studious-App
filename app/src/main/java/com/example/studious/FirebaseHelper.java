@@ -102,4 +102,12 @@ public class FirebaseHelper {
         return userLoginStatus; // return value to indicate login status
     }
 
+    public void addCourse(Course course) {
+        // TODO
+        String email = course.getUserEmail();
+        email = email.substring(0, email.length() - 9); // remove @wisc.edu from email
+
+        userPref.child(email).child("Courses").setValue(course);
+    }
+
 }
