@@ -103,27 +103,28 @@ public class FirebaseHelper {
     }
 
 
+
     /// Sofia: I added these two methods. Both should add entries under UserPref in the database. Under useremail, there'll be
     /// entries for user courses (String arraylist), user days (String ArrayList), and user locations (String arraylist)
 
-    public void addUserCourses(userEmail, ArrayList <String> courses) {
+    //this is to be used in AddCourse page. To update user's courses in DB.
+    public void addUserCourses(String userEmail, ArrayList <String> courses) {
 
-        DatabaseReference userRef = userPref.child(userEmail);
-        userRef.setValue(newUser);
+        DatabaseReference userPref = userPref.child(userEmail); //why does userPref give an error?
+        userPref.setValue(userEmail);
 
-        userPref.child(email).child("Courses").setValue(courses);
-        
+        userPref.child(userEmail).child("Courses").setValue(courses);
+
     }
 
-    public void addUserPrefs(userEmail, ArrayList <String> days, ArrayList <String> locations){
+    //this is to be used in Preferences page. To update user's days & locations in DB.
+    public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
 
-        DatabaseReference userPref = userPref.child(userEmail);
-        userRef.setValue(newUser);
+        DatabaseReference userPref = userPref.child(userEmail); //why does userPref give an error? 
+        userPref.setValue(userEmail);
 
         userPref.child(userEmail).child("Days").setValue(days);
         userPref.child(userEmail).child("Locations").setValue(locations);
-
-
     }
 
 }
