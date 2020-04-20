@@ -110,21 +110,18 @@ public class FirebaseHelper {
     //this is to be used in AddCourse page. To update user's courses in DB.
     public void addUserCourses(String userEmail, ArrayList <String> courses) {
 
-        DatabaseReference userPref = userPref.child(userEmail); //why does userPref give an error?
-        userPref.setValue(userEmail);
-
-        userPref.child(userEmail).child("Courses").setValue(courses);
+        DatabaseReference pref = userPref.child(userEmail);
+        pref.child("Courses").setValue(courses);
 
     }
 
     //this is to be used in Preferences page. To update user's days & locations in DB.
     public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
 
-        DatabaseReference userPref = userPref.child(userEmail); //why does userPref give an error? 
-        userPref.setValue(userEmail);
+        DatabaseReference pref = userPref.child(userEmail);
+        pref.child("Days").setValue(days);
+        pref.child("Locations").setValue(locations);
 
-        userPref.child(userEmail).child("Days").setValue(days);
-        userPref.child(userEmail).child("Locations").setValue(locations);
     }
 
 }
