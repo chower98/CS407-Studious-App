@@ -102,12 +102,28 @@ public class FirebaseHelper {
         return userLoginStatus; // return value to indicate login status
     }
 
-    public void addCourse(Course course) {
-        // TODO
-        String email = course.getUserEmail();
-        email = email.substring(0, email.length() - 9); // remove @wisc.edu from email
 
-        userPref.child(email).child("Courses").setValue(course);
+    /// Sofia: I added these two methods. Both should add entries under UserPref in the database. Under useremail, there'll be
+    /// entries for user courses (String arraylist), user days (String ArrayList), and user locations (String arraylist)
+
+    public void addUserCourses(userEmail, ArrayList <String> courses) {
+
+        DatabaseReference userRef = userPref.child(userEmail);
+        userRef.setValue(newUser);
+
+        userPref.child(email).child("Courses").setValue(courses);
+        
+    }
+
+    public void addUserPrefs(userEmail, ArrayList <String> days, ArrayList <String> locations){
+
+        DatabaseReference userPref = userPref.child(userEmail);
+        userRef.setValue(newUser);
+
+        userPref.child(userEmail).child("Days").setValue(days);
+        userPref.child(userEmail).child("Locations").setValue(locations);
+
+
     }
 
 }
