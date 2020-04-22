@@ -108,10 +108,25 @@ public class FirebaseHelper {
     /// entries for user courses (String arraylist), user days (String ArrayList), and user locations (String arraylist)
 
     //this is to be used in AddCourse page. To update user's courses in DB.
-    public void addUserCourses(String userEmail, ArrayList <String> courses) {
+    public void addUserCourses(String userEmail, String course) {
+        String netID = userEmail.substring(0, userEmail.length() - 9); // remove "@wisc.edu" from email
+        DatabaseReference currentUserPref = userPref.child(netID);
 
-        DatabaseReference pref = userPref.child(userEmail);
-        pref.child("Courses").setValue(courses);
+        currentUserPref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserPreferences oldPref = dataSnapshot.getValue(UserPreferences.class);
+                ArrayList<String> courses = oldPref.getCourses();
+                courses.add(course)
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure if something needs to be done here??
+            }
+        });
+
+        currentUserPref.child("Courses").setValue(course);
 
     }
 

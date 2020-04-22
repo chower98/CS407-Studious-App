@@ -25,6 +25,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +39,7 @@ import java.util.Date;
 public class AddClasses extends AppCompatActivity {
 
     int courseId = -1;
-    public static ArrayList<Course> courses;
+    public static ArrayList<String> courses;
     private ArrayList<String> displayCourses;
     private String currentUser;
     private DBHelper dbHelper;
@@ -55,6 +61,21 @@ public class AddClasses extends AppCompatActivity {
         currentUser = sharedPreferences.getString("email", "");
 
         nextButton = findViewById(R.id.nextButton); // reference to nextButton
+
+        DatabaseReference currentUserPref = FirebaseDatabase.getInstance().getReference().child("userPreferences").child(currentUser);
+        currentUserPref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserPreferences oldPref = dataSnapshot.getValue(UserPreferences.class);
+                //ArrayList<String> courses = oldPref.getCourses();
+                courses.add(course)
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure if something needs to be done here??
+            }
+        });
 
         // get intent and get the value of newUser
         Intent intent = getIntent();
