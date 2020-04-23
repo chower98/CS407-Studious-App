@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class AddClasses extends AppCompatActivity {
     private final static String DATABASE_NAME = "data";
     //SQLiteDatabase sqLiteDatabase;
 
+    DatabaseReference currentUserCourses;
+    String newCourse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +66,18 @@ public class AddClasses extends AppCompatActivity {
 
         nextButton = findViewById(R.id.nextButton); // reference to nextButton
 
-        DatabaseReference currentUserPref = FirebaseDatabase.getInstance().getReference().child("userPreferences").child(currentUser);
-        currentUserPref.addListenerForSingleValueEvent(new ValueEventListener() {
+        displayCourses = new ArrayList<>();
+        String userName = currentUser.substring(0, currentUser.length() - 9); // remove "@wisc.edu" from email
+        currentUserCourses = FirebaseDatabase.getInstance().getReference().child("UserPref").child(userName).child("Courses");
+        currentUserCourses.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserPreferences oldPref = dataSnapshot.getValue(UserPreferences.class);
-                //ArrayList<String> courses = oldPref.getCourses();
-                courses.add(course)
+                boolean exists = dataSnapshot.exists();
+                if (exists) // TODO: for debugging
+                    Log.e("does data even exist?", "true");
+                else
+                    Log.e("does data even exist?", "false");
+                readCourseData(dataSnapshot);
             }
 
             @Override
@@ -107,8 +116,19 @@ public class AddClasses extends AppCompatActivity {
             nextButton.setVisibility(View.GONE);
         }
 
-        displayCourses = new ArrayList<>();
+        Log.e("courses to display 1", displayCourses.toString());
         refresh();
+    }
+
+    private void readCourseData(DataSnapshot dataSnapshot) {
+        String courseList = dataSnapshot.getValue(String.class);
+        Log.e("reading data", courseList + " ");
+        String[] courseArray = courseList.split(",");
+        displayCourses.clear();
+        for (String course : courseArray) {
+            displayCourses.add(course);
+        }
+        Log.e("courses to display 2", displayCourses.toString());
     }
 
     public void addClass(View view) {
@@ -141,17 +161,34 @@ public class AddClasses extends AppCompatActivity {
         }
 
         // get full course name
-        String courseToAddName = department + " " + number;
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String date = dateFormat.format(new Date());
-        Course newCourse = new Course(date, currentUser, courseToAddName, "not matched");
+        newCourse = department + " " + number;
 
         // instantiate FirebaseHelper and add new course
         FirebaseHelper firebaseHelper = new FirebaseHelper();
-        firebaseHelper.addCourse(newCourse); // TODO: not functional yet
+        //firebaseHelper.addCourse(newCourse); // TODO: not functional yet
 
-        displayCourses.add(courseToAddName);
+        currentUserCourses.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String newCourseList = addClassHelper(dataSnapshot);
+                currentUserCourses.setValue(newCourseList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure if something needs to be done here??
+            }
+        });
+
+        //displayCourses.add(newCourse);
         refresh();
+    }
+
+    // helper method that does Firebase storing
+    private String addClassHelper(DataSnapshot dataSnapshot) {
+        String courseList = dataSnapshot.getValue(String.class);
+        courseList = courseList + ", " + newCourse;
+        return courseList;
     }
 
     public void refresh() {

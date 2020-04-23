@@ -20,7 +20,7 @@ public class FirebaseHelper {
     DatabaseReference userConnections;
 
     private final String USER_INFO = "userInfo";
-    private final String USER_PREF = "userPreferences";
+    private final String USER_PREF = "UserPref";
     private final String USER_MATCHES = "userMatches";
     private final String USER_CONNECTIONS = "userConnections";
 
@@ -117,7 +117,7 @@ public class FirebaseHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserPreferences oldPref = dataSnapshot.getValue(UserPreferences.class);
                 ArrayList<String> courses = oldPref.getCourses();
-                courses.add(course)
+                //courses.add(course)
             }
 
             @Override
