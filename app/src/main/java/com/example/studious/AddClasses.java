@@ -39,54 +39,51 @@ import java.util.Date;
 
 public class AddClasses extends AppCompatActivity {
 
-    int courseId = -1;
-    public static ArrayList<String> courses;
-    private ArrayList<String> displayCourses;
-    private String currentUser;
-    private DBHelper dbHelper;
-    private Button nextButton;
-    private boolean newUser;
+    private String currentUserEmail; // full email of current user
+    private String currentNetID; // netID of current user
+    private boolean newUser; // checks whether user is new or returning
+    private Button nextButton; // Button for new users to proceed; doesn't show for returning users
 
+    private ArrayList<String> currentCourses; // ArrayList of current courses
+    private ListView displayCourseList; // ListView that displays courses for users
+    private DatabaseReference currentUserCourses; // database reference to specific user's courses
+    private String newCourse; // holds name of course to add
+
+    // for shared preferences
     private final static String EMAIL_KEY = "email";
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
-    private final static String DATABASE_NAME = "data";
-    //SQLiteDatabase sqLiteDatabase;
-
-    DatabaseReference currentUserCourses;
-    String newCourse;
-    ListView courseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_classes);
 
+        // initialize fields
+        nextButton = findViewById(R.id.nextButton);
+        displayCourseList = findViewById(R.id.classHolder);
+        currentCourses = new ArrayList<>();
+
+        // get email and net id from sharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-        currentUser = sharedPreferences.getString("email", "");
+        currentUserEmail = sharedPreferences.getString("email", "");
+        currentNetID = currentUserEmail.substring(0, currentUserEmail.length() - 9); // remove "@wisc.edu" from email
 
-        nextButton = findViewById(R.id.nextButton); // reference to nextButton
-
-        displayCourses = new ArrayList<>();
-        courseList = findViewById(R.id.classHolder);
-        String userName = currentUser.substring(0, currentUser.length() - 9); // remove "@wisc.edu" from email
-        currentUserCourses = FirebaseDatabase.getInstance().getReference().child("UserPref").child(userName).child("Courses");
+        // initialize FireBase reference and add listener to read data
+        currentUserCourses = FirebaseDatabase.getInstance().getReference().child("UserPref").child(currentNetID).child("Courses");
         currentUserCourses.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean exists = dataSnapshot.exists();
-                if (exists) // TODO: for debugging
-                    Log.e("does data even exist?", "true");
-                else
-                    Log.e("does data even exist?", "false");
-                readCourseData(dataSnapshot);
+                // helper method to convert dataSnapshot into ArrayList<String>
+                currentCourses = readCourseData(dataSnapshot);
 
-                ArrayAdapter adapter = new ArrayAdapter(AddClasses.this, android.R.layout.simple_list_item_1, displayCourses);
-                courseList.setAdapter(adapter);
-                courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // set adapter of the listView
+                ArrayAdapter adapter = new ArrayAdapter(AddClasses.this, android.R.layout.simple_list_item_1, currentCourses);
+                displayCourseList.setAdapter(adapter);
+                displayCourseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        openDialog(position);
+                        createDeleteDialog(position);
                     }
                 });
             }
@@ -103,43 +100,27 @@ public class AddClasses extends AppCompatActivity {
 
         if (newUser) { // new user adding classes, so nextButton must be visible
             nextButton.setVisibility(View.VISIBLE);
+            createNewUserDialog(); // create dialog for new user
 
-            // show dialog telling new user what to do
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Welcome to Studious, an app that will help you connect to " +
-                    "other study partners at UW-Madison! Please add the classes that you would " +
-                    "like to find study buddies for. When you are finished, click the Continue " +
-                    "button. You can always come back to this page from your home screen if you'd " +
-                    "like to edit your list of classes!");
-            builder.setTitle("Hi There!");
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // When the user click yes button, the dialog will close
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog newUserWelcome = builder.create();
-            newUserWelcome.show();
         } else { // not a new user, do not show nextButton or welcome dialog
             nextButton.setVisibility(View.GONE);
         }
-
-        Log.e("courses to display 1", displayCourses.toString());
-        //refresh();
     }
 
-    private void readCourseData(DataSnapshot dataSnapshot) {
-        String allCourses = dataSnapshot.getValue(String.class);
-        Log.e("reading data", allCourses + " ");
-        String[] courseArray = allCourses.split(",");
-        displayCourses.clear();
-        for (String course : courseArray) {
-            displayCourses.add(course);
+    private ArrayList<String> readCourseData(DataSnapshot dataSnapshot) {
+        String allCourses = dataSnapshot.getValue(String.class); // string of all classes
+        ArrayList<String> coursesArrayList = new ArrayList<String>(); // ArrayList to hold classes
+
+        if (allCourses != null) {
+            String[] courseArray = allCourses.split(", "); // split into string array at ", "
+
+            // move course names to ArrayList
+            for (String course : courseArray) {
+                coursesArrayList.add(course);
+            }
         }
-        Log.e("courses to display 2", displayCourses.toString());
+
+        return coursesArrayList;
     }
 
     public void addClass(View view) {
@@ -152,37 +133,23 @@ public class AddClasses extends AppCompatActivity {
 
         // check to make sure class to add is fully specified
         if (department.contains("Select Subject") || number.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
-
-            builder.setMessage("Cannot add class without a subject or course number!");
-            builder.setTitle("Alert!");
-
-            builder.setCancelable(false);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // When the user click yes button, then dialog will close
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog duplicateEmailAlert = builder.create();
-            duplicateEmailAlert.show();
+            createCourseAlertDialog();
             return; // end method so that class without enough details is not added
         }
 
-        // get full course name
-        newCourse = department + " " + number;
+        newCourse = department + " " + number; // get full course name
 
-        // instantiate FirebaseHelper and add new course
-        FirebaseHelper firebaseHelper = new FirebaseHelper();
-        //firebaseHelper.addCourse(newCourse); // TODO: not functional yet
-
+        // single value event listener to add new class
         currentUserCourses.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String newCourseList = addClassHelper(dataSnapshot);
-                currentUserCourses.setValue(newCourseList);
+                String courseList = dataSnapshot.getValue(String.class); // get current courseList
+                if (courseList == null) {
+                    courseList = newCourse;
+                } else {
+                    courseList = courseList + ", " + newCourse; // add new class to courseList
+                }
+                currentUserCourses.setValue(courseList); // update database value of courseList
             }
 
             @Override
@@ -190,57 +157,58 @@ public class AddClasses extends AppCompatActivity {
                 // TODO: not sure if something needs to be done here??
             }
         });
-
-        //displayCourses.add(newCourse);
-        refresh();
     }
 
-    // helper method that does Firebase storing
-    private String addClassHelper(DataSnapshot dataSnapshot) {
-        String courseList = dataSnapshot.getValue(String.class);
-        courseList = courseList + ", " + newCourse;
-        return courseList;
-    }
+    private void createNewUserDialog() {
+        // show dialog telling new user what to do
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Welcome to Studious, an app that will help you connect to " +
+                "other study partners at UW-Madison! Please add the classes that you would " +
+                "like to find study buddies for. When you are finished, click the Continue " +
+                "button. You can always come back to this page from your home screen if you'd " +
+                "like to edit your list of classes!");
+        builder.setTitle("Hi There!");
 
-    public void refresh() {
-        //SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-        //currentUser = sharedPreferences.getString(EMAIL_KEY, "");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-        // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
-        Context context = getApplicationContext();
-        //sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        //dbHelper = new DBHelper(sqLiteDatabase);
-        //courses = dbHelper.readCourses(currentUser);
-
-        // create ArrayList<String> by iterating courses object
-
-//        for (Course course : courses) {
-//            displayCourses.add(String.format("Course: %s\nStatus: %s\n", course.getName(), course.getStatus()));
-//        }
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, displayCourses);
-        ListView listView = findViewById(R.id.classHolder);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDialog(position);
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, the dialog will close
+                dialog.dismiss();
             }
         });
+        AlertDialog newUserWelcome = builder.create();
+        newUserWelcome.show();
     }
 
-    public void openDialog(final int position){
+    private void createCourseAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
-        builder.setMessage("Remove " + displayCourses.get(position) + " from Courses?")
+
+        builder.setMessage("Cannot add class without a subject or course number!");
+        builder.setTitle("Alert!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, then dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog duplicateEmailAlert = builder.create();
+        duplicateEmailAlert.show();
+    }
+
+    private void createDeleteDialog(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+        builder.setMessage("Remove " + currentCourses.get(position) + " from Courses?")
                 .setTitle("Remove Course?")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        displayCourses.remove(position);
-//                        dbHelper.deleteCourse(EMAIL_KEY, currentUser);
-//                        courses = dbHelper.readCourses(currentUser);
-                        refresh();
+                        String toRemove = currentCourses.get(position);
+                        deleteCourse(toRemove); // call helper method to remove course
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -250,6 +218,38 @@ public class AddClasses extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void deleteCourse(final String courseToDelete) {
+        // single value event listener to delete class
+        currentUserCourses.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // helper method to convert dataSnapshot into ArrayList<String>
+                ArrayList<String> current = readCourseData(dataSnapshot);
+
+                current.remove(courseToDelete); // remove course from ArrayList current
+
+                // convert ArrayList to string of all courses
+                String updatedCourses = null;
+                if (!current.isEmpty()) {
+                    for (String course : current) {
+                        if (updatedCourses == null) {
+                            updatedCourses = course;
+                        } else {
+                            updatedCourses = updatedCourses + ", " + course;
+                        }
+                    }
+                }
+
+                currentUserCourses.setValue(updatedCourses); // update database value of Courses
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: not sure if something needs to be done here??
+            }
+        });
     }
 
     public void continueSignup(View view) {
