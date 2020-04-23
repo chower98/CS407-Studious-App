@@ -106,7 +106,7 @@ public class FirebaseHelper {
 
     /// Sofia: I added these two methods. Both should add entries under UserPref in the database. Under useremail, there'll be
     /// entries for user courses (String arraylist), user days (String ArrayList), and user locations (String arraylist)
-    
+
 
     //this is to be used in Preferences page. To update user's days & locations in DB.
     public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
