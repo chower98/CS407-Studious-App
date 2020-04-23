@@ -55,6 +55,7 @@ public class AddClasses extends AppCompatActivity {
 
     DatabaseReference currentUserCourses;
     String newCourse;
+    ListView courseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class AddClasses extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton); // reference to nextButton
 
         displayCourses = new ArrayList<>();
+        courseList = findViewById(R.id.classHolder);
         String userName = currentUser.substring(0, currentUser.length() - 9); // remove "@wisc.edu" from email
         currentUserCourses = FirebaseDatabase.getInstance().getReference().child("UserPref").child(userName).child("Courses");
         currentUserCourses.addValueEventListener(new ValueEventListener() {
@@ -78,6 +80,15 @@ public class AddClasses extends AppCompatActivity {
                 else
                     Log.e("does data even exist?", "false");
                 readCourseData(dataSnapshot);
+
+                ArrayAdapter adapter = new ArrayAdapter(AddClasses.this, android.R.layout.simple_list_item_1, displayCourses);
+                courseList.setAdapter(adapter);
+                courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        openDialog(position);
+                    }
+                });
             }
 
             @Override
@@ -117,13 +128,13 @@ public class AddClasses extends AppCompatActivity {
         }
 
         Log.e("courses to display 1", displayCourses.toString());
-        refresh();
+        //refresh();
     }
 
     private void readCourseData(DataSnapshot dataSnapshot) {
-        String courseList = dataSnapshot.getValue(String.class);
-        Log.e("reading data", courseList + " ");
-        String[] courseArray = courseList.split(",");
+        String allCourses = dataSnapshot.getValue(String.class);
+        Log.e("reading data", allCourses + " ");
+        String[] courseArray = allCourses.split(",");
         displayCourses.clear();
         for (String course : courseArray) {
             displayCourses.add(course);
