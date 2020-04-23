@@ -106,29 +106,7 @@ public class FirebaseHelper {
 
     /// Sofia: I added these two methods. Both should add entries under UserPref in the database. Under useremail, there'll be
     /// entries for user courses (String arraylist), user days (String ArrayList), and user locations (String arraylist)
-
-    //this is to be used in AddCourse page. To update user's courses in DB.
-    public void addUserCourses(String userEmail, String course) {
-        String netID = userEmail.substring(0, userEmail.length() - 9); // remove "@wisc.edu" from email
-        DatabaseReference currentUserPref = userPref.child(netID);
-
-        currentUserPref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserPreferences oldPref = dataSnapshot.getValue(UserPreferences.class);
-                ArrayList<String> courses = oldPref.getCourses();
-                //courses.add(course)
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO: not sure if something needs to be done here??
-            }
-        });
-
-        currentUserPref.child("Courses").setValue(course);
-
-    }
+    
 
     //this is to be used in Preferences page. To update user's days & locations in DB.
     public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
