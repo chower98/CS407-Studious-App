@@ -168,6 +168,7 @@ public class Preferences extends AppCompatActivity {
                     if(engineering.isChecked() ){addToLocArray("Engineering");}
                     if(southeast.isChecked() ){addToLocArray("Southeast");  }
 
+
                     currentUserDays.setValue(userDays);
                     currentUserLocations.setValue(userLocations);
 
@@ -198,8 +199,31 @@ public class Preferences extends AppCompatActivity {
                     if(engineering.isChecked() ){addToLocArray("Engineering");}
                     if(southeast.isChecked() ){addToLocArray("Southeast");  }
 
-                    currentUserDays.setValue(userDays);
-                    currentUserLocations.setValue(userLocations);
+
+                    // convert ArrayList to string of all days
+                    String stringDays = null;
+                    if (!userDays.isEmpty()) {
+                        for (String day : userDays) {
+                            if (stringDays == null) {
+                                stringDays = day;
+                            } else {
+                                stringDays = stringDays + ", " + day;
+                            }
+                        }
+                    }
+                    currentUserDays.setValue(stringDays);
+                    // convert ArrayList to string of all days
+                    String stringLocs = null;
+                    if (!userLocations.isEmpty()) {
+                        for (String loc : userLocations) {
+                            if (stringLocs == null) {
+                                stringLocs = loc;
+                            } else {
+                                stringLocs = stringLocs + ", " + loc;
+                            }
+                        }
+                    }
+                    currentUserLocations.setValue(stringLocs);
 
                     goHome(v);
                     //go home.
