@@ -109,12 +109,12 @@ public class FirebaseHelper {
 
 
     //this is to be used in Preferences page. To update user's days & locations in DB.
-    public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
-
-        DatabaseReference pref = userPref.child(userEmail);
-        pref.child("Days").setValue(days);
-        pref.child("Locations").setValue(locations);
-
-    }
+//    public void addUserPrefs(String userEmail, ArrayList <String> days, ArrayList <String> locations) {
+//
+//        DatabaseReference pref = userPref.child(userEmail);
+//        pref.child("Days").setValue(days);
+//        pref.child("Locations").setValue(locations);
+//
+//    }
 
 }
