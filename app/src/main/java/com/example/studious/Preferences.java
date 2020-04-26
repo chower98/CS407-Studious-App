@@ -39,8 +39,8 @@ public class Preferences extends AppCompatActivity {
     private String currentNetID; // netID of current user
     private DatabaseReference currentUserDays; // database reference to specific user's courses
     private DatabaseReference currentUserLocations; // database reference to specific user's courses
-    private ArrayList<String> userLocations = new ArrayList<>(); // ArrayList of current locations
-    private ArrayList<String> userDays=  new ArrayList<>(); // ArrayList of current days
+    private static ArrayList<String> userLocations = new ArrayList<>(); // ArrayList of current locations
+    private static ArrayList<String> userDays=  new ArrayList<>(); // ArrayList of current days
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,59 +69,11 @@ public class Preferences extends AppCompatActivity {
         currentUserEmail = sharedPreferences.getString("email", "");
         currentNetID = currentUserEmail.substring(0, currentUserEmail.length() - 9); // remove "@wisc.edu" from email
 
-        // initialize FireBase reference and add listener to read data
-        // set reference to child userID
-        //
+        // initialize FireBase reference
         currentUserLocations = FirebaseDatabase.getInstance().getReference().child("UserPref").child(currentNetID).child("Locations");
-//        currentUserLocations.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // helper method to convert dataSnapshot into ArrayList<String>
-//                currentLocations = readCourseData(dataSnapshot);
-//
-////                // set adapter of the listView
-////                ArrayAdapter adapter = new ArrayAdapter(Preferences.this, android.R.layout.simple_list_item_1, currentLocations);
-////                displayCourseList.setAdapter(adapter);
-////                displayCourseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////                    @Override
-////                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                        createDeleteDialog(position);
-////                    }
-////                });
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // TODO: not sure if something needs to be done here??
-//            }
-//        });
         currentUserDays = FirebaseDatabase.getInstance().getReference().child("UserPref").child(currentNetID).child("Days");
-//        currentUserDays.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // helper method to convert dataSnapshot into ArrayList<String>
-//                currentDays = readCourseData(dataSnapshot);
-//
-////                // set adapter of the listView
-////                ArrayAdapter adapter = new ArrayAdapter(Preferences.this, android.R.layout.simple_list_item_1, currentDays);
-////                displayCourseList.setAdapter(adapter);
-////                displayCourseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////                    @Override
-////                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                        createDeleteDialog(position);
-////                    }
-////                });
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // TODO: not sure if something needs to be done here??
-//            }
-//        });
-
-
 
         // get intent and get the value of newUser
-
         Intent intent = getIntent();
         newUser = intent.getBooleanExtra("newUser", false);
 
@@ -181,6 +133,22 @@ public class Preferences extends AppCompatActivity {
             saveButton.setText("Save Changes");
             //add functionality for save changes button click
 
+            //add persistence for checkboxes (have the users saved preferences checked.)
+            // TODO: doesn't display on first click :(
+            if(setChecked("Monday", userDays)) monday.setChecked(true);
+            if(setChecked("Tuesday", userDays)) tuesday.setChecked(true);
+            if(setChecked("Wednesday", userDays)) wednesday.setChecked(true);
+            if(setChecked("Thursday", userDays)) thursday.setChecked(true);
+            if(setChecked("Friday", userDays)) friday.setChecked(true);
+            if(setChecked("Saturday", userDays)) saturday.setChecked(true);
+            if(setChecked("Sunday", userDays)) sunday.setChecked(true);
+            if(setChecked("Lakeshore", userLocations)) lakeshore.setChecked(true);
+            if(setChecked("Southeast", userLocations)) southeast.setChecked(true);
+            if(setChecked("Engineering", userLocations)) engineering.setChecked(true);
+            if(setChecked("College", userLocations)) college.setChecked(true);
+            if(setChecked("State", userLocations)) state.setChecked(true);
+
+
             //when the save button is clicked, the day or location is added to its respective arrayList.
             // here, for OLD USERS.
             saveButton.setOnClickListener(new View.OnClickListener(){
@@ -200,7 +168,7 @@ public class Preferences extends AppCompatActivity {
                     if(southeast.isChecked() ){addToLocArray("Southeast");  }
 
 
-                    // convert ArrayList to string of all days
+                    // convert ArrayList to string of all days.
                     String stringDays = null;
                     if (!userDays.isEmpty()) {
                         for (String day : userDays) {
@@ -212,7 +180,7 @@ public class Preferences extends AppCompatActivity {
                         }
                     }
                     currentUserDays.setValue(stringDays);
-                    // convert ArrayList to string of all days
+                    // convert ArrayList to string of all locations.
                     String stringLocs = null;
                     if (!userLocations.isEmpty()) {
                         for (String loc : userLocations) {
@@ -242,6 +210,14 @@ public class Preferences extends AppCompatActivity {
     public void goHome(View view){
         Intent intent = new Intent(this, HomeScreen.class);
         startActivity(intent);
+    }
+
+    public boolean setChecked(String cb, ArrayList<String> s){
+        if(s.contains(cb)){
+            return true;
+        }
+        else
+        return false;
     }
 
     @Override
@@ -286,21 +262,5 @@ public class Preferences extends AppCompatActivity {
         }
     }
 
-//    // helper method to convert dataSnapshot into ArrayList<String>
-//    private ArrayList<String> readCourseData(DataSnapshot dataSnapshot) {
-//        String allCourses = dataSnapshot.getValue(String.class); // string of all classes
-//        ArrayList<String> coursesArrayList = new ArrayList<String>(); // ArrayList to hold classes
-//
-//        if (allCourses != null) {
-//            String[] courseArray = allCourses.split(", "); // split into string array at ", "
-//
-//            // move course names to ArrayList
-//            for (String course : courseArray) {
-//                coursesArrayList.add(course);
-//            }
-//        }
-//
-//        return coursesArrayList;
-//    }
 
 }
