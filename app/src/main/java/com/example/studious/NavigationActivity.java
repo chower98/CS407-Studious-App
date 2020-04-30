@@ -20,7 +20,7 @@ public class NavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.navigation);
+        setContentView(R.layout.activity_match);
         bottomNavigation = findViewById(R.id.bottom_navigation);
     }
     public void openFragment(Fragment fragment) {

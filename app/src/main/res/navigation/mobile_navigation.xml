@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_matches">
+    app:startDestination="@+id/navigation_matches"
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
-        android:id="@+id/navigation_matches"
+        android:id="@+id/navigation_connections"
         android:name="com.example.studious.ConnectionsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_connections" />
+        tools:context="@layout.fragment_connections" />
 
     <fragment
         android:id="@+id/navigation_recommendations"
