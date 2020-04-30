@@ -6,15 +6,13 @@
     <item
         android:id="@+id/fragment_connections"
         android:name="com.example.studious.ConnectionsFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_connections"
+
         android:title="Connections" />
 
     <item
         android:id="@+id/fragment_requests"
         android:name="com.example.studious.RequestFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_request"
+
         android:title="Requests" />
 
 

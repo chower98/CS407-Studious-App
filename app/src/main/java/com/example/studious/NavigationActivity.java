@@ -40,8 +40,8 @@ public class NavigationActivity extends AppCompatActivity {
                         case R.id.fragment_request:
                             openFragment(RequestFragment.newInstance("", ""));
                             return true;
-                        case R.id.fragment_matches:
-                            openFragment(MatchesFragment.newInstance("", ""));
+                        case R.id.fragment_recommendations:
+                            openFragment(RecommendationsFragment.newInstance("", ""));
                             return true;
                     }
                     return false;
