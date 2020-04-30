@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void signupClick(View view) {
-        EditText editText =findViewById(R.id.emailInput);
+        EditText editText = findViewById(R.id.emailInput);
 
         SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
@@ -95,15 +95,15 @@ public class Login extends AppCompatActivity {
     private void checkLogin() {
         //TODO: debug final boolean loginCheck = false;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference currentUser = firebaseDatabase.getReference().child("userInfo").child(netID);
+        DatabaseReference currentUser = firebaseDatabase.getReference().child("UserInfo").child(netID);
 
         currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
 
-                if (user == null) { // no user exists
-                    createIncorrectLoginAlert();
+                if (user == null) {
+                    createIncorrectLoginAlert(); // no user exists
                 } else {
                     if (user.getPassword().equals(password)) {
                         loginUser(); // correct login info
