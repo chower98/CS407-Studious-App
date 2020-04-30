@@ -22,5 +22,11 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_recommendations"
         android:title="Recommendations" />
+    <item
+        android:id="@+id/home_screen"
+        android:name="com.example.studious.RecommendationsFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/activity_home_screen"
+        android:title="Back to Home" />
 
 </menu>

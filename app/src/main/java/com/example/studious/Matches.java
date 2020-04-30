@@ -1,7 +1,9 @@
 package com.example.studious;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ public class Matches extends AppCompatActivity {
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
     BottomNavigationView bottomNavigation;
+    private boolean newUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +42,19 @@ public class Matches extends AppCompatActivity {
                             case R.id.fragment_recommendations:
                                 openFragment(RecommendationsFragment.newInstance("", ""));
                                 return true;
+                            case R.id.home_screen:
+                                openFragment(HomeScreenFragment.newInstance("", ""));
+                                return true;
                         }
                         return false;
                     }
                 };
 
+    public void backToHome(View view){
+        Intent intent = new Intent(this, HomeScreen.class);
+        intent.putExtra("newUser", newUser);
+        startActivity(intent);
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater menuInflater = getMenuInflater();
