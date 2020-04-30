@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ public class Preferences extends AppCompatActivity {
     private final static String EMAIL_KEY = "email";
     private final static String PASSWORD_KEY = "password";
     private final static String PACKAGE_NAME = "com.example.studious";
+    private static final String TAG = "Preferences";
 
     private Button homeButton;
     private Button saveButton;
@@ -41,6 +43,9 @@ public class Preferences extends AppCompatActivity {
     private DatabaseReference currentUserLocations; // database reference to specific user's courses
     private static ArrayList<String> userLocations = new ArrayList<>(); // ArrayList of current locations
     private static ArrayList<String> userDays=  new ArrayList<>(); // ArrayList of current days
+
+    private ArrayList<String> alreadyDays = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +125,31 @@ public class Preferences extends AppCompatActivity {
                     if(engineering.isChecked() ){addToLocArray("Engineering");}
                     if(southeast.isChecked() ){addToLocArray("Southeast");  }
 
+                    // convert ArrayList to string of all days.
+                    String stringDays = "";
+                    if (!userDays.isEmpty()) {
+                        for (String day : userDays) {
+                            if (stringDays == "") {
+                                stringDays = day;
+                            } else {
+                                stringDays = stringDays + ", " + day;
+                            }
+                        }
+                    }
+                    currentUserDays.setValue(stringDays);
 
-                    currentUserDays.setValue(userDays);
-                    currentUserLocations.setValue(userLocations);
+                    // convert ArrayList to string of all locations.
+                    String stringLocs = "";
+                    if (!userLocations.isEmpty()) {
+                        for (String loc : userLocations) {
+                            if (stringLocs == "") {
+                                stringLocs = loc;
+                            } else {
+                                stringLocs = stringLocs + ", " + loc;
+                            }
+                        }
+                    }
+                    currentUserLocations.setValue(stringLocs);
 
                     goHome(v);
                 }
@@ -131,48 +158,65 @@ public class Preferences extends AppCompatActivity {
         } else { // not a new user, do not show dialog, and buttonHome should say "Back to Home" & there should be a save changes button
             homeButton.setText("Back to Home"); //clicking back to home will *not* save changes.
             saveButton.setText("Save Changes");
-            //add functionality for save changes button click
 
-            //add persistence for checkboxes (have the users saved preferences checked.)
-            // TODO: doesn't display on first click :(
-            if(setChecked("Monday", userDays)) monday.setChecked(true);
-            if(setChecked("Tuesday", userDays)) tuesday.setChecked(true);
-            if(setChecked("Wednesday", userDays)) wednesday.setChecked(true);
-            if(setChecked("Thursday", userDays)) thursday.setChecked(true);
-            if(setChecked("Friday", userDays)) friday.setChecked(true);
-            if(setChecked("Saturday", userDays)) saturday.setChecked(true);
-            if(setChecked("Sunday", userDays)) sunday.setChecked(true);
-            if(setChecked("Lakeshore", userLocations)) lakeshore.setChecked(true);
-            if(setChecked("Southeast", userLocations)) southeast.setChecked(true);
-            if(setChecked("Engineering", userLocations)) engineering.setChecked(true);
-            if(setChecked("College", userLocations)) college.setChecked(true);
-            if(setChecked("State", userLocations)) state.setChecked(true);
-
+            //MAKE SURE THE SAVED PREFERENCES ARE CHECKED WHEN THEY OPEN UP ACTIVITY
+            currentUserDays.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String currentDays = dataSnapshot.getValue(String.class);
+                    Log.i(TAG, "Current days: " + currentDays);
+                    if(currentDays.contains("Monday")) monday.setChecked(true);
+                    if(currentDays.contains("Tuesday")) tuesday.setChecked(true);
+                    if(currentDays.contains("Wednesday")) wednesday.setChecked(true);
+                    if(currentDays.contains("Thursday")) thursday.setChecked(true);
+                    if(currentDays.contains("Friday")) friday.setChecked(true);
+                    if(currentDays.contains("Saturday")) saturday.setChecked(true);
+                    if(currentDays.contains("Sunday")) sunday.setChecked(true);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) { //nada
+                }
+            });
+            currentUserLocations.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String currentLocs = dataSnapshot.getValue(String.class);
+                    Log.i(TAG, "Current locs: " + currentLocs);
+                    if(currentLocs.contains("Lakeshore")) lakeshore.setChecked(true);
+                    if(currentLocs.contains("State")) state.setChecked(true);
+                    if(currentLocs.contains("Southeast")) southeast.setChecked(true);
+                    if(currentLocs.contains("College")) college.setChecked(true);
+                    if(currentLocs.contains("Engineering")) engineering.setChecked(true);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) { //nada
+                }
+            });
 
             //when the save button is clicked, the day or location is added to its respective arrayList.
             // here, for OLD USERS.
             saveButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    if(monday.isChecked() ){ addToDaysArray("Monday"); }
-                    if(tuesday.isChecked() ){ addToDaysArray("Tuesday"); }
-                    if(wednesday.isChecked() ){ addToDaysArray("Wednesday"); }
-                    if(thursday.isChecked() ){addToDaysArray("Thursday");}
-                    if(friday.isChecked() ){addToDaysArray("Friday");}
-                    if(saturday.isChecked() ){addToDaysArray("Saturday");}
-                    if(sunday.isChecked() ){addToDaysArray("Sunday"); }
-                    if(lakeshore.isChecked() ){addToLocArray("Lakeshore"); }
-                    if(college.isChecked() ){addToLocArray("College");}
-                    if(state.isChecked() ){addToLocArray("State");}
-                    if(engineering.isChecked() ){addToLocArray("Engineering");}
-                    if(southeast.isChecked() ){addToLocArray("Southeast");  }
-
+                    //if box is checked, add to database. if not (or its been unchecked) remove.
+                    if(monday.isChecked() ){ addToDaysArray("Monday"); } else removeFromDays("Monday, ");
+                    if(tuesday.isChecked() ){ addToDaysArray("Tuesday"); }  else removeFromDays("Tuesday, ");
+                    if(wednesday.isChecked() ){ addToDaysArray("Wednesday"); } else removeFromDays("Wednesday, ");
+                    if(thursday.isChecked() ){addToDaysArray("Thursday");} else removeFromDays("Thursday, ");
+                    if(friday.isChecked() ){addToDaysArray("Friday");} else removeFromDays("Friday, ");
+                    if(saturday.isChecked() ){addToDaysArray("Saturday");} else removeFromDays("Saturday, ");
+                    if(sunday.isChecked() ){addToDaysArray("Sunday"); } else removeFromDays("Sunday, ");
+                    if(lakeshore.isChecked() ){addToLocArray("Lakeshore"); } else removeFromLocs("Lakeshore, ");
+                    if(college.isChecked() ){addToLocArray("College");} else  removeFromLocs("College, ");
+                    if(state.isChecked() ){addToLocArray("State"); } else  removeFromLocs("State, ");
+                    if(engineering.isChecked() ){addToLocArray("Engineering");} else  removeFromLocs("Engineering, ");
+                    if(southeast.isChecked() ){addToLocArray("Southeast");  } else  removeFromLocs("Southeast, ");
 
                     // convert ArrayList to string of all days.
-                    String stringDays = null;
+                    String stringDays = "";
                     if (!userDays.isEmpty()) {
                         for (String day : userDays) {
-                            if (stringDays == null) {
+                            if (stringDays == "") {
                                 stringDays = day;
                             } else {
                                 stringDays = stringDays + ", " + day;
@@ -180,11 +224,12 @@ public class Preferences extends AppCompatActivity {
                         }
                     }
                     currentUserDays.setValue(stringDays);
+
                     // convert ArrayList to string of all locations.
-                    String stringLocs = null;
+                    String stringLocs = "";
                     if (!userLocations.isEmpty()) {
                         for (String loc : userLocations) {
-                            if (stringLocs == null) {
+                            if (stringLocs == "") {
                                 stringLocs = loc;
                             } else {
                                 stringLocs = stringLocs + ", " + loc;
@@ -195,29 +240,9 @@ public class Preferences extends AppCompatActivity {
 
                     goHome(v);
                     //go home.
-
                 }
             });
         }
-    }
-
-    public void backToHome(View view){
-        Intent intent = new Intent(this, HomeScreen.class);
-        intent.putExtra("newUser", newUser);
-        startActivity(intent);
-    }
-
-    public void goHome(View view){
-        Intent intent = new Intent(this, HomeScreen.class);
-        startActivity(intent);
-    }
-
-    public boolean setChecked(String cb, ArrayList<String> s){
-        if(s.contains(cb)){
-            return true;
-        }
-        else
-        return false;
     }
 
     @Override
@@ -251,14 +276,64 @@ public class Preferences extends AppCompatActivity {
     }
 
 
+    //                  HELPER METHODS                      //
+
+    private ArrayList<String> readDaysDate(DataSnapshot dataSnapshot) {
+        String allDays = dataSnapshot.getValue(String.class); // string of all days
+        ArrayList<String> daysList = new ArrayList<String>(); // ArrayList to hold days
+
+        if (daysList != null) {
+            String[] daysArray = allDays.split(", "); // split into string array at ", "
+            // move course names to ArrayList
+            for (String course : daysArray) {
+                daysList.add(course);
+            }
+        }
+        return daysList;
+    }
+
+    public void backToHome(View view){
+        Intent intent = new Intent(this, HomeScreen.class);
+        intent.putExtra("newUser", newUser);
+        startActivity(intent);
+    }
+
+    public void goHome(View view){
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+    }
+
+    //this method checks to see whether the array list contains an element
+    public boolean setChecked(String cb, ArrayList<String> s){
+        if(s.contains(cb)){
+            return true;
+        }
+        else
+            return false;
+    }
+
+
+    //helper methods: used to add and remove to the userDays/userLocs arraylists.
+    // eventually these arrays get converted to strings and put in database.
     private void addToDaysArray(String day){
         if(!userDays.contains(day)){
             userDays.add(day);
         }
     }
+    private void removeFromDays(String day){
+        if(userDays.contains(day)){
+            userDays.remove(day );
+        }
+    }
+
     private void addToLocArray(String loc){
         if(!userLocations.contains(loc)){
             userLocations.add(loc);
+        }
+    }
+    private void removeFromLocs(String loc){
+        if(userLocations.contains(loc)){
+            userLocations.remove(loc );
         }
     }
 
