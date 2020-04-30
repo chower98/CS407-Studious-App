@@ -40,11 +40,14 @@ public class MatchRunnable implements Runnable {
 
     }
 
-    private void method1(String matchString){
+    private void method1(String matchString) {
         String[] array = matchString.split(", ");
         List<String> list = Arrays.asList(array);
         ArrayList<String> matchesList = new ArrayList<String>(list);
+        method3(matchesList);
+    }
 
+    private void method3(ArrayList<String> matchesList) {
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> users;
