@@ -157,14 +157,53 @@ public class MatchRunnable implements Runnable {
             days.remove(indicesToRemove.get(i));
             locations.remove(indicesToRemove.get(i));
         }
-
+        if(users.size() == 1) {
+            matchCreator(users.get(0));
+        }
         //Days
+        indicesToRemove = new ArrayList<Integer>();
+        for(int i = 0; i < users.size(); i++) {
+            for(int j = 0; j < days.get(i).size(); j++) {
+                if(userDays.contains(days.get(i).get(j))) {
+                    j = days.get(i).size();
+                } else if(j == (days.get(i).size() - 1)) {
+                    indicesToRemove.add(i);
+                }
+            }
+        }
 
+        Collections.sort(indicesToRemove);
+        for(int i = indicesToRemove.size(); i > -1; i--){
+            users.remove(indicesToRemove.get(i));
+            courses.remove(indicesToRemove.get(i));
+            days.remove(indicesToRemove.get(i));
+            locations.remove(indicesToRemove.get(i));
+        }
 
         //Location
+        indicesToRemove = new ArrayList<Integer>();
+        for(int i = 0; i < users.size(); i++) {
+            for(int j = 0; j < locations.get(i).size(); j++) {
+                if(userLocations.contains(locations.get(i).get(j))) {
+                    j = locations.get(i).size();
+                } else if(j == (locations.get(i).size() - 1)) {
+                    indicesToRemove.add(i);
+                }
+            }
+        }
 
+        Collections.sort(indicesToRemove);
+        for(int i = indicesToRemove.size(); i > -1; i--){
+            users.remove(indicesToRemove.get(i));
+            courses.remove(indicesToRemove.get(i));
+            days.remove(indicesToRemove.get(i));
+            locations.remove(indicesToRemove.get(i));
+        }
 
     }
 
+    private void matchCreator(String matchToAdd) {
+
+    }
 
 }
