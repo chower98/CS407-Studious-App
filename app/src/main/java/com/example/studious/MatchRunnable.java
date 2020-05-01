@@ -10,11 +10,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MatchRunnable implements Runnable {
     private String username;
     private DatabaseReference dataRef;
+    private ArrayList<String> matchesList;
 
     MatchRunnable(String username) {
         this.username = username;
@@ -43,11 +45,7 @@ public class MatchRunnable implements Runnable {
     private void method1(String matchString) {
         String[] array = matchString.split(", ");
         List<String> list = Arrays.asList(array);
-        ArrayList<String> matchesList = new ArrayList<String>(list);
-        method3(matchesList);
-    }
-
-    private void method3(ArrayList<String> matchesList) {
+        matchesList = new ArrayList<String>(list);
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> users;
@@ -115,6 +113,58 @@ public class MatchRunnable implements Runnable {
                            ArrayList<ArrayList<String>> courses, ArrayList<ArrayList<String>> days,
                            ArrayList<ArrayList<String>> locations) {
 
+        //Get the current user's preferences, then remove the user's preferences from that list
+        int userIndex = users.indexOf(username);
+        ArrayList<String> userCourses = new ArrayList<String>(courses.get(userIndex));
+        ArrayList<String> userDays = new ArrayList<String>(days.get(userIndex));
+        ArrayList<String> userLocations = new ArrayList<String>(locations.get(userIndex));
+
+        users.remove(userIndex);
+        courses.remove(userIndex);
+        days.remove(userIndex);
+        locations.remove(userIndex);
+
+        //this will remove all matches the user has from the users list
+        for(int i = 0; i < matches.size(); i++) {
+            int matchIndex = users.indexOf(matches.get(i));
+            if(matchIndex < 0) {
+                users.remove(matchIndex);
+                courses.remove(matchIndex);
+                days.remove(matchIndex);
+                locations.remove(matchIndex);
+            }
+        }
+
+        //Narrow down list of possible matches
+        //Courses
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        for(int i = 0; i < users.size(); i++) {
+            for(int j = 0; j < courses.get(i).size(); j++) {
+                if(userCourses.contains(courses.get(i).get(j))) {
+                    j = courses.get(i).size();
+                } else if(j == (courses.get(i).size() - 1)) {
+                    indicesToRemove.add(i);
+                }
+            }
+        }
+
+        //sorts indicestoRemove numerically. This allows us to remove the highest indices first so
+        // that the indices are not changing in users
+        Collections.sort(indicesToRemove);
+        for(int i = indicesToRemove.size(); i > -1; i--){
+            users.remove(indicesToRemove.get(i));
+            courses.remove(indicesToRemove.get(i));
+            days.remove(indicesToRemove.get(i));
+            locations.remove(indicesToRemove.get(i));
+        }
+
+        //Days
+
+
+        //Location
+
 
     }
+
+
 }
