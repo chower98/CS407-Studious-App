@@ -159,6 +159,7 @@ public class MatchRunnable implements Runnable {
         }
         if(users.size() == 1) {
             matchCreator(users.get(0));
+            return;
         }
         //Days
         indicesToRemove = new ArrayList<Integer>();
@@ -178,6 +179,14 @@ public class MatchRunnable implements Runnable {
             courses.remove(indicesToRemove.get(i));
             days.remove(indicesToRemove.get(i));
             locations.remove(indicesToRemove.get(i));
+            if(users.size() == 1) {
+                matchCreator(users.get(0));
+                return;
+            }
+        }
+        if(users.size() == 1) {
+            matchCreator(users.get(0));
+            return;
         }
 
         //Location
@@ -198,7 +207,14 @@ public class MatchRunnable implements Runnable {
             courses.remove(indicesToRemove.get(i));
             days.remove(indicesToRemove.get(i));
             locations.remove(indicesToRemove.get(i));
+            if(users.size() == 1) {
+                matchCreator(users.get(0));
+                return;
+            }
         }
+
+        matchCreator(users.get(0));
+
 
     }
 
