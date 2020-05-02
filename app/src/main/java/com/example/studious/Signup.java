@@ -21,8 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Signup extends AppCompatActivity {
-    private EditText emailInput, passwordInput, nameInput, phoneInput;
-    private String name, email, password, phone;
+    private EditText emailInput, passwordInput, confirmPasswordInput, nameInput, phoneInput;
+    private String name, email, password, confirmPassword, phone;
     private String netID;
 
     @Override
@@ -34,12 +34,14 @@ public class Signup extends AppCompatActivity {
     public void signUpClick(View view) {
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
+        confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         nameInput = findViewById(R.id.nameInput);
         phoneInput = findViewById(R.id.phoneInput);
 
         name = nameInput.getText().toString();
         email = emailInput.getText().toString();
         password = passwordInput.getText().toString();
+        confirmPassword = confirmPasswordInput.getText().toString();
         phone = phoneInput.getText().toString();
 
         if (name.equals("") || email.equals("") || password.equals("") || phone.equals("")) {
@@ -50,6 +52,11 @@ public class Signup extends AppCompatActivity {
         String[] emailName = email.split("@");
         if (!emailName[1].equals("wisc.edu")) { // check that it's a wisc.edu email
             createIncorrectInfoAlert();
+            return; // end signup method early
+        }
+
+        if (!password.equals(confirmPassword)) {
+            createIncorrectPasswordAlert();
             return; // end signup method early
         }
 
@@ -139,11 +146,36 @@ public class Signup extends AppCompatActivity {
                 dialog.dismiss();
 
                 passwordInput.setText(""); // reset password field to ""
+                confirmPasswordInput.setText("");
             }
         });
 
         AlertDialog incorrectInfoAlert = builder.create();
         incorrectInfoAlert.show();
     }
+
+    private void createIncorrectPasswordAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Signup.this);
+
+        builder.setMessage("Passwords must match!");
+        builder.setTitle("Alert!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, the dialog will close
+                dialog.dismiss();
+
+                passwordInput.setText(""); // reset password field to ""
+                confirmPasswordInput.setText("");
+            }
+        });
+
+        AlertDialog incorrectPassAlert = builder.create();
+        incorrectPassAlert.show();
+    }
+
 
 }
