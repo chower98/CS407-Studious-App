@@ -35,13 +35,15 @@
             android:id="@+id/nextButton"
             android:layout_width="67dp"
             android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:background="@color/colorLGreen"
             android:onClick="continueSignup"
             android:text="Save!"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-           app:layout_constraintStart_toEndOf="@id/addedClasses"
-            app:layout_constraintTop_toBottomOf="@id/classNumber"/>
+            app:layout_constraintStart_toEndOf="@id/addedClasses"
+            app:layout_constraintTop_toBottomOf="@id/classNumber" />
 
         <Button
             android:id="@+id/addButton"
