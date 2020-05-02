@@ -67,6 +67,27 @@ public class Matches extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                // remove data kept in the instance for the user since they are logging out
+                SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(EMAIL_KEY).apply();
+                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
+
+                Intent logoutIntent = new Intent(this, Login.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(logoutIntent);
+                return true;
+
+            case R.id.preferences:
+                Intent preferencesIntent = new Intent(this, Preferences.class);
+                startActivity(preferencesIntent);
+                return true;
+
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
 //    @Override
