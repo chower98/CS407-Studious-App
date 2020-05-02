@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "496502137983",
+    "firebase_url": "https://studious-a3548.firebaseio.com",
+    "project_id": "studious-a3548",
+    "storage_bucket": "studious-a3548.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496502137983:android:973b8d1024133363d7cb4a",
+        "android_client_info": {
+          "package_name": "com.example.studious"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496502137983-l9937gkvg03g5ga8iatcaa5c65v24ftm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.studious",
+            "certificate_hash": "ecf063fa745c343fd4d18884254686a47a8f6d9e"
+          }
+        },
+        {
+          "client_id": "496502137983-660l4ahdpsf0ta24vgrcuq361dmlk73h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOfXWY1FVhkbfeOBJSE5qmlsQd3WJxv4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496502137983-660l4ahdpsf0ta24vgrcuq361dmlk73h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

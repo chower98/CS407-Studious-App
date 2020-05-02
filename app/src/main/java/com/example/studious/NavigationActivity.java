@@ -20,7 +20,7 @@ public class NavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.navigation);
+        setContentView(R.layout.activity_match);
         bottomNavigation = findViewById(R.id.bottom_navigation);
     }
     public void openFragment(Fragment fragment) {
@@ -34,14 +34,14 @@ public class NavigationActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.navigation_matches:
-                            openFragment(MatchesFragment.newInstance("", ""));
+                        case R.id.fragment_connections:
+                            openFragment(ConnectionsFragment.newInstance("", ""));
                             return true;
-                        case R.id.navigation_recommendations:
-                            openFragment(RecommendationsFragment.newInstance("", ""));
-                            return true;
-                        case R.id.navigation_requests:
+                        case R.id.fragment_request:
                             openFragment(RequestFragment.newInstance("", ""));
+                            return true;
+                        case R.id.fragment_recommendations:
+                            openFragment(RecommendationsFragment.newInstance("", ""));
                             return true;
                     }
                     return false;
