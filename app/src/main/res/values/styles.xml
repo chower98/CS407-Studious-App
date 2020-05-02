@@ -5,6 +5,12 @@
 
     </style>
 
+    <style name="checkBoxStyle" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/checked</item>
+        <item name="android:textColor">@color/option</item>
+        <item name="android:textColorSecondary">@color/option</item>
+    </style>
+
 
 
 </resources>

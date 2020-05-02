@@ -3,6 +3,9 @@
     <color name="colorPrimary">#006F00</color>
     <color name="colorPrimaryLight">#FFFFFF</color>
     <color name="colorLGreen">#8BC34A</color>
-
+    <color name="unchecked">#9AB7BDB0</color>
+    <color name="checked">#9A69C300</color>
     <color name="colorAccent">#FF835C</color>
+    <color name="option">#333333</color>
+
 </resources>

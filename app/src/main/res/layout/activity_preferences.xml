@@ -8,6 +8,7 @@
 
     <CheckBox
         android:id="@+id/wednesday"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -113,9 +114,9 @@
         android:id="@+id/areaPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="268dp"
         android:text="Where do you prefer to study?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -175,43 +176,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="72dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mini_logo" />
-
     <Button
         android:id="@+id/homeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:layout_marginBottom="40dp"
-        android:background="#4CAF50"
+        android:background="@color/colorLGreen"
         android:onClick="backToHome"
-        android:text="Back to Home"
+        android:text="Back to \n Home"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginStart="76dp"
         android:layout_marginLeft="76dp"
         android:layout_marginBottom="40dp"
-        android:background="#4CAF50"
+        android:background="@color/colorLGreen"
         android:onClick="savePreferences"
-        android:text="Save Changes"
+        android:text="Save\nChanges"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/homeButton" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/preftitle"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
