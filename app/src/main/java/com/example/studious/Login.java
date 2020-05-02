@@ -43,6 +43,11 @@ public class Login extends AppCompatActivity {
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
         } else { // go to login screen if no user logged in
+            String email = sharedPreferences.getString(EMAIL_KEY, "");
+            String netID = email.substring(0, email.length() - 9);
+            MatchRunnable matchMaker = new MatchRunnable(netID);
+            new Thread(matchMaker).start();
+
             setContentView(R.layout.activity_login);
             emailInput = findViewById(R.id.emailInput);
             passwordInput = findViewById(R.id.passwordInput);
