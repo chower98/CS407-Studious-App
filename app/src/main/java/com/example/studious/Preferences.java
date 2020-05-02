@@ -132,6 +132,12 @@ public class Preferences extends AppCompatActivity {
                     }
                     currentUserLocations.setValue(stringLocs);
 
+                    SharedPreferences sp = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+                    String email = sp.getString(EMAIL_KEY,"");
+                    String netID = email.substring(0, email.length() - 9);
+                    MatchRunnable matchMaker = new MatchRunnable(netID);
+                    new Thread(matchMaker).start();
+
                     goHome(v);
                 }
             });
