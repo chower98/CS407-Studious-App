@@ -1,6 +1,8 @@
 package com.example.studious;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ public class Matches extends AppCompatActivity {
     private final static String PACKAGE_NAME = "com.example.studious";
     BottomNavigationView bottomNavigation;
     private boolean newUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class Matches extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
