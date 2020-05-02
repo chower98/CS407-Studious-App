@@ -1,5 +1,7 @@
 package com.example.studious;
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +32,7 @@ public class MatchRunnable implements Runnable {
         userMatches.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String matchString = dataSnapshot.child("matches").getValue().toString();
+                String matchString = dataSnapshot.child("Matches:").getValue().toString();
                 method1(matchString);
             }
 
@@ -218,8 +220,41 @@ public class MatchRunnable implements Runnable {
 
     }
 
-    private void matchCreator(String matchToAdd) {
+    private void matchCreator(final String matchToAdd) {
+        DatabaseReference matchFB = dataRef.child("UserMatches");
 
+        matchFB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String newMatches = "";
+                String userNewMatches = "";
+                String oldMatches = dataSnapshot.child(matchToAdd).child("Matches:").getValue().toString();
+                if(oldMatches.isEmpty())
+                    newMatches = username;
+                else
+                    newMatches = oldMatches + ", " + username;
+
+
+                String userMatches = dataSnapshot.child(username).child("Matches:").getValue().toString();
+                if(userMatches.isEmpty())
+                    userNewMatches = matchToAdd;
+                else
+                    userNewMatches = userMatches + ", " + matchToAdd;
+
+                updateMatches(userNewMatches, newMatches, matchToAdd);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void updateMatches(String userMatches, String otherMatches, String otherUser) {
+        dataRef.child("UserMatches").child(username).child("Matches:").setValue(userMatches);
+        dataRef.child("UserMatches").child(otherUser).child("Matches:").setValue(otherMatches);
     }
 
 }

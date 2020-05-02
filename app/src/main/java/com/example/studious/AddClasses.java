@@ -88,20 +88,8 @@ public class AddClasses extends AppCompatActivity {
     }
 
     public void refresh() {
-        //SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-        //currentUser = sharedPreferences.getString(EMAIL_KEY, "");
 
-        // get SQLiteDatabase instance and initiate notes ArrayList by using DBHelper
         Context context = getApplicationContext();
-        //sqLiteDatabase = context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        //dbHelper = new DBHelper(sqLiteDatabase);
-        //courses = dbHelper.readCourses(currentUser);
-
-        // create ArrayList<String> by iterating courses object
-
-//        for (Course course : courses) {
-//            displayCourses.add(String.format("Course: %s\nStatus: %s\n", course.getName(), course.getStatus()));
-//        }
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, displayCourses);
         ListView listView = findViewById(R.id.classHolder);

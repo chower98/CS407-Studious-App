@@ -30,7 +30,7 @@ public class HomeScreen extends AppCompatActivity {
         // get intent and get the value of newUser
         Intent intent = getIntent();
         newUser = intent.getBooleanExtra("newUser", false);
-
+        
         if (newUser) { // new user finishing sign up, display dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("This is your home page! This is where you will be directed to in " +
