@@ -5,4 +5,5 @@
     <item name="navigation_requests" type="id" />
     <item name="nav_view" type="id" />
     <item name="nav_host_fragment" type="id" />
+    <item name="fragment_connections" type="id" />
 </resources>

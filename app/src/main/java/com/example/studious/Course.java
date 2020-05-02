@@ -6,6 +6,11 @@ public class Course {
     private String name;
     private String status;
 
+    public Course() {
+        // default constructor for database
+    }
+
+
     public Course(String date, String userEmail, String name, String status) {
         this.userEmail = userEmail;
         this.date = date;

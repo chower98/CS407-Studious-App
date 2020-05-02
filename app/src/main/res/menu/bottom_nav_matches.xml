@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/fragment_connections"
+        android:name="com.example.studious.ConnectionsFragment"
+        android:icon="@drawable/connect"
+        android:title="Connections"
+        />
+
+    <item
+        android:id="@+id/fragment_requests"
+        android:name="com.example.studious.RequestFragment"
+        android:icon="@drawable/request"
+        android:title="Requests" />
+
+    <item
+        android:id="@+id/fragment_recommendations"
+        android:name="com.example.studious.RecommendationsFragment"
+        android:label="@string/title_home"
+        android:icon="@drawable/homei"
+        tools:layout="@layout/fragment_recommendations"
+        android:title="Recommendations" />
+    <item
+        android:id="@+id/home_screen"
+        android:name="com.example.studious.RecommendationsFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/activity_home_screen"
+        android:title="Back to Home" />
+
+
+
+</menu>
