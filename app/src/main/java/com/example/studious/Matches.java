@@ -92,10 +92,13 @@ public class Matches extends AppCompatActivity {
         dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches:").getValue().toString();
-                String[] matchesArray = matches.split(", ");
-                List<String> matchesList = Arrays.asList(matchesArray);
-                ArrayList<String> userMatches = new ArrayList<String>(matchesList);
+                String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches:").getValue(String.class);
+                if(matches!=null) {
+                    String[] matchesArray = matches.split(", ");
+                    List<String> matchesList = Arrays.asList(matchesArray);
+                    ArrayList<String> userMatches = new ArrayList<String>(matchesList);
+                }
+                ArrayList<String> userMatches = new ArrayList<String>();
 
                 matchesNames = new ArrayList<String>();
                 matchesNumber = new ArrayList<String>();
