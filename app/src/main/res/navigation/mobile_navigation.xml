@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_matches">
+    app:startDestination="@+id/navigation_matches"
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
-        android:id="@+id/navigation_matches"
-        android:name="com.example.studious.ui.ConnectionFragment"
+        android:id="@+id/navigation_connections"
+        android:name="com.example.studious.ConnectionsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_connections" />
+        tools:context="@layout.fragment_connections" />
 
     <fragment
         android:id="@+id/navigation_recommendations"
-        android:name="com.example.studious.ui.RequestsFragment"
+        android:name="com.example.studious.RequestFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_request" />
 
     <fragment
         android:id="@+id/navigation_requests"
-        android:name="com.example.studious.ui.NotificationsFragment"
+        android:name="com.example.studious.MatchesFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_matches" />
 </navigation>

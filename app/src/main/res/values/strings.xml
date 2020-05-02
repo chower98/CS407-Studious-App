@@ -35,4 +35,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="connections">Connections</string>
+    <string name="request">Request</string>
+    <string name="matches">Matches</string>
 </resources>

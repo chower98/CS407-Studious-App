@@ -1,6 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1"
+    tools:context=".ConnectionsFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TableRow>
+
+        <TextView
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:layout_column="1"
+            android:gravity="center_vertical"
+            android:text="Connections" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Sofia Khan" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Message" />
+
+        <TextView
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="CS 407" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Sofia Khan" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Message" />
+
+        <TextView
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="CS 407" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Sofia Khan" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Message" />
+
+        <TextView
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="CS 407" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Sofia Khan" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_column="1"
+            android:padding="3dip"
+            android:text="Message" />
+
+        <TextView
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="CS 407" />
+    </TableRow>
+
+
+
+
+
+    <TableRow>
+        <TextView
+            android:layout_column="1"
+            android:text="Quit"
+            android:padding="3dip" />
+    </TableRow>
+</TableLayout>
