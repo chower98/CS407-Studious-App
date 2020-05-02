@@ -6,23 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".HomeScreen">
 
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/full_logo" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+        <ImageButton
+            android:id="@+id/matches"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorLGreen"
+            android:onClick="matchesClick"
+            android:scaleType="fitCenter"
+            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <ImageButton
             android:id="@+id/courses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:background="@color/colorLGreen"
             android:onClick="coursesClick"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +56,14 @@
             app:srcCompat="@android:drawable/ic_menu_today" />
 
         <ImageButton
-            android:id="@+id/messages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
-            android:scaleType="fitCenter"
-            android:onClick="messagesClick"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
-
-        <ImageButton
-            android:id="@+id/matches"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:onClick="matchesClick"
-            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
-
-        <ImageButton
             android:id="@+id/preferences"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:background="@color/colorLGreen"
             android:onClick="preferencesClick"
+            android:scaleType="fitCenter"
             app:srcCompat="@android:drawable/ic_menu_manage" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
