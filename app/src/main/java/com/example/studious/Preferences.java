@@ -294,12 +294,12 @@ public class Preferences extends AppCompatActivity {
 
     public void backToHome(View view){
         Intent intent = new Intent(this, HomeScreen.class);
-        intent.putExtra("newUser", newUser);
         startActivity(intent);
     }
 
     public void goHome(View view){
         Intent intent = new Intent(this, HomeScreen.class);
+        intent.putExtra("newUser", newUser);
         startActivity(intent);
     }
 

@@ -22,6 +22,7 @@ public class Matches extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     private boolean newUser;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,7 @@ public class Matches extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

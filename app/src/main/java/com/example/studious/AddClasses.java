@@ -139,24 +139,28 @@ public class AddClasses extends AppCompatActivity {
 
         newCourse = department + " " + number; // get full course name
 
-        // single value event listener to add new class
-        currentUserCourses.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String courseList = dataSnapshot.getValue(String.class); // get current courseList
-                if (courseList == null) {
-                    courseList = newCourse;
-                } else {
-                    courseList = courseList + ", " + newCourse; // add new class to courseList
+        if (currentCourses.contains(newCourse)) {
+            createDuplicateCourseDialog();
+        } else {
+            // single value event listener to add new class
+            currentUserCourses.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String courseList = dataSnapshot.getValue(String.class); // get current courseList
+                    if (courseList == null) {
+                        courseList = newCourse;
+                    } else {
+                        courseList = courseList + ", " + newCourse; // add new class to courseList
+                    }
+                    currentUserCourses.setValue(courseList); // update database value of courseList
                 }
-                currentUserCourses.setValue(courseList); // update database value of courseList
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO: not sure if something needs to be done here??
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // TODO: not sure if something needs to be done here??
+                }
+            });
+        }
     }
 
     private void createNewUserDialog() {
@@ -196,8 +200,27 @@ public class AddClasses extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        AlertDialog duplicateEmailAlert = builder.create();
-        duplicateEmailAlert.show();
+        AlertDialog courseAlert = builder.create();
+        courseAlert.show();
+    }
+
+    private void createDuplicateCourseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+
+        builder.setMessage("This course is already listed as one of your classes.");
+        builder.setTitle("Alert!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, then dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog duplicateCourseAlert = builder.create();
+        duplicateCourseAlert.show();
     }
 
     private void createDeleteDialog(final int position){
