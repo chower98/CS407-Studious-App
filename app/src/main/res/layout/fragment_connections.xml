@@ -1,120 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="1"
-    tools:context=".ConnectionsFragment">
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:layout_column="1"
-            android:gravity="center_vertical"
-            android:text="Connections" />
+    tools:context=".AddClasses">
 
 
-    </TableRow>
-
-    <TableRow
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:text="@string/connections"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Sofia Khan" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Message" />
-
-        <TextView
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="CS 407" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Sofia Khan" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Message" />
-
-        <TextView
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="CS 407" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Sofia Khan" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Message" />
-
-        <TextView
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="CS 407" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Sofia Khan" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_column="1"
-            android:padding="3dip"
-            android:text="Message" />
-
-        <TextView
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="CS 407" />
-    </TableRow>
-
-
-
-
-
-    <TableRow>
-        <TextView
-            android:layout_column="1"
-            android:text="Quit"
-            android:padding="3dip" />
-    </TableRow>
-</TableLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

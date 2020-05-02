@@ -199,18 +199,18 @@ public class Preferences extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //if box is checked, add to database. if not (or its been unchecked) remove.
-                    if(monday.isChecked() ){ addToDaysArray("Monday"); } else removeFromDays("Monday, ");
-                    if(tuesday.isChecked() ){ addToDaysArray("Tuesday"); }  else removeFromDays("Tuesday, ");
-                    if(wednesday.isChecked() ){ addToDaysArray("Wednesday"); } else removeFromDays("Wednesday, ");
-                    if(thursday.isChecked() ){addToDaysArray("Thursday");} else removeFromDays("Thursday, ");
-                    if(friday.isChecked() ){addToDaysArray("Friday");} else removeFromDays("Friday, ");
-                    if(saturday.isChecked() ){addToDaysArray("Saturday");} else removeFromDays("Saturday, ");
-                    if(sunday.isChecked() ){addToDaysArray("Sunday"); } else removeFromDays("Sunday, ");
-                    if(lakeshore.isChecked() ){addToLocArray("Lakeshore"); } else removeFromLocs("Lakeshore, ");
-                    if(college.isChecked() ){addToLocArray("College");} else  removeFromLocs("College, ");
-                    if(state.isChecked() ){addToLocArray("State"); } else  removeFromLocs("State, ");
-                    if(engineering.isChecked() ){addToLocArray("Engineering");} else  removeFromLocs("Engineering, ");
-                    if(southeast.isChecked() ){addToLocArray("Southeast");  } else  removeFromLocs("Southeast, ");
+                    if(monday.isChecked() ){ addToDaysArray("Monday"); } else removeFromDays("Monday");
+                    if(tuesday.isChecked() ){ addToDaysArray("Tuesday"); }  else removeFromDays("Tuesday");
+                    if(wednesday.isChecked() ){ addToDaysArray("Wednesday"); } else removeFromDays("Wednesday");
+                    if(thursday.isChecked() ){addToDaysArray("Thursday");} else removeFromDays("Thursday");
+                    if(friday.isChecked() ){addToDaysArray("Friday");} else removeFromDays("Friday");
+                    if(saturday.isChecked() ){addToDaysArray("Saturday");} else removeFromDays("Saturday");
+                    if(sunday.isChecked() ){addToDaysArray("Sunday"); } else removeFromDays("Sunday");
+                    if(lakeshore.isChecked() ){addToLocArray("Lakeshore"); } else removeFromLocs("Lakeshore");
+                    if(college.isChecked() ){addToLocArray("College");} else  removeFromLocs("College");
+                    if(state.isChecked() ){addToLocArray("State"); } else  removeFromLocs("State");
+                    if(engineering.isChecked() ){addToLocArray("Engineering");} else  removeFromLocs("Engineering");
+                    if(southeast.isChecked() ){addToLocArray("Southeast");  } else  removeFromLocs("Southeast");
 
                     // convert ArrayList to string of all days.
                     String stringDays = "";
