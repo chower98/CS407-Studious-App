@@ -11,40 +11,14 @@
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="120dp"
         android:layout_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/full_logo"
         tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-        android:id="@+id/myclass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Classes"
-        android:textColor="@color/colorLGreen"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="474dp" />
-
-    <TextView
-        android:id="@+id/pref"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preferences"
-        android:textColor="@color/colorLGreen"
-        tools:layout_editor_absoluteX="301dp"
-        tools:layout_editor_absoluteY="474dp" />
-
-    <TextView
-        android:id="@+id/mymatches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Study Matches"
-        android:textColor="@color/colorLGreen"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="474dp" />
-
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="40dp"
@@ -91,6 +65,42 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_settings_black_24dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/mymatches"
+            android:layout_width="124dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Study Matches"
+            android:textColor="@color/colorLGreen" />
+
+        <TextView
+            android:id="@+id/myclass"
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="My Classes"
+            android:textColor="@color/colorLGreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pref"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Preferences"
+            android:textColor="@color/colorLGreen" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
