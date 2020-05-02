@@ -11,16 +11,43 @@
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="124dp"
         android:layout_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/full_logo"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/myclass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Classes"
+        android:textColor="@color/colorLGreen"
+        tools:layout_editor_absoluteX="169dp"
+        tools:layout_editor_absoluteY="474dp" />
+
+    <TextView
+        android:id="@+id/pref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferences"
+        android:textColor="@color/colorLGreen"
+        tools:layout_editor_absoluteX="301dp"
+        tools:layout_editor_absoluteY="474dp" />
+
+    <TextView
+        android:id="@+id/mymatches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Study Matches"
+        android:textColor="@color/colorLGreen"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="474dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2">
@@ -45,11 +72,11 @@
             android:background="@color/colorLGreen"
             android:onClick="coursesClick"
             android:scaleType="fitCenter"
+            android:src="@drawable/ic_library_books_black_24dp"
             app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_library_books_black_24dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/preferences"
@@ -63,5 +90,7 @@
             android:onClick="preferencesClick"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_settings_black_24dp" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
