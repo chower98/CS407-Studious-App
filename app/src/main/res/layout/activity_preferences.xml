@@ -183,10 +183,10 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:layout_marginBottom="40dp"
-        android:background="@color/colorLGreen"
         android:onClick="backToHome"
         android:text="Back to \n Home"
         android:textAllCaps="false"
+        android:background="@color/colorLGreen"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
