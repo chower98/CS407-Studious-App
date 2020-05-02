@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,7 +30,16 @@ public class Matches extends AppCompatActivity {
         setContentView(R.layout.activity_match);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(ConnectionsFragment.newInstance("", ""));
+
+        // TODO: make connections a part of the actual layout file and not a fragment
+        FragmentManager connectionsFragmentManager = getSupportFragmentManager();
+        connectionsFragmentManager.popBackStack("root_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // Add the new tab fragment
+        connectionsFragmentManager.beginTransaction()
+                .replace(R.id.container, ConnectionsFragment.newInstance("",""))
+                .addToBackStack("root_fragment")
+                .commit();
     }
         BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,16 +47,38 @@ public class Matches extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.fragment_connections:
-                                openFragment(ConnectionsFragment.newInstance("", ""));
+                                FragmentManager connectionsFragmentManager = getSupportFragmentManager();
+                                connectionsFragmentManager.popBackStack("new_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                                // Add the new tab fragment
+                                connectionsFragmentManager.beginTransaction()
+                                        .replace(R.id.container, ConnectionsFragment.newInstance("",""))
+                                        .addToBackStack("new_fragment")
+                                        .commit();
                                 return true;
                             case R.id.fragment_requests:
-                                openFragment(RequestFragment.newInstance("", ""));
+                                FragmentManager requestsFragmentManager = getSupportFragmentManager();
+                                requestsFragmentManager.popBackStack("new_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                                // Add the new tab fragment
+                                requestsFragmentManager.beginTransaction()
+                                        .replace(R.id.container, RequestFragment.newInstance("",""))
+                                        .addToBackStack("new_fragment")
+                                        .commit();
                                 return true;
                             case R.id.fragment_recommendations:
-                                openFragment(RecommendationsFragment.newInstance("", ""));
+                                FragmentManager recFragmentManager = getSupportFragmentManager();
+                                recFragmentManager.popBackStack("new_fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                                // Add the new tab fragment
+                                recFragmentManager.beginTransaction()
+                                        .replace(R.id.container, RecommendationsFragment.newInstance("",""))
+                                        .addToBackStack("new_fragment")
+                                        .commit();
                                 return true;
                             case R.id.home_screen:
-                                openFragment(HomeScreenFragment.newInstance("", ""));
+                                Intent homeIntent = new Intent(Matches.this, HomeScreen.class);
+                                startActivity(homeIntent);
                                 return true;
                         }
                         return false;
