@@ -43,6 +43,12 @@ public class Login extends AppCompatActivity {
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
         } else { // go to login screen if no user logged in
+            //make new thread, run matchmaker algorithm
+            String email = sharedPreferences.getString(EMAIL_KEY,"");
+            String netID = email.substring(0, email.length() - 9);
+            MatchRunnable matchMaker = new MatchRunnable(netID);
+            new Thread(matchMaker).start();
+
             setContentView(R.layout.activity_login);
             emailInput = findViewById(R.id.emailInput);
             passwordInput = findViewById(R.id.passwordInput);
@@ -125,6 +131,11 @@ public class Login extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
             sharedPreferences.edit().putString(EMAIL_KEY, email).apply();
             sharedPreferences.edit().putString(PASSWORD_KEY, password).apply();
+
+        String email = sharedPreferences.getString(EMAIL_KEY,"");
+        String netID = email.substring(0, email.length() - 9);
+        MatchRunnable matchMaker = new MatchRunnable(netID);
+        new Thread(matchMaker).start();
 
         Intent loginIntent = new Intent(this, HomeScreen.class);
         startActivity(loginIntent);
