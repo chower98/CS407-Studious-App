@@ -42,6 +42,8 @@ public class Login extends AppCompatActivity {
             String email = sharedPreferences.getString(EMAIL_KEY,"");
             String netID = email.substring(0, email.length() - 9);
             MatchRunnable matchMaker = new MatchRunnable(netID);
+            Log.i("EMAIL_KEY VALUE", sharedPreferences.getString(EMAIL_KEY,""));
+
             new Thread(matchMaker).start();
 
             // go automatically to home screen if user is still logged in

@@ -132,12 +132,6 @@ public class Preferences extends AppCompatActivity {
                     }
                     currentUserLocations.setValue(stringLocs);
 
-                    SharedPreferences sp = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-                    String email = sp.getString(EMAIL_KEY,"");
-                    String netID = email.substring(0, email.length() - 9);
-                    MatchRunnable matchMaker = new MatchRunnable(netID);
-                    new Thread(matchMaker).start();
-
                     goHome(v);
                 }
             });
@@ -231,12 +225,6 @@ public class Preferences extends AppCompatActivity {
                     }
                     currentUserLocations.setValue(stringLocs);
 
-                    SharedPreferences sp = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
-                    String email = sp.getString(EMAIL_KEY,"");
-                    String netID = email.substring(0, email.length() - 9);
-                    MatchRunnable matchMaker = new MatchRunnable(netID);
-                    new Thread(matchMaker).start();
-
                     goHome(v);
                     //go home.
                 }
@@ -300,6 +288,12 @@ public class Preferences extends AppCompatActivity {
         //if (userDays.isEmpty() || userLocations.isEmpty()) {
         //    createMinimumPrefAlert();
         //} else {
+        SharedPreferences sp = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        String email = sp.getString(EMAIL_KEY,"");
+        String netID = email.substring(0, email.length() - 9);
+        MatchRunnable matchMaker = new MatchRunnable(netID);
+        new Thread(matchMaker).start();
+
             Intent intent = new Intent(this, HomeScreen.class);
             intent.putExtra("newUser", newUser);
             startActivity(intent);
