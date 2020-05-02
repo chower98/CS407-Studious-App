@@ -32,7 +32,9 @@ public class MatchRunnable implements Runnable {
         userMatches.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String matchString = dataSnapshot.child("Matches:").getValue().toString();
+                String matchString = dataSnapshot.child("Matches:").getValue(String.class);
+                if(matchString == null)
+                    matchString = "";
                 method1(matchString);
             }
 
@@ -50,10 +52,10 @@ public class MatchRunnable implements Runnable {
         matchesList = new ArrayList<String>(list);
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<String> users;
-            ArrayList<String> courses;
-            ArrayList<String> days;
-            ArrayList<String> locations;
+            ArrayList<String> users = new ArrayList<String>();
+            ArrayList<String> courses = new ArrayList<String>();
+            ArrayList<String> days = new ArrayList<String>();
+            ArrayList<String> locations = new ArrayList<String>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()) {

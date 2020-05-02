@@ -39,15 +39,16 @@ public class Login extends AppCompatActivity {
         if(!sharedPreferences.getString(EMAIL_KEY, "").equals("")
                 && !sharedPreferences.getString(PASSWORD_KEY, "").equals("")) {
 
+            String email = sharedPreferences.getString(EMAIL_KEY,"");
+            String netID = email.substring(0, email.length() - 9);
+            MatchRunnable matchMaker = new MatchRunnable(netID);
+            new Thread(matchMaker).start();
+
             // go automatically to home screen if user is still logged in
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
         } else { // go to login screen if no user logged in
             //make new thread, run matchmaker algorithm
-            String email = sharedPreferences.getString(EMAIL_KEY,"");
-            String netID = email.substring(0, email.length() - 9);
-            MatchRunnable matchMaker = new MatchRunnable(netID);
-            new Thread(matchMaker).start();
 
             setContentView(R.layout.activity_login);
             emailInput = findViewById(R.id.emailInput);
