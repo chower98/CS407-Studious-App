@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.renderscript.Sampler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -266,8 +267,12 @@ public class Matches extends AppCompatActivity {
         });
 
         AlertDialog dialog = builder.create();
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int height = dm.heightPixels;
+        int width = dm.widthPixels;
         dialog.show();;
-        dialog.getWindow().setLayout(1100, 700);
+        dialog.getWindow().setLayout(width, height/2);
 
     }
 
