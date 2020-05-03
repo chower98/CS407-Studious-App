@@ -1,70 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddClasses">
 
-    <Spinner
-        android:id="@+id/courseList"
-        android:layout_width="189dp"
-        android:layout_height="50dp"
-        android:entries="@array/course_array"
-        android:prompt="@string/course_Prompt"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/classNumber"
-        android:layout_width="102dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:hint="Course #"
-        android:inputType="number"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/courseList"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Add!"
-        android:onClick="addClass"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseList"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <FrameLayout
-        android:id="@+id/classHolder"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addedClasses"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp">
 
-    <TextView
-        android:id="@+id/addedClasses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Courses Added:"
-        app:layout_constraintBottom_toTopOf="@+id/classHolder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addButton"
-        app:layout_constraintVertical_bias="0.0" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/classtitle" />
+
+        <ListView
+            android:id="@+id/classHolder"
+            android:layout_width="326dp"
+            android:layout_height="254dp"
+            android:layout_marginTop="16dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addedClasses">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="67dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:background="@color/colorLGreen"
+            android:onClick="continueSignup"
+            android:text="Save!"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@id/addedClasses"
+            app:layout_constraintTop_toBottomOf="@id/classNumber" />
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:background="@color/colorLGreen"
+            android:onClick="addClass"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@+id/classNumber"
+            app:layout_constraintTop_toBottomOf="@+id/addClass" />
+
+        <TextView
+            android:id="@+id/addedClasses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Courses Added: (tap to remove)"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/classNumber" />
+
+        <TextView
+            android:id="@+id/addClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add a class:"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/imageView5" />
+
+        <Spinner
+            android:id="@+id/courseList"
+            android:layout_width="187dp"
+            android:layout_height="47dp"
+            android:entries="@array/course_array"
+            android:prompt="@string/course_Prompt"
+            android:textColor="@color/unchecked"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addClass" />
+
+        <EditText
+            android:id="@+id/classNumber"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:ems="10"
+            android:hint="Course #"
+            android:inputType="number"
+            android:text=""
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/courseList"
+            app:layout_constraintTop_toBottomOf="@+id/addClass" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

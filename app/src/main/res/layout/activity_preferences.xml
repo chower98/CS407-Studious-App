@@ -1,18 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
+
+    <CheckBox
+        android:id="@+id/wednesday"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TODO"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:text="Wednesday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tuesday" />
+
+    <TextView
+        android:id="@+id/daysPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="284dp"
+        android:layout_marginRight="284dp"
+        android:text="When are you free to study?"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/monday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:text="Monday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/daysPrompt" />
+
+    <CheckBox
+        android:id="@+id/tuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:text="Tuesday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monday" />
+
+    <CheckBox
+        android:id="@+id/thursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginLeft="188dp"
+        android:text="Thursday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
+
+    <CheckBox
+        android:id="@+id/friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginLeft="188dp"
+        android:text="Friday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/thursday" />
+
+    <CheckBox
+        android:id="@+id/sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="96dp"
+        android:text="Sunday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daysPrompt" />
+
+    <CheckBox
+        android:id="@+id/saturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginLeft="188dp"
+        android:text="Saturday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/friday" />
+
+    <TextView
+        android:id="@+id/areaPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="268dp"
+        android:text="Where do you prefer to study?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/lakeshore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="23dp"
+        android:text="Lakeshore"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/areaPrompt" />
+
+    <CheckBox
+        android:id="@+id/college"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="208dp"
+        android:layout_marginLeft="208dp"
+        android:layout_marginTop="20dp"
+        android:text="College Area"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
+
+    <CheckBox
+        android:id="@+id/state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="208dp"
+        android:layout_marginLeft="208dp"
+        android:layout_marginTop="52dp"
+        android:text="State St."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
+
+    <CheckBox
+        android:id="@+id/southeast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="52dp"
+        android:text="Southeast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
+
+    <CheckBox
+        android:id="@+id/engineering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="84dp"
+        android:text="Engineering"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaPrompt" />
+
+    <Button
+        android:id="@+id/homeButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginBottom="40dp"
+        android:onClick="backToHome"
+        android:text="Back to \n Home"
+        android:textAllCaps="false"
+        android:background="@color/colorLGreen"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/colorAccent"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/engineering" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/colorLGreen"
+        android:onClick="savePreferences"
+        android:text="Save\nChanges"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/homeButton" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/preftitle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

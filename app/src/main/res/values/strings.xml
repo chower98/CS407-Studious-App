@@ -4,18 +4,38 @@
 
     <string-array name="course_array">
         <item>Select Subject</item>
-        <item>Anatomy</item>
-        <item>Biology</item>
-        <item>Biomedical Engineering</item>
-        <item>Chemical Engineering</item>
-        <item>Chemistry</item>
-        <item>Computer Engineering</item>
-        <item>Computer Science</item>
-        <item>Electrical Engineering</item>
+        <item>ANATOMY</item>
+        <item>BIOLOGY</item>
+        <item>BME</item>
+        <item>CBE</item>
+        <item>CHEM</item>
+        <item>CIV ENGR</item>
+        <item>COM ARTS</item>
+        <item>COMP SCI</item>
+        <item>ECE</item>
+        <item>E P</item>
+        <item>INFO SYS</item>
+        <item>INTER EGR</item>
+        <item>MATH</item>
+        <item>MICROBIO</item>
+        <item>PHILOS</item>
+        <item>PHYSICS</item>
+        <item>PSYCH</item>
+        <item>STAT</item>
         <item>MCAT</item>
         <item>LSAT</item>
         <item>PCAT</item>
-        <item>Physiology</item>
-        <item>Zoology</item>
+        <item>PHYSIOL</item>
+        <item>ZOOLOGY</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_match">MatchActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="connections">Connections</string>
+    <string name="request">Request</string>
+    <string name="matches">Matches</string>
 </resources>
