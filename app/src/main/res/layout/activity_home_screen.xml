@@ -27,32 +27,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
         <ImageButton
-            android:id="@+id/matches"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@color/colorLGreen"
-            android:onClick="matchesClick"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_people_black_24dp" />
-
-        <ImageButton
-            android:id="@+id/courses"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@color/colorLGreen"
-            android:onClick="coursesClick"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_library_books_black_24dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
             android:id="@+id/preferences"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -64,6 +38,33 @@
             android:onClick="preferencesClick"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_settings_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/courses"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorLGreen"
+            android:onClick="coursesClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_library_books_black_24dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/matches"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@color/colorLGreen"
+            android:onClick="matchesClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_people_black_24dp" />
 
     </LinearLayout>
 
@@ -77,11 +78,11 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
-            android:id="@+id/mymatches"
-            android:layout_width="124dp"
+            android:id="@+id/pref"
+            android:layout_width="116dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Study Matches"
+            android:text="Preferences"
             android:textColor="@color/colorLGreen" />
 
         <TextView
@@ -90,16 +91,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="My Classes"
-            android:textColor="@color/colorLGreen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/colorLGreen" />
 
         <TextView
-            android:id="@+id/pref"
-            android:layout_width="116dp"
+            android:id="@+id/mymatches"
+            android:layout_width="124dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Preferences"
+            android:text="Study Matches"
             android:textColor="@color/colorLGreen" />
     </LinearLayout>
 

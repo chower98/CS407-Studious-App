@@ -103,6 +103,7 @@ public class Matches extends AppCompatActivity {
                                         .addToBackStack("new_fragment")
                                         .commit();
                                 return true;
+
                         }
                         return false;
                     }
