@@ -168,9 +168,9 @@ public class AddClasses extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Welcome to Studious, an app that will help you connect to " +
                 "other study partners at UW-Madison! Please add the classes that you would " +
-                "like to find study buddies for. When you are finished, click the Continue " +
-                "button. You can always come back to this page from your home screen if you'd " +
-                "like to edit your list of classes!");
+                "like to find study buddies for. You must add at least one class!\n" +
+                "When you are finished, click the Continue button. You can always come back " +
+                "to this page from your home screen if you'd like to edit your list of classes!");
         builder.setTitle("Hi There!");
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -223,6 +223,27 @@ public class AddClasses extends AppCompatActivity {
         duplicateCourseAlert.show();
     }
 
+    private void createMinimumClassDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+
+        builder.setMessage("You must have at least one class registered at all times. " +
+                "Please add a class to continue with your sign up.");
+        builder.setTitle("You cannot move on yet!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, then dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog minimumCourseAlert = builder.create();
+        minimumCourseAlert.show();
+    }
+
+
     private void createDeleteDialog(final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
         builder.setMessage("Remove " + currentCourses.get(position) + " from Courses?")
@@ -251,6 +272,11 @@ public class AddClasses extends AppCompatActivity {
                 // helper method to convert dataSnapshot into ArrayList<String>
                 ArrayList<String> current = readCourseData(dataSnapshot);
 
+                if (current.size() == 1) {
+                    createCannotDeleteAlert();
+                    return; // exit method early to avoid deleting
+                }
+
                 current.remove(courseToDelete); // remove course from ArrayList current
 
                 // convert ArrayList to string of all courses
@@ -275,10 +301,35 @@ public class AddClasses extends AppCompatActivity {
         });
     }
 
+    private void createCannotDeleteAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddClasses.this);
+
+        builder.setMessage("You must have at least one class registered at all times. " +
+                "Please add another class before deleting this one.");
+        builder.setTitle("You cannot delete this class yet!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, then dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog duplicateCourseAlert = builder.create();
+        duplicateCourseAlert.show();
+    }
+
     public void continueSignup(View view) {
-        Intent continueIntent = new Intent(this, Preferences.class);
-        continueIntent.putExtra("newUser", newUser);
-        startActivity(continueIntent);
+        if (currentCourses.isEmpty()) {
+            createMinimumClassDialog();
+            return;
+        } else {
+            Intent continueIntent = new Intent(this, Preferences.class);
+            continueIntent.putExtra("newUser", newUser);
+            startActivity(continueIntent);
+        }
     }
 
     @Override

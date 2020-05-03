@@ -42,7 +42,7 @@ public class Preferences extends AppCompatActivity {
     private DatabaseReference currentUserDays; // database reference to specific user's courses
     private DatabaseReference currentUserLocations; // database reference to specific user's courses
     private static ArrayList<String> userLocations = new ArrayList<>(); // ArrayList of current locations
-    private static ArrayList<String> userDays=  new ArrayList<>(); // ArrayList of current days
+    private static ArrayList<String> userDays = new ArrayList<>(); // ArrayList of current days
 
     private ArrayList<String> alreadyDays = null;
 
@@ -87,26 +87,7 @@ public class Preferences extends AppCompatActivity {
             saveButton.setVisibility(View.GONE); // it's going to save b/c this is first time, don't need a save button yet
 
             // show dialog telling new user what to do
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Now that you've added all your classes, let's set your preferences. " +
-                    "This will help us match you to study buddies with similar studying " +
-                    "preferences! Once you are done, press the Finished button at the bottom of " +
-                    "your screen to complete your sign up.\n" +
-                    "If you want to change your options, you can come back to this page at any time. " +
-                    "Changing your preferences will not affect any matches you already have, it will only " +
-                    "change how you are matched to others in the future.");
-            builder.setTitle("Continuing On!");
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // When the user click yes button, the dialog will close
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog newUserWelcome = builder.create();
-            newUserWelcome.show();
+            createNewUserDialog();
 
             //when the "Finished!" button is clicked by new users, the prefs will be saved to firebase
             homeButton.setOnClickListener(new View.OnClickListener(){
@@ -198,6 +179,7 @@ public class Preferences extends AppCompatActivity {
             saveButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+
                     //if box is checked, add to database. if not (or its been unchecked) remove.
                     if(monday.isChecked() ){ addToDaysArray("Monday"); } else removeFromDays("Monday");
                     if(tuesday.isChecked() ){ addToDaysArray("Tuesday"); }  else removeFromDays("Tuesday");
@@ -211,6 +193,11 @@ public class Preferences extends AppCompatActivity {
                     if(state.isChecked() ){addToLocArray("State"); } else  removeFromLocs("State");
                     if(engineering.isChecked() ){addToLocArray("Engineering");} else  removeFromLocs("Engineering");
                     if(southeast.isChecked() ){addToLocArray("Southeast");  } else  removeFromLocs("Southeast");
+
+                    if (userDays.isEmpty() || userLocations.isEmpty()) {
+                        createMinimumPrefAlert(); // check to make sure at least one box checked
+                        return;
+                    }
 
                     // convert ArrayList to string of all days.
                     String stringDays = "";
@@ -298,9 +285,62 @@ public class Preferences extends AppCompatActivity {
     }
 
     public void goHome(View view){
-        Intent intent = new Intent(this, HomeScreen.class);
-        intent.putExtra("newUser", newUser);
-        startActivity(intent);
+        //if (userDays.isEmpty() || userLocations.isEmpty()) {
+        //    createMinimumPrefAlert();
+        //} else {
+        SharedPreferences sp = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
+        String email = sp.getString(EMAIL_KEY,"");
+        String netID = email.substring(0, email.length() - 9);
+        MatchRunnable matchMaker = new MatchRunnable(netID);
+        new Thread(matchMaker).start();
+
+            Intent intent = new Intent(this, HomeScreen.class);
+            intent.putExtra("newUser", newUser);
+            startActivity(intent);
+        //}
+    }
+
+    private void createNewUserDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Now that you've added all your classes, let's set your preferences. " +
+                "This will help us match you to study buddies with similar studying " +
+                "preferences! Once you are done, press the Finished button at the bottom of " +
+                "your screen to complete your sign up.\n" +
+                "If you want to change your options, you can come back to this page at any time. " +
+                "Changing your preferences will not affect any matches you already have, it will only " +
+                "change how you are matched to others in the future.");
+        builder.setTitle("Continuing On!");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, the dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog newUserWelcome = builder.create();
+        newUserWelcome.show();
+    }
+
+    private void createMinimumPrefAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Preferences.this);
+
+        builder.setMessage("You must have at least one day and location preference chosen at all times. " +
+                "Please make sure at least one box is checked to complete your preferences.");
+        builder.setTitle("You cannot move on yet!");
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button, then dialog will close
+                dialog.dismiss();
+            }
+        });
+        AlertDialog minimumPrefAlert = builder.create();
+        minimumPrefAlert.show();
     }
 
     //this method checks to see whether the array list contains an element

@@ -59,6 +59,7 @@ public class HomeScreen extends AppCompatActivity {
 
     public void matchesClick(View view) {
         Intent matchesIntent = new Intent(this, Matches.class);
+        //matchesIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(matchesIntent);
     }
 

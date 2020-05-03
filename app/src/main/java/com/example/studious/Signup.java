@@ -95,6 +95,7 @@ public class Signup extends AppCompatActivity {
         DatabaseReference newUserRef = firebaseDatabase.getReference().child("UserInfo").child(netID);
         newUserRef.setValue(newUser);
 
+        firebaseDatabase.getReference().child("UserMatches").child(netID).child("Matches").setValue("");
         // shared preferences to keep user logged in app if they do not manually log out
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("email", email).apply();

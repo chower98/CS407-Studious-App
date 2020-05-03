@@ -1,6 +1,7 @@
 package com.example.studious;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -32,7 +33,9 @@ public class MatchRunnable implements Runnable {
         userMatches.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String matchString = dataSnapshot.child("Matches:").getValue().toString();
+                String matchString = dataSnapshot.child("Matches").getValue(String.class);
+                if(matchString == null)
+                    matchString = "";
                 method1(matchString);
             }
 
@@ -50,21 +53,21 @@ public class MatchRunnable implements Runnable {
         matchesList = new ArrayList<String>(list);
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<String> users;
-            ArrayList<String> courses;
-            ArrayList<String> days;
-            ArrayList<String> locations;
+            ArrayList<String> users = new ArrayList<String>();
+            ArrayList<String> courses = new ArrayList<String>();
+            ArrayList<String> days = new ArrayList<String>();
+            ArrayList<String> locations = new ArrayList<String>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     users.add(postSnapshot.getKey());
-                    for(DataSnapshot userChild: postSnapshot.getChildren()) {
-                        courses.add(userChild.child("Courses:").getValue().toString());
-                        days.add(userChild.child("Days:").getValue().toString());
-                        locations.add(userChild.child("Locations:").getValue().toString());
-                    }
-                    method2(matchesList, users, courses, days, locations);
+                    //for(DataSnapshot userChild: postSnapshot.getChildren()) {
+                    days.add(postSnapshot.child("Days").getValue(String.class));
+                    courses.add(postSnapshot.child("Courses").getValue(String.class));
+                    locations.add(postSnapshot.child("Locations").getValue(String.class));
+                    //}
                 }
+                    method2(matchesList, users, courses, days, locations);
 
             }
 
@@ -81,31 +84,23 @@ public class MatchRunnable implements Runnable {
         ArrayList<ArrayList<String>> days2 = new ArrayList<ArrayList<String>>();
         ArrayList<ArrayList<String>> locations2 = new ArrayList<ArrayList<String>>();
 
-        for(int i = 0; i < courses2.size(); i++) {
+        for(int i = 0; i < courses.size(); i++) {
             String[] array = courses.get(i).split(", ");
             List<String> placeHolder = Arrays.asList(array);
+                courses2.add(new ArrayList<String>(placeHolder));
 
-            for(int j = 0; j < placeHolder.size(); j++) {
-                courses2.get(0).add(placeHolder.get(j));
-            }
         }
 
-        for(int i = 0; i < courses2.size(); i++) {
+        for(int i = 0; i < days.size(); i++) {
             String[] array = days.get(i).split(", ");
             List<String> placeHolder = Arrays.asList(array);
-
-            for(int j = 0; j < placeHolder.size(); j++) {
-                days2.get(0).add(placeHolder.get(j));
-            }
+            days2.add(new ArrayList<String>(placeHolder));
         }
 
-        for(int i = 0; i < courses2.size(); i++) {
+        for(int i = 0; i < locations.size(); i++) {
             String[] array = locations.get(i).split(", ");
             List<String> placeHolder = Arrays.asList(array);
-
-            for(int j = 0; j < placeHolder.size(); j++) {
-                locations2.get(0).add(placeHolder.get(j));
-            }
+            locations2.add(new ArrayList<String>(placeHolder));
         }
 
         matchMaker(matches, users, courses2, days2, locations2);
@@ -117,6 +112,7 @@ public class MatchRunnable implements Runnable {
 
         //Get the current user's preferences, then remove the user's preferences from that list
         int userIndex = users.indexOf(username);
+
         ArrayList<String> userCourses = new ArrayList<String>(courses.get(userIndex));
         ArrayList<String> userDays = new ArrayList<String>(days.get(userIndex));
         ArrayList<String> userLocations = new ArrayList<String>(locations.get(userIndex));
@@ -129,7 +125,7 @@ public class MatchRunnable implements Runnable {
         //this will remove all matches the user has from the users list
         for(int i = 0; i < matches.size(); i++) {
             int matchIndex = users.indexOf(matches.get(i));
-            if(matchIndex < 0) {
+            if(matchIndex >= 0) {
                 users.remove(matchIndex);
                 courses.remove(matchIndex);
                 days.remove(matchIndex);
@@ -153,14 +149,18 @@ public class MatchRunnable implements Runnable {
         //sorts indicestoRemove numerically. This allows us to remove the highest indices first so
         // that the indices are not changing in users
         Collections.sort(indicesToRemove);
-        for(int i = indicesToRemove.size(); i > -1; i--){
-            users.remove(indicesToRemove.get(i));
-            courses.remove(indicesToRemove.get(i));
-            days.remove(indicesToRemove.get(i));
-            locations.remove(indicesToRemove.get(i));
+        if(indicesToRemove.size() > 0) {
+            for (int i = indicesToRemove.size(); i >= 0; i--) {
+                users.remove(indicesToRemove.get(i));
+                courses.remove(indicesToRemove.get(i));
+                days.remove(indicesToRemove.get(i));
+                locations.remove(indicesToRemove.get(i));
+            }
         }
         if(users.size() == 1) {
             matchCreator(users.get(0));
+            return;
+        } else if(users.size() == 0) {
             return;
         }
         //Days
@@ -189,6 +189,8 @@ public class MatchRunnable implements Runnable {
         if(users.size() == 1) {
             matchCreator(users.get(0));
             return;
+        } else if(users.size() == 0) {
+            return;
         }
 
         //Location
@@ -214,7 +216,9 @@ public class MatchRunnable implements Runnable {
                 return;
             }
         }
-
+        if(users.size() == 0) {
+            return;
+        }
         matchCreator(users.get(0));
 
 
@@ -228,14 +232,14 @@ public class MatchRunnable implements Runnable {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String newMatches = "";
                 String userNewMatches = "";
-                String oldMatches = dataSnapshot.child(matchToAdd).child("Matches:").getValue().toString();
+                String oldMatches = dataSnapshot.child(matchToAdd).child("Matches").getValue().toString();
                 if(oldMatches.isEmpty())
                     newMatches = username;
                 else
                     newMatches = oldMatches + ", " + username;
 
 
-                String userMatches = dataSnapshot.child(username).child("Matches:").getValue().toString();
+                String userMatches = dataSnapshot.child(username).child("Matches").getValue().toString();
                 if(userMatches.isEmpty())
                     userNewMatches = matchToAdd;
                 else
@@ -253,8 +257,8 @@ public class MatchRunnable implements Runnable {
 
 
     private void updateMatches(String userMatches, String otherMatches, String otherUser) {
-        dataRef.child("UserMatches").child(username).child("Matches:").setValue(userMatches);
-        dataRef.child("UserMatches").child(otherUser).child("Matches:").setValue(otherMatches);
+        dataRef.child("UserMatches").child(username).child("Matches").setValue(userMatches);
+        dataRef.child("UserMatches").child(otherUser).child("Matches").setValue(otherMatches);
     }
 
 }
