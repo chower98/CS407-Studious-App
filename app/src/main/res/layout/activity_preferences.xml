@@ -94,23 +94,6 @@
         app:layout_constraintTop_toBottomOf="@id/friday" />
 
     <TextView
-        android:id="@+id/deletePrompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="436dp"
-        android:layout_marginEnd="223dp"
-        android:layout_marginRight="223dp"
-        android:text="Delete My Account"
-        android:textColor="#E80000"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/areaPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -192,19 +175,18 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/homeButton2"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginBottom="200dp"
+        android:id="@+id/logoutButton"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="18dp"
         android:background="@color/colorAccent"
-        android:onClick="backToHome"
         android:text="Logout"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/engineering" />
 
     <Button
         android:id="@+id/saveButton"
@@ -225,8 +207,11 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        app:srcCompat="@drawable/preftitle"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="4dp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/preftitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

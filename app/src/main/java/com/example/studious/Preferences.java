@@ -36,6 +36,7 @@ public class Preferences extends AppCompatActivity {
 
     private Button homeButton;
     private Button saveButton;
+    private Button logoutButton;
     private boolean newUser;
     private String currentUserEmail; // full email of current user
     private String currentNetID; // netID of current user
@@ -68,6 +69,7 @@ public class Preferences extends AppCompatActivity {
 
         homeButton = findViewById(R.id.homeButton);
         saveButton = findViewById(R.id.saveButton);
+        logoutButton = findViewById(R.id.logoutButton);
 
         // get email and net id from sharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
@@ -85,7 +87,7 @@ public class Preferences extends AppCompatActivity {
         if (newUser) { // new user choosing preferences, so buttonHome will say "Finished!"
             homeButton.setText("Finished!");
             saveButton.setVisibility(View.GONE); // it's going to save b/c this is first time, don't need a save button yet
-
+            logoutButton.setVisibility(View.GONE);
             // show dialog telling new user what to do
             createNewUserDialog();
 
@@ -229,6 +231,14 @@ public class Preferences extends AppCompatActivity {
                     //go home.
                 }
             });
+
+            logoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goLogin(v);
+                }
+            });
+
         }
     }
 
@@ -281,6 +291,11 @@ public class Preferences extends AppCompatActivity {
 
     public void backToHome(View view){
         Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+    }
+
+    public void goLogin(View view){
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 
