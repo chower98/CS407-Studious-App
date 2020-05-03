@@ -99,10 +99,7 @@ public class Matches extends AppCompatActivity {
                                         .addToBackStack("new_fragment")
                                         .commit();
                                 return true;
-                            case R.id.home_screen:
-                                Intent homeIntent = new Intent(Matches.this, HomeScreen.class);
-                                startActivity(homeIntent);
-                                return true;
+
                         }
                         return false;
                     }
