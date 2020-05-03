@@ -45,8 +45,8 @@ public class Matches extends AppCompatActivity {
     private ArrayList<String> userMatches;
 
     private ArrayList<String> sharedCourses = new ArrayList<String>();
-    private String currentUserCourses;
-    private String matchedUserCourses;
+    private ArrayList<String> matchesCourses;
+    private ArrayList<String> userCoursesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,18 +115,19 @@ public class Matches extends AppCompatActivity {
         intent.putExtra("newUser", newUser);
         startActivity(intent);
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.main_menu, menu);
-//        return true;
-//    }
+
     private void retrieveMatches() {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches").getValue(String.class);
+                String courses = dataSnapshot.child("UserPref").child(netID).child("Courses").getValue(String.class);
+
+                String[] coursesArray = courses.split(", ");
+                List<String> coursesList = Arrays.asList(coursesArray);
+                userCoursesList = new ArrayList<String>(coursesList);
+
 
                 String[] matchesArray = matches.split(", ");
                 List<String> matchesList = Arrays.asList(matchesArray);
@@ -136,11 +137,12 @@ public class Matches extends AppCompatActivity {
 
                 matchesNames = new ArrayList<String>();
                 matchesNumber = new ArrayList<String>();
-
+                matchesCourses = new ArrayList<String>();
 
                 for(int i = 0; i < userMatches.size(); i++) {
                     matchesNames.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("name").getValue().toString());
                     matchesNumber.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("phone").getValue().toString());
+                    matchesCourses.add(dataSnapshot.child("UserPref").child(userMatches.get(i)).child("Courses").getValue().toString());
                 }
 
                 ListView matchList = findViewById(R.id.listView);
@@ -150,7 +152,7 @@ public class Matches extends AppCompatActivity {
                 matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        createUserDialog(position, matchesNames.get(position), matchesNumber.get(position), userMatches.get(position));
+                        createUserDialog(position, matchesNames.get(position), matchesNumber.get(position), userMatches.get(position), matchesCourses.get(position));
                     }
                 });
             }
@@ -162,13 +164,19 @@ public class Matches extends AppCompatActivity {
         });
     }
 
-    private void createUserDialog(final int position, final String name, final String number, String matchedID) {
-        findSharedClasses(matchedID); // find and store classes matched to sharedCourses
-        String matchedCourses = "Courses that you share: ";
-        for (String course : sharedCourses) {
-            matchedCourses = matchedCourses + course + ", ";
+    private void createUserDialog(final int position, final String name, final String number, String matchedID, String matchedUserCourses) {
+        String[] matchedCourse = matchedUserCourses.split(", ");
+        List<String> matchedCourseList = Arrays.asList(matchedCourse);
+        ArrayList<String> matchedCoursesList = new ArrayList<String>(matchedCourseList);
+
+        String matchedCourses = "";
+
+        for (int i = 0; i < userCoursesList.size(); i++) {
+            if(userCoursesList.contains(matchedCoursesList.get(i)))
+                matchedCourses = matchedCourses + matchedCoursesList.get(i) + ", ";
         }
-        matchedCourses = matchedCourses.substring(0, matchedCourses.length()-3); // remove last ", "
+
+        matchedCourses = matchedCourses.substring(0, matchedCourses.length()-2); // remove last ", "
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Matches.this);
         builder.setMessage(name + "\n" + matchedCourses).setTitle("Studious Partner");
@@ -239,62 +247,8 @@ public class Matches extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();;
+        dialog.getWindow().setLayout(1100, 700);
 
-    }
-
-    private void findSharedClasses(String matchedPerson) {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference currentUser = firebaseDatabase.getReference().child("UserPref").child(netID).child("Courses");
-        DatabaseReference matchedUser = firebaseDatabase.getReference().child("UserPref").child(matchedPerson).child("Courses");
-
-        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                currentUserCourses = dataSnapshot.getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        matchedUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                matchedUserCourses = dataSnapshot.getValue().toString();
-                findSharedClassesPart2();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void findSharedClassesPart2() {
-        String[] currentUserList = currentUserCourses.split(", ");
-        String[] matchedUserTemp = matchedUserCourses.split(", ");
-        ArrayList<String> matchedUserList = new ArrayList<>();
-        for (String matchedCourse : matchedUserTemp) { // convert matchedUser to ArrayList
-            matchedUserList.add(matchedCourse);
-        }
-
-        for (String userCourse : currentUserList) {
-            if (matchedUserList.contains(userCourse)) { // check if matched user has the same course as current user
-                sharedCourses.add(userCourse);
-            }
-        }
-    }
-
-
-    public void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     @Override
@@ -320,26 +274,5 @@ public class Matches extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.logout:
-//                // remove data kept in the instance for the user since they are logging out
-//                SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-//                sharedPreferences.edit().remove(EMAIL_KEY).apply();
-//                sharedPreferences.edit().remove(PASSWORD_KEY).apply();
-//
-//                Intent logoutIntent = new Intent(this, Login.class);
-//                startActivity(logoutIntent);
-//                return true;
-//
-//            case R.id.preferences:
-//                Intent preferencesIntent = new Intent(this, Preferences.class);
-//                startActivity(preferencesIntent);
-//                return true;
-//
-//            default: return super.onOptionsItemSelected(item);
-//        }
-//    }
 
 }
