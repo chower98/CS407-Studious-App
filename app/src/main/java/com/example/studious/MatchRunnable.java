@@ -136,6 +136,7 @@ public class MatchRunnable implements Runnable {
         //Narrow down list of possible matches
         //Courses
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        
         for(int i = 0; i < users.size(); i++) {
             for(int j = 0; j < courses.get(i).size(); j++) {
                 if(userCourses.contains(courses.get(i).get(j))) {
@@ -148,13 +149,15 @@ public class MatchRunnable implements Runnable {
 
         //sorts indicestoRemove numerically. This allows us to remove the highest indices first so
         // that the indices are not changing in users
-        Collections.sort(indicesToRemove);
-        if(indicesToRemove.size() > 0) {
-            for (int i = indicesToRemove.size() -1; i >= 0; i--) {
-                users.remove(indicesToRemove.get(i));
-                courses.remove(indicesToRemove.get(i));
-                days.remove(indicesToRemove.get(i));
-                locations.remove(indicesToRemove.get(i));
+        Collections.sort(indicesToRemove, Collections.reverseOrder());
+        int size = indicesToRemove.size();
+        if(size > 0) {
+            for (int i = 0; i < size; i++) {
+                int index = indicesToRemove.get(i);
+                users.remove(index);
+                courses.remove(index);
+                days.remove(index);
+                locations.remove(index);
             }
         }
         if(users.size() == 1) {
@@ -175,12 +178,14 @@ public class MatchRunnable implements Runnable {
             }
         }
 
+
         Collections.sort(indicesToRemove);
-        for(int i = indicesToRemove.size(); i > -1; i--){
-            users.remove(indicesToRemove.get(i));
-            courses.remove(indicesToRemove.get(i));
-            days.remove(indicesToRemove.get(i));
-            locations.remove(indicesToRemove.get(i));
+        for(int i = indicesToRemove.size()-1; i > -1; i--){
+            int index = indicesToRemove.get(i);
+            users.remove(index);
+            courses.remove(index);
+            days.remove(index);
+            locations.remove(index);
             if(users.size() == 1) {
                 matchCreator(users.get(0));
                 return;
@@ -206,11 +211,12 @@ public class MatchRunnable implements Runnable {
         }
 
         Collections.sort(indicesToRemove);
-        for(int i = indicesToRemove.size(); i > -1; i--){
-            users.remove(indicesToRemove.get(i));
-            courses.remove(indicesToRemove.get(i));
-            days.remove(indicesToRemove.get(i));
-            locations.remove(indicesToRemove.get(i));
+        for(int i = indicesToRemove.size() -1; i > -1; i--){
+            int index = indicesToRemove.get(i);
+            users.remove(index);
+            courses.remove(index);
+            days.remove(index);
+            locations.remove(index);
             if(users.size() == 1) {
                 matchCreator(users.get(0));
                 return;
