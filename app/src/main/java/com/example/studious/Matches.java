@@ -177,6 +177,7 @@ public class Matches extends AppCompatActivity {
         matchedCourses = matchedCourses.substring(0, matchedCourses.length()-2); // remove last ", "
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Matches.this);
+        builder.setIcon(R.drawable.ic_library_books_black_24dp);
         builder.setMessage(name + "\n" + matchedCourses).setTitle("Studious Partner");
         builder.setPositiveButton("Send SMS", new DialogInterface.OnClickListener() {
             @Override
