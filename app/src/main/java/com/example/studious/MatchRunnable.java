@@ -225,8 +225,10 @@ public class MatchRunnable implements Runnable {
         if(users.size() == 0) {
             return;
         }
-        matchCreator(users.get(0));
-
+        
+        for(int i = 0; i < users.size(); i++) {
+            matchCreator(users.get(i));
+        }
 
     }
 

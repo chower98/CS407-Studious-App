@@ -212,7 +212,7 @@ public class Matches extends AppCompatActivity {
                         String userUnmatches = dataSnapshot.child(netID).child("Unmatches").getValue(String.class);
                         userUnmatches = userUnmatches + ", " + name;
                         dataRef.child(netID).child("Unmatches").setValue(otherUnmatches);
-                        
+
                     }
 
                     @Override
