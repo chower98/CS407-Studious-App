@@ -1,18 +1,16 @@
 package com.example.studious;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,6 +94,7 @@ public class Signup extends AppCompatActivity {
         newUserRef.setValue(newUser);
 
         firebaseDatabase.getReference().child("UserMatches").child(netID).child("Matches").setValue("");
+        firebaseDatabase.getReference().child("UserMatches").child(netID).child("Unmatches").setValue("");
         // shared preferences to keep user logged in app if they do not manually log out
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.studious", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("email", email).apply();

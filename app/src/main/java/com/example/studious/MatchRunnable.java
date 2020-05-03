@@ -1,8 +1,5 @@
 package com.example.studious;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +17,7 @@ public class MatchRunnable implements Runnable {
     private String username;
     private DatabaseReference dataRef;
     private ArrayList<String> matchesList;
+    private ArrayList<String> unmatchesList;
 
     MatchRunnable(String username) {
         this.username = username;
@@ -34,9 +32,14 @@ public class MatchRunnable implements Runnable {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String matchString = dataSnapshot.child("Matches").getValue(String.class);
+                String unmatchString = dataSnapshot.child("Unmatches").getValue(String.class);
                 if(matchString == null)
                     matchString = "";
+                if(unmatchString == null)
+                    unmatchString= "";
+
                 method1(matchString);
+                method1(unmatchString);
             }
 
             @Override
@@ -51,6 +54,7 @@ public class MatchRunnable implements Runnable {
         String[] array = matchString.split(", ");
         List<String> list = Arrays.asList(array);
         matchesList = new ArrayList<String>(list);
+        unmatchesList = new ArrayList<String>(list);
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> users = new ArrayList<String>();
@@ -67,7 +71,7 @@ public class MatchRunnable implements Runnable {
                     locations.add(postSnapshot.child("Locations").getValue(String.class));
                     //}
                 }
-                    method2(matchesList, users, courses, days, locations);
+                    method2(matchesList, unmatchesList, users, courses, days, locations);
 
             }
 
@@ -78,7 +82,7 @@ public class MatchRunnable implements Runnable {
         });
     }
 
-    public void method2(ArrayList<String> matches, ArrayList<String> users, ArrayList<String> courses,
+    public void method2(ArrayList<String> matches, ArrayList<String> unmatches, ArrayList<String> users, ArrayList<String> courses,
                         ArrayList<String> days, ArrayList<String> locations) {
         ArrayList<ArrayList<String>> courses2 = new ArrayList<ArrayList<String>>();
         ArrayList<ArrayList<String>> days2 = new ArrayList<ArrayList<String>>();
@@ -103,10 +107,10 @@ public class MatchRunnable implements Runnable {
             locations2.add(new ArrayList<String>(placeHolder));
         }
 
-        matchMaker(matches, users, courses2, days2, locations2);
+        matchMaker(matches, unmatches, users, courses2, days2, locations2);
     }
 
-    public void matchMaker(ArrayList<String> matches, ArrayList<String> users,
+    public void matchMaker(ArrayList<String> matches, ArrayList<String> unmatches, ArrayList<String> users,
                            ArrayList<ArrayList<String>> courses, ArrayList<ArrayList<String>> days,
                            ArrayList<ArrayList<String>> locations) {
 
@@ -121,6 +125,17 @@ public class MatchRunnable implements Runnable {
         courses.remove(userIndex);
         days.remove(userIndex);
         locations.remove(userIndex);
+
+        //add the removed matches to the unmatches list
+        for(int i = 0; i < unmatches.size(); i++) {
+            int matchIndex = users.indexOf(matches.get(i));
+            if(matchIndex >= 0) {
+                users.remove(matchIndex);
+                courses.remove(matchIndex);
+                days.remove(matchIndex);
+                locations.remove(matchIndex);
+            }
+        }
 
         //this will remove all matches the user has from the users list
         for(int i = 0; i < matches.size(); i++) {
