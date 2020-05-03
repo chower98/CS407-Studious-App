@@ -249,7 +249,9 @@ public class Matches extends AppCompatActivity {
                         for (int i = 0; i < userMatches.size(); i++) {
                             matches1 = matches1 + userMatches.get(i) + ", ";
                         }
-                        matches1 = matches1.substring(0, matches1.length()-2);
+                        if(!matches1.equals(""))
+                            matches1 = matches1.substring(0, matches1.length()-2);
+
                         dataRef.child(netID).child("Matches").setValue(matches1);
 
                         retrieveMatches();

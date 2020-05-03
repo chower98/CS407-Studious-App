@@ -132,7 +132,7 @@ public class MatchRunnable implements Runnable {
 
         //add the removed matches to the unmatches list
         for(int i = 0; i < unmatches.size(); i++) {
-            int matchIndex = users.indexOf(matches.get(i));
+            int matchIndex = users.indexOf(unmatches.get(i));
             if(matchIndex >= 0) {
                 users.remove(matchIndex);
                 courses.remove(matchIndex);
