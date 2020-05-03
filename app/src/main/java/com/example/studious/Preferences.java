@@ -294,9 +294,14 @@ public class Preferences extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goLogin(View view){
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
+    public void goLogin(View view){ //clear sharepref and logout intents
+        SharedPreferences sharedPreferences = getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences.edit().remove(EMAIL_KEY).apply();
+        sharedPreferences.edit().remove(PASSWORD_KEY).apply();
+
+        Intent logoutIntent = new Intent(this, Login.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(logoutIntent);
     }
 
     public void goHome(View view){
