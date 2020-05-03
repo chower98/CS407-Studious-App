@@ -43,8 +43,6 @@ public class Matches extends AppCompatActivity {
     private ArrayList<String> matchesNames;
     private ArrayList<String> matchesNumber;
     private ArrayList<String> userMatches;
-
-    private ArrayList<String> sharedCourses = new ArrayList<String>();
     private ArrayList<String> matchesCourses;
     private ArrayList<String> userCoursesList;
 
@@ -164,7 +162,7 @@ public class Matches extends AppCompatActivity {
         });
     }
 
-    private void createUserDialog(final int position, final String name, final String number, String matchedID, String matchedUserCourses) {
+    private void createUserDialog(final int position, final String name, final String number, final String matchedID, String matchedUserCourses) {
         String[] matchedCourse = matchedUserCourses.split(", ");
         List<String> matchedCourseList = Arrays.asList(matchedCourse);
         ArrayList<String> matchedCoursesList = new ArrayList<String>(matchedCourseList);
@@ -172,8 +170,8 @@ public class Matches extends AppCompatActivity {
         String matchedCourses = "";
 
         for (int i = 0; i < userCoursesList.size(); i++) {
-            if(userCoursesList.contains(matchedCoursesList.get(i)))
-                matchedCourses = matchedCourses + matchedCoursesList.get(i) + ", ";
+            if(matchedCourseList.contains(userCoursesList.get(i)))
+                matchedCourses = matchedCourses + userCoursesList.get(i) + ", ";
         }
 
         matchedCourses = matchedCourses.substring(0, matchedCourses.length()-2); // remove last ", "
@@ -202,10 +200,10 @@ public class Matches extends AppCompatActivity {
                 dataRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String otherUserMatches = dataSnapshot.child(name).child("Matches").getValue(String.class);
+                        String otherUserMatches = dataSnapshot.child(matchedID).child("Matches").getValue(String.class);
                         String[] otherUserMatchesArray = otherUserMatches.split(", ");
                         if(otherUserMatchesArray.length == 1)
-                            dataRef.child(name).child("Matches").setValue("");
+                            dataRef.child(matchedID).child("Matches").setValue("");
                         else {
                             List<String> otherUserMatchesList = Arrays.asList(otherUserMatchesArray);
                             otherUserMatchesList.remove(netID);
@@ -216,9 +214,9 @@ public class Matches extends AppCompatActivity {
                                 else
                                 otherMatches = otherMatches + otherUserMatchesList.get(i);
                             }
-                            dataRef.child(name).child("Matches").setValue(otherMatches);
+                            dataRef.child(matchedID).child("Matches").setValue(otherMatches);
                         }
-                        matchesNames.remove(name);
+                        matchesNames.remove(matchedID);
                         String matches = "";
                         for(int i = 0; i < matchesNames.size(); i++) {
                             if(i == 0)
@@ -227,13 +225,19 @@ public class Matches extends AppCompatActivity {
                                 matches = matches + matchesNames.get(i);
                         }
 
-                        String otherUnmatches = dataSnapshot.child(name).child("Unmatches").getValue(String.class);
+                        String otherUnmatches = dataSnapshot.child(matchedID).child("Unmatches").getValue(String.class);
                         otherUnmatches = otherUnmatches + ", " + netID;
-                        dataRef.child(name).child("Unmatches").setValue(otherUnmatches);
+                        dataRef.child(matchedID).child("Unmatches").setValue(otherUnmatches);
 
                         String userUnmatches = dataSnapshot.child(netID).child("Unmatches").getValue(String.class);
-                        userUnmatches = userUnmatches + ", " + name;
-                        dataRef.child(netID).child("Unmatches").setValue(otherUnmatches);
+                        userUnmatches = userUnmatches + ", " + matchedID;
+                        dataRef.child(netID).child("Unmatches").setValue(userUnmatches);
+                        int index = userMatches.indexOf(matchedID);
+                        userMatches.remove(index);
+                        matchesNames.remove(index);
+                        matchesNumber.remove(index);
+                        matchesCourses.remove(index);
+
 
                     }
 

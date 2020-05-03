@@ -38,8 +38,7 @@ public class MatchRunnable implements Runnable {
                 if(unmatchString == null)
                     unmatchString= "";
 
-                method1(matchString);
-                method1(unmatchString);
+                method1(matchString, unmatchString);
             }
 
             @Override
@@ -50,7 +49,7 @@ public class MatchRunnable implements Runnable {
 
     }
 
-    private void method1(String matchString) {
+    private void method1(String matchStr, String unmatchedStr) {
         String[] array = matchString.split(", ");
         List<String> list = Arrays.asList(array);
         matchesList = new ArrayList<String>(list);
