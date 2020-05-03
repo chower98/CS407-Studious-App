@@ -1,5 +1,7 @@
 package com.example.studious;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +20,7 @@ public class MatchRunnable implements Runnable {
     private DatabaseReference dataRef;
     private ArrayList<String> matchesList;
     private ArrayList<String> unmatchesList;
+    private String matchToAdd;
 
     MatchRunnable(String username) {
         this.username = username;
@@ -69,11 +72,9 @@ public class MatchRunnable implements Runnable {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     users.add(postSnapshot.getKey());
-                    //for(DataSnapshot userChild: postSnapshot.getChildren()) {
                     days.add(postSnapshot.child("Days").getValue(String.class));
                     courses.add(postSnapshot.child("Courses").getValue(String.class));
                     locations.add(postSnapshot.child("Locations").getValue(String.class));
-                    //}
                 }
                     method2(matchesList, unmatchesList, users, courses, days, locations);
 
@@ -130,7 +131,7 @@ public class MatchRunnable implements Runnable {
         days.remove(userIndex);
         locations.remove(userIndex);
 
-        //add the removed matches to the unmatches list
+        //remove unmatches from lists
         for(int i = 0; i < unmatches.size(); i++) {
             int matchIndex = users.indexOf(unmatches.get(i));
             if(matchIndex >= 0) {
@@ -180,7 +181,8 @@ public class MatchRunnable implements Runnable {
             }
         }
         if(users.size() == 1) {
-            matchCreator(users.get(0));
+            matchToAdd = users.get(0);
+            matchCreator();
             return;
         } else if(users.size() == 0) {
             return;
@@ -206,12 +208,14 @@ public class MatchRunnable implements Runnable {
             days.remove(index);
             locations.remove(index);
             if(users.size() == 1) {
-                matchCreator(users.get(0));
+                matchToAdd = users.get(0);
+                matchCreator();
                 return;
             }
         }
         if(users.size() == 1) {
-            matchCreator(users.get(0));
+            matchToAdd = users.get(0);
+            matchCreator();
             return;
         } else if(users.size() == 0) {
             return;
@@ -237,7 +241,8 @@ public class MatchRunnable implements Runnable {
             days.remove(index);
             locations.remove(index);
             if(users.size() == 1) {
-                matchCreator(users.get(0));
+                matchToAdd = users.get(0);
+                matchCreator();
                 return;
             }
         }
@@ -246,12 +251,13 @@ public class MatchRunnable implements Runnable {
         }
 
         for(int i = 0; i < users.size(); i++) {
-            matchCreator(users.get(i));
+            matchToAdd = users.get(i);
+            matchCreator();
         }
 
     }
 
-    private void matchCreator(final String matchToAdd) {
+    private void matchCreator() {
         DatabaseReference matchFB = dataRef.child("UserMatches");
 
         matchFB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -260,14 +266,14 @@ public class MatchRunnable implements Runnable {
                 String newMatches = "";
                 String userNewMatches = "";
                 String oldMatches = dataSnapshot.child(matchToAdd).child("Matches").getValue().toString();
-                if(oldMatches.isEmpty())
+                if(oldMatches.equals(""))
                     newMatches = username;
                 else
                     newMatches = oldMatches + ", " + username;
 
 
                 String userMatches = dataSnapshot.child(username).child("Matches").getValue().toString();
-                if(userMatches.isEmpty())
+                if(userMatches.equals(""))
                     userNewMatches = matchToAdd;
                 else
                     userNewMatches = userMatches + ", " + matchToAdd;
