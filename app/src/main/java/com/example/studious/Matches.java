@@ -77,6 +77,7 @@ public class Matches extends AppCompatActivity {
                                         .replace(R.id.container, ConnectionsFragment.newInstance("",""))
                                         .addToBackStack("new_fragment")
                                         .commit();
+                                retrieveMatches();
                                 return true;
                             case R.id.fragment_requests:
                                 FragmentManager requestsFragmentManager = getSupportFragmentManager();
@@ -120,24 +121,24 @@ public class Matches extends AppCompatActivity {
 //    }
     private void retrieveMatches() {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
-        dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches:").getValue(String.class);
-                if(matches!=null) {
-                    String[] matchesArray = matches.split(", ");
-                    List<String> matchesList = Arrays.asList(matchesArray);
-                    ArrayList<String> userMatches = new ArrayList<String>(matchesList);
-                }
-                ArrayList<String> userMatches = new ArrayList<String>();
+                String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches").getValue(String.class);
+
+                String[] matchesArray = matches.split(", ");
+                List<String> matchesList = Arrays.asList(matchesArray);
+                ArrayList<String> userMatches = new ArrayList<String>(matchesList);
+                if(userMatches.get(0).equals(""))
+                    userMatches = new ArrayList<String>();
 
                 matchesNames = new ArrayList<String>();
                 matchesNumber = new ArrayList<String>();
 
 
                 for(int i = 0; i < userMatches.size(); i++) {
-                    matchesNames.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("name:").getValue().toString());
-                    matchesNumber.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("number:").getValue().toString());
+                    matchesNames.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("name").getValue().toString());
+                    matchesNumber.add(dataSnapshot.child("UserInfo").child(userMatches.get(i)).child("phone").getValue().toString());
                 }
 
                 ListView matchList = findViewById(R.id.listView);
