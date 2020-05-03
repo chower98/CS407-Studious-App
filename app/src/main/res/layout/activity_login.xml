@@ -89,12 +89,15 @@
         android:id="@+id/textView3"
         android:layout_width="118dp"
         android:layout_height="48dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginRight="200dp"
         android:gravity="right"
         android:text="Find your study success."
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="italic"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="207dp" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
