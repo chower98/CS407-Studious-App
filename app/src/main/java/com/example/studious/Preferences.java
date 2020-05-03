@@ -285,13 +285,9 @@ public class Preferences extends AppCompatActivity {
     }
 
     public void goHome(View view){
-        //if (userDays.isEmpty() || userLocations.isEmpty()) {
-        //    createMinimumPrefAlert();
-        //} else {
             Intent intent = new Intent(this, HomeScreen.class);
             intent.putExtra("newUser", newUser);
             startActivity(intent);
-        //}
     }
 
     private void createNewUserDialog() {
