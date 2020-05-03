@@ -114,9 +114,9 @@ public class Matches extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void retrieveMatches() {
+    public void retrieveMatches() {
         DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference();
-        dataRef.addValueEventListener(new ValueEventListener() {
+        dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String matches = dataSnapshot.child("UserMatches").child(netID).child("Matches").getValue(String.class);
@@ -125,7 +125,6 @@ public class Matches extends AppCompatActivity {
                 String[] coursesArray = courses.split(", ");
                 List<String> coursesList = Arrays.asList(coursesArray);
                 userCoursesList = new ArrayList<String>(coursesList);
-
 
                 String[] matchesArray = matches.split(", ");
                 List<String> matchesList = Arrays.asList(matchesArray);
@@ -197,7 +196,7 @@ public class Matches extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference dataRef = database.getReference().child("UserMatches");
-                dataRef.addValueEventListener(new ValueEventListener() {
+                dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String otherUserMatches = dataSnapshot.child(matchedID).child("Matches").getValue(String.class);
@@ -206,39 +205,52 @@ public class Matches extends AppCompatActivity {
                             dataRef.child(matchedID).child("Matches").setValue("");
                         else {
                             List<String> otherUserMatchesList = Arrays.asList(otherUserMatchesArray);
-                            otherUserMatchesList.remove(netID);
+                            ArrayList<String> otherUserMatchesList2 = new ArrayList<String>(otherUserMatchesList);
+                            otherUserMatchesList2.remove(netID);
+
                             String otherMatches = "";
-                            for(int i = 0; i < otherUserMatchesList.size(); i++) {
+                            for(int i = 0; i < otherUserMatchesList2.size(); i++) {
                                 if(i == 0)
-                                    otherMatches = otherUserMatchesList.get(0);
+                                    otherMatches = otherUserMatchesList2.get(0);
                                 else
-                                otherMatches = otherMatches + otherUserMatchesList.get(i);
+                                otherMatches = otherMatches + ", " + otherUserMatchesList2.get(i) ;
                             }
+
                             dataRef.child(matchedID).child("Matches").setValue(otherMatches);
                         }
-                        matchesNames.remove(matchedID);
-                        String matches = "";
-                        for(int i = 0; i < matchesNames.size(); i++) {
-                            if(i == 0)
-                                matches = matchesNames.get(0);
-                            else
-                                matches = matches + matchesNames.get(i);
-                        }
+
 
                         String otherUnmatches = dataSnapshot.child(matchedID).child("Unmatches").getValue(String.class);
-                        otherUnmatches = otherUnmatches + ", " + netID;
+                        if(otherUnmatches.equals(""))
+                            otherUnmatches = netID;
+                        else
+                            otherUnmatches = otherUnmatches + ", " + netID;
+
                         dataRef.child(matchedID).child("Unmatches").setValue(otherUnmatches);
 
                         String userUnmatches = dataSnapshot.child(netID).child("Unmatches").getValue(String.class);
-                        userUnmatches = userUnmatches + ", " + matchedID;
+                        if(userUnmatches.equals(""))
+                            userUnmatches = matchedID;
+                        else
+                            userUnmatches = userUnmatches + ", " + matchedID;
+                        
                         dataRef.child(netID).child("Unmatches").setValue(userUnmatches);
-                        int index = userMatches.indexOf(matchedID);
-                        userMatches.remove(index);
-                        matchesNames.remove(index);
-                        matchesNumber.remove(index);
-                        matchesCourses.remove(index);
 
 
+                        //int index = userMatches.indexOf(matchedID);
+                        userMatches.remove(position);
+                        matchesNames.remove(position);
+                        matchesNumber.remove(position);
+                        matchesCourses.remove(position);
+
+                        String matches1 = "";
+                        for (int i = 0; i < userMatches.size(); i++) {
+                            matches1 = matches1 + userMatches.get(i) + ", ";
+                        }
+                        matches1 = matches1.substring(0, matches1.length()-2);
+                        dataRef.child(netID).child("Matches").setValue(matches1);
+
+                        retrieveMatches();
                     }
 
                     @Override

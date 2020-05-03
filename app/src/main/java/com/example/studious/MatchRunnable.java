@@ -33,6 +33,7 @@ public class MatchRunnable implements Runnable {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String matchString = dataSnapshot.child("Matches").getValue(String.class);
                 String unmatchString = dataSnapshot.child("Unmatches").getValue(String.class);
+
                 if(matchString == null)
                     matchString = "";
                 if(unmatchString == null)
@@ -50,10 +51,14 @@ public class MatchRunnable implements Runnable {
     }
 
     private void method1(String matchStr, String unmatchedStr) {
-        String[] array = matchString.split(", ");
+        String[] array = matchStr.split(", ");
         List<String> list = Arrays.asList(array);
         matchesList = new ArrayList<String>(list);
-        unmatchesList = new ArrayList<String>(list);
+
+        String[] array2 = unmatchedStr.split(", ");
+        List<String> list2 = Arrays.asList(array2);
+        unmatchesList = new ArrayList<String>(list2);
+
         DatabaseReference allUsers = dataRef.child("UserPref");
         allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> users = new ArrayList<String>();
