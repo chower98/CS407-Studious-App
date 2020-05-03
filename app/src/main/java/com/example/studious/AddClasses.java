@@ -103,7 +103,7 @@ public class AddClasses extends AppCompatActivity {
             createNewUserDialog(); // create dialog for new user
 
         } else { // not a new user, do not show nextButton or welcome dialog
-            nextButton.setVisibility(View.GONE);
+            //nextButton.setVisibility(View.GONE);
         }
     }
 
@@ -325,9 +325,13 @@ public class AddClasses extends AppCompatActivity {
         if (currentCourses.isEmpty()) {
             createMinimumClassDialog();
             return;
-        } else {
+        } else if(newUser){
             Intent continueIntent = new Intent(this, Preferences.class);
             continueIntent.putExtra("newUser", newUser);
+            startActivity(continueIntent);
+        }
+        else {
+            Intent continueIntent = new Intent(this, HomeScreen.class);
             startActivity(continueIntent);
         }
     }
