@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.renderscript.Sampler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +42,11 @@ public class Matches extends AppCompatActivity {
     private boolean newUser;
     private ArrayList<String> matchesNames;
     private ArrayList<String> matchesNumber;
+    private ArrayList<String> userMatches;
+
+    private ArrayList<String> sharedCourses = new ArrayList<String>();
+    private String currentUserCourses;
+    private String matchedUserCourses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +130,7 @@ public class Matches extends AppCompatActivity {
 
                 String[] matchesArray = matches.split(", ");
                 List<String> matchesList = Arrays.asList(matchesArray);
-                ArrayList<String> userMatches = new ArrayList<String>(matchesList);
+                userMatches = new ArrayList<String>(matchesList);
                 if(userMatches.get(0).equals(""))
                     userMatches = new ArrayList<String>();
 
@@ -144,7 +150,7 @@ public class Matches extends AppCompatActivity {
                 matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        createUserDialog(position, matchesNames.get(position), matchesNumber.get(position));
+                        createUserDialog(position, matchesNames.get(position), matchesNumber.get(position), userMatches.get(position));
                     }
                 });
             }
@@ -156,9 +162,17 @@ public class Matches extends AppCompatActivity {
         });
     }
 
-    private void createUserDialog(final int position, final String name, final String number) {
+    private void createUserDialog(final int position, final String name, final String number, String matchedID) {
+        findSharedClasses(matchedID); // find and store classes matched to sharedCourses
+        String matchedCourses = "Courses that you share: ";
+        for (String course : sharedCourses) {
+            matchedCourses = matchedCourses + course + ", ";
+        }
+        matchedCourses = matchedCourses.substring(0, matchedCourses.length()-3); // remove last ", "
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Matches.this);
-        builder.setMessage(name).setTitle("Studious Partner").setPositiveButton("Send Intro SMS?", new DialogInterface.OnClickListener() {
+        builder.setMessage(name + "\n" + matchedCourses).setTitle("Studious Partner");
+        builder.setPositiveButton("Send SMS", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SendIntroSMS smsSender = new SendIntroSMS();
@@ -226,6 +240,53 @@ public class Matches extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();;
 
+    }
+
+    private void findSharedClasses(String matchedPerson) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference currentUser = firebaseDatabase.getReference().child("UserPref").child(netID).child("Courses");
+        DatabaseReference matchedUser = firebaseDatabase.getReference().child("UserPref").child(matchedPerson).child("Courses");
+
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentUserCourses = dataSnapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        matchedUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                matchedUserCourses = dataSnapshot.getValue().toString();
+                findSharedClassesPart2();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void findSharedClassesPart2() {
+        String[] currentUserList = currentUserCourses.split(", ");
+        String[] matchedUserTemp = matchedUserCourses.split(", ");
+        ArrayList<String> matchedUserList = new ArrayList<>();
+        for (String matchedCourse : matchedUserTemp) { // convert matchedUser to ArrayList
+            matchedUserList.add(matchedCourse);
+        }
+
+        for (String userCourse : currentUserList) {
+            if (matchedUserList.contains(userCourse)) { // check if matched user has the same course as current user
+                sharedCourses.add(userCourse);
+            }
+        }
     }
 
 
