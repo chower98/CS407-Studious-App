@@ -150,7 +150,7 @@ public class MatchRunnable implements Runnable {
         // that the indices are not changing in users
         Collections.sort(indicesToRemove);
         if(indicesToRemove.size() > 0) {
-            for (int i = indicesToRemove.size(); i >= 0; i--) {
+            for (int i = indicesToRemove.size() -1; i >= 0; i--) {
                 users.remove(indicesToRemove.get(i));
                 courses.remove(indicesToRemove.get(i));
                 days.remove(indicesToRemove.get(i));
