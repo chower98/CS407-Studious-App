@@ -176,7 +176,7 @@ public class MatchRunnable implements Runnable {
         }
 
         Collections.sort(indicesToRemove);
-        for(int i = indicesToRemove.size(); i > -1; i--){
+        for(int i = indicesToRemove.size()-1; i > -1; i--){
             users.remove(indicesToRemove.get(i));
             courses.remove(indicesToRemove.get(i));
             days.remove(indicesToRemove.get(i));
@@ -206,7 +206,7 @@ public class MatchRunnable implements Runnable {
         }
 
         Collections.sort(indicesToRemove);
-        for(int i = indicesToRemove.size(); i > -1; i--){
+        for(int i = indicesToRemove.size() -1; i > -1; i--){
             users.remove(indicesToRemove.get(i));
             courses.remove(indicesToRemove.get(i));
             days.remove(indicesToRemove.get(i));
