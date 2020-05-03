@@ -39,7 +39,6 @@ public class Matches extends AppCompatActivity {
     private String netID;
     BottomNavigationView bottomNavigation;
     private boolean newUser;
-
     private ArrayList<String> matchesNames;
     private ArrayList<String> matchesNumber;
 
@@ -62,6 +61,7 @@ public class Matches extends AppCompatActivity {
                 .replace(R.id.container, ConnectionsFragment.newInstance("",""))
                 .addToBackStack("root_fragment")
                 .commit();
+        retrieveMatches();
     }
         BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,10 +98,6 @@ public class Matches extends AppCompatActivity {
                                         .replace(R.id.container, RecommendationsFragment.newInstance("",""))
                                         .addToBackStack("new_fragment")
                                         .commit();
-                                return true;
-                            case R.id.home_screen:
-                                Intent homeIntent = new Intent(Matches.this, HomeScreen.class);
-                                startActivity(homeIntent);
                                 return true;
                         }
                         return false;
@@ -176,6 +172,55 @@ public class Matches extends AppCompatActivity {
         }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {}
+        }).setNegativeButton("Remove Match", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference dataRef = database.getReference().child("UserMatches");
+                dataRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String otherUserMatches = dataSnapshot.child(name).child("Matches").getValue(String.class);
+                        String[] otherUserMatchesArray = otherUserMatches.split(", ");
+                        if(otherUserMatchesArray.length == 1)
+                            dataRef.child(name).child("Matches").setValue("");
+                        else {
+                            List<String> otherUserMatchesList = Arrays.asList(otherUserMatchesArray);
+                            otherUserMatchesList.remove(netID);
+                            String otherMatches = "";
+                            for(int i = 0; i < otherUserMatchesList.size(); i++) {
+                                if(i == 0)
+                                    otherMatches = otherUserMatchesList.get(0);
+                                else
+                                otherMatches = otherMatches + otherUserMatchesList.get(i);
+                            }
+                            dataRef.child(name).child("Matches").setValue(otherMatches);
+                        }
+                        matchesNames.remove(name);
+                        String matches = "";
+                        for(int i = 0; i < matchesNames.size(); i++) {
+                            if(i == 0)
+                                matches = matchesNames.get(0);
+                            else
+                                matches = matches + matchesNames.get(i);
+                        }
+
+                        String otherUnmatches = dataSnapshot.child(name).child("Unmatches").getValue(String.class);
+                        otherUnmatches = otherUnmatches + ", " + netID;
+                        dataRef.child(name).child("Unmatches").setValue(otherUnmatches);
+
+                        String userUnmatches = dataSnapshot.child(netID).child("Unmatches").getValue(String.class);
+                        userUnmatches = userUnmatches + ", " + name;
+                        dataRef.child(netID).child("Unmatches").setValue(otherUnmatches);
+                        
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
         });
 
         AlertDialog dialog = builder.create();
